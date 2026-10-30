@@ -1,0 +1,1 @@
+CREATE TABLE anchors(round_id TEXT PRIMARY KEY REFERENCES rounds(id),url TEXT NOT NULL,published INTEGER NOT NULL);

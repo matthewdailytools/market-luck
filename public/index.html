@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Market Luck · 全球收盘实验室</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/">◈ MARKET LUCK <small>全球收盘实验室</small></a>
+      <nav>
+        <select id="language" aria-label="Language">
+          <option value="zh-CN">中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option></select
+        ><a href="#play">选号大厅</a><a href="#audit">透明账本</a
+        ><button id="account">登录 / 注册</button
+        ><button id="logout" hidden>退出</button>
+      </nav>
+    </header>
+    <main>
+      <div class="eyebrow">THE MARKET CLOSES. YOUR LUCK OPENS.</div>
+      <section class="hero">
+        <div>
+          <h1>让世界收盘，<br />让好运<span>开场。</span></h1>
+          <p>
+            把公开行情变成可复算的幸运号码。<br />规则提前锁定，每一注、每一分，都有迹可循。
+          </p>
+          <a class="primary" href="#play">试试我的运气 ↗</a>
+          <div class="tags">
+            纯积分娱乐 <b>·</b> 无充值提现 <b>·</b> 开源算法
+          </div>
+        </div>
+        <aside class="orb">
+          <div class="orbit">GLOBAL CLOSING SIGNAL</div>
+          <div class="bigball">?</div>
+          <div class="orbit">公开输入 → 哈希 → 幸运号码</div>
+        </aside>
+      </section>
+      <div class="notice">
+        实验环境 /
+        模拟行情与模拟时钟，不代表真实股市开奖。“绝对不能操控”无法保证，公开复算让信任边界可见。
+      </div>
+      <section class="stats">
+        <div>
+          <label>共享奖池 / POINTS</label><strong id="pool">—</strong
+          ><span>销售累积 · 未中奖滚存</span>
+        </div>
+        <div>
+          <label>我的积分</label><strong id="balance">—</strong
+          ><span>注册即领 1,000 积分</span>
+        </div>
+        <div>
+          <label>本期状态</label><strong id="status">等待开期</strong
+          ><span id="deadline">所有时间为本地时区显示</span>
+        </div>
+      </section>
+      <section id="play">
+        <div class="sectionhead">
+          <div>
+            <div class="eyebrow">PICK YOUR POSSIBILITY</div>
+            <h2>一张票，另一种可能。</h2>
+          </div>
+          <span>每注 10 积分 / 16 国经典选号结构</span>
+        </div>
+        <div id="games" class="games"></div>
+        <details class="game-rules" open>
+          <summary>玩法规则与中奖条件</summary>
+          <div id="gameRules"></div>
+        </details>
+        <div class="picker">
+          <div>
+            <h3 id="gameName">选号</h3>
+            <p id="rule"></p>
+          </div>
+          <button id="random">↻ 随机选号</button>
+          <div id="numbers" class="numbers"></div>
+          <p id="bonusLabel"></p>
+          <div id="bonus" class="numbers"></div>
+          <footer>
+            <span id="selection">请选择号码</span
+            ><button class="primary" id="buy">确认购票 · 10 分</button>
+          </footer>
+        </div>
+      </section>
+      <section id="audit">
+        <div class="sectionhead">
+          <div>
+            <div class="eyebrow">DON'T TRUST. VERIFY.</div>
+            <h2>好运公开，过程也公开。</h2>
+          </div>
+          <button id="refresh">刷新账本 ↻</button>
+        </div>
+        <div class="auditgrid">
+          <article>
+            <h3>01 / 锁定规则</h3>
+            <p>
+              售票前公布固定标的、日期、算法与承诺。缺失数据等待，不临时替换。
+            </p>
+            <code id="commitment">尚未开期</code>
+          </article>
+          <article>
+            <h3>02 / 闭市确认</h3>
+            <p>
+              正式模式须晚于最后一个市场收盘和确认窗口；本地演示可推进模拟时钟。
+            </p>
+            <div id="markets"></div>
+          </article>
+          <article>
+            <h3>03 / 独立复算</h3>
+            <p>MD5 为指纹，SHA-256 产生种子。拒绝采样抽号，避免取模偏差。</p>
+            <div id="proofs"></div>
+          </article>
+        </div>
+        <details>
+          <summary>奖池分配与信任边界</summary>
+          <p>
+            各玩法的中奖条件以上方规则面板为准。按共享奖池的 50% / 30% / 20%
+            分档均分，向下取整，其余滚存。每注只计最高档。各国玩法是选号结构模拟，不是官方彩票。集中托管、数据源和管理员仍是信任边界，需外部承诺与审计进一步约束。
+          </p>
+        </details>
+        <div class="lists">
+          <article>
+            <h3>我的彩票</h3>
+            <div id="tickets"></div>
+          </article>
+          <article>
+            <h3>公开中奖清单</h3>
+            <div id="winners"></div>
+          </article>
+        </div>
+        <article class="ledger">
+          <h3>
+            奖池流水
+            <small>最近 100 条；销售负数是用户支出，对奖池为流入</small>
+          </h3>
+          <div id="ledger"></div>
+        </article>
+        <div class="demo">
+          <b>本地演示控制台</b><button id="create">创建下一期</button
+          ><button id="advance">模拟全部闭市</button
+          ><button id="draw">执行开奖</button><span>仅 localhost 开放</span>
+        </div>
+      </section>
+    </main>
+    <footer class="sitefooter">
+      <a
+        href="https://github.com/matthewdailytools/market-luck"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub · MIT · Open source ↗</a
+      ><a
+        href="https://github.com/matthewdailytools/market-luck/blob/main/ALGORITHM.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Algorithm ↗</a
+      ><a
+        href="https://github.com/matthewdailytools/market-luck/blob/main/API.md"
+        target="_blank"
+        rel="noopener noreferrer"
+        >API ↗</a
+      >
+    </footer>
+    <div id="toast" role="status"></div>
+    <dialog id="auth">
+      <form id="authForm">
+        <button type="button" id="closeAuth" class="close">×</button>
+        <div class="eyebrow">WELCOME TO MARKET LUCK</div>
+        <h2>从 1,000 分开始。</h2>
+        <label
+          >用户名<input
+            id="name"
+            autocomplete="username"
+            required
+            minlength="3"
+            maxlength="24" /></label
+        ><label
+          >密码<input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            minlength="8"
+            maxlength="128" /></label
+        ><button class="primary" name="action" value="register">
+          注册并领取积分</button
+        ><button name="action" value="login">已有账号，登录</button>
+        <p>仅虚拟积分，无现金价值。</p>
+      </form>
+    </dialog>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

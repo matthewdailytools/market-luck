@@ -1,0 +1,27 @@
+name: Local Cloudflare checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run db:migrate
+      - name: Integration with local D1 and R2
+        shell: bash
+        run: |
+          npm run dev > /tmp/market-luck.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" || true' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8787/api/state > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:integration || { cat /tmp/market-luck.log; exit 1; }
