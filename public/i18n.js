@@ -37,7 +37,6 @@ export const dictionary = {
     "Winning conditions are defined in each game’s rules panel above.",
     "当選条件は上記の各ゲームのルール欄に従います。",
   ],
-  主球: ["Main ball", "主番号"],
   全球收盘实验室: ["Global Closing Lab", "世界終値ラボ"],
   选号大厅: ["Play", "番号を選ぶ"],
   透明账本: ["Public ledger", "公開台帳"],
@@ -207,20 +206,36 @@ export const dictionary = {
   期次已结算: ["Round already settled", "精算済みです"],
   来源校验失败: ["Origin check failed", "オリジン検証に失敗しました"],
 };
+dictionary[
+  "各玩法的中奖条件以上方规则面板为准。按共享奖池的 50% / 30% / 20% 分档均分，向下取整，其余滚存。每注只计最高档。各国玩法是选号结构模拟，不是官方彩票。集中托管、数据源和管理员仍是信任边界，需外部承诺与审计进一步约束。"
+] = [
+  "Winning conditions are defined in each game’s rules panel above. The shared pool allocates 50% / 30% / 20% to tiers 1/2/3, split equally and rounded down; unused points roll over. Each ticket receives its highest tier only. These formats are simulations, not official lotteries. Hosting, data providers and administrators remain trust boundaries; external commitments and independent audits are still needed.",
+  "当選条件は上記の各ゲームのルール欄に従います。共有プールの50% / 30% / 20%を1～3等に均等配分し、端数と未配分分を繰り越します。1口につき最高等級のみ適用します。各国の形式を参考にした仮想ゲームで、公式宝くじではありません。運営・情報源・管理者への信頼は残り、外部コミットメントと独立監査が必要です。",
+];
 let lang;
-try {
-  lang = localStorage.getItem("market-luck-language");
-} catch {}
+if (typeof document !== "undefined") {
+  try {
+    lang = localStorage.getItem("market-luck-language");
+  } catch {}
+}
 if (!languages.includes(lang))
-  lang = navigator.language.startsWith("ja")
+  lang = (typeof navigator === "undefined"
+    ? "en"
+    : navigator.language
+  ).startsWith("ja")
     ? "ja"
-    : navigator.language.startsWith("zh")
+    : (typeof navigator === "undefined" ? "en" : navigator.language).startsWith(
+          "zh",
+        )
       ? "zh-CN"
       : "en";
 const records = new WeakMap();
 export function translate(source, language = lang) {
   if (language === "zh-CN") return source;
   const i = language === "ja" ? 1 : 0;
+  if (source === "主球") return language === "ja" ? "主番号" : "Main ball";
+  const normalized = source.replace(/\s+/g, " ").trim();
+  if (dictionary[normalized]) return dictionary[normalized][i];
   if (dictionary[source]) return dictionary[source][i];
   let out = source;
   for (const [zh, values] of Object.entries(dictionary).sort(
@@ -287,7 +302,7 @@ function visit(root) {
     if (n.nodeValue !== next) n.nodeValue = next;
   }
 }
-const observer = new MutationObserver(() => visit(document.body));
+let observer;
 export function setLanguage(value) {
   if (!languages.includes(value)) return;
   lang = value;
@@ -303,6 +318,7 @@ export function initLanguages() {
   select.value = lang;
   select.onchange = () => setLanguage(select.value);
   setLanguage(lang);
+  observer ||= new MutationObserver(() => visit(document.body));
   observer.observe(document.body, {
     subtree: true,
     childList: true,
