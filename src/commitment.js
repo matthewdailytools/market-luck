@@ -251,8 +251,8 @@ export function canonicalV3(
       beaconRound: snapshot.beaconRound,
     },
     witnesses: {
-      presale: digest(JSON.stringify(witnesses.presale)),
-      freeze: digest(JSON.stringify(witnesses.freeze)),
+      presale: digest(witnessRecord(round, "presale")),
+      freeze: digest(witnessRecord(round, "freeze", snapshot)),
     },
     beacon: {
       chainHash: RANDOMNESS_POLICY_V3.chainHash,

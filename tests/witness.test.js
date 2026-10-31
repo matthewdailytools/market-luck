@@ -552,3 +552,39 @@ test("v3 complete public replay verifies genuine log receipts and future beacon,
   );
   assert.equal(cli.status, 0, cli.stderr);
 });
+
+test("refreshing a genuine checkpoint or reordering receipt properties cannot choose a different v3 seed", async () => {
+  const proof = JSON.parse(
+      readFileSync(
+        new URL("./fixtures/v3-controlled-proof.json", import.meta.url),
+      ),
+    ),
+    replacement = JSON.parse(
+      readFileSync(
+        new URL("./fixtures/rekor-freeze-new-checkpoint.json", import.meta.url),
+      ),
+    );
+  assert(await verifyWitness(replacement, replacement.record));
+  const altered = structuredClone(proof);
+  altered.witnesses.freeze = replacement;
+  altered.witnesses.presale = Object.fromEntries(
+    Object.entries(altered.witnesses.presale).reverse(),
+  );
+  const round = {
+    id: proof.manifest.id,
+    manifest: JSON.stringify(proof.manifest),
+    commitment: proof.commitment,
+  };
+  assert.equal(
+    canonicalV3(round, JSON.parse(proof.input).prices, altered),
+    proof.input,
+  );
+  const checked = await verifyProof(altered, {
+    roundId: round.id,
+    manifest: proof.manifest,
+    commitment: proof.commitment,
+  });
+  assert(checked.ok, checked.errors.join(","));
+  assert.equal(altered.seed, proof.seed);
+  assert.deepEqual(altered.results, proof.results);
+});

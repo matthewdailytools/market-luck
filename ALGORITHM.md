@@ -136,11 +136,11 @@ The extra second prevents rounding the witness second down from shortening the f
  prices:[six price fields, now in the revealed stock order],
  reveal:"EXACT_SECRET_JSON_STRING",
  snapshot:{digest,sealedAt,witnessedAt,beaconRound},
- witnesses:{presale:SHA256(JSON.stringify(presaleReceipt)),freeze:SHA256(JSON.stringify(freezeReceipt))},
+ witnesses:{presale:SHA256(presaleRecord),freeze:SHA256(freezeRecord)},
  beacon:{chainHash,round,signature,randomness}}
 seed = SHA256(UTF8("market-luck/draw/v3\n" + input))
 ```
 
-Each receipt has `{record,uuid,entry}` in that order, preserving Rekor's returned entry fields in the stored JSON. Its hash is reproducible from the full receipt included in the proof. The snapshot stays ASCII-sorted to preserve set validation; only the v3 input price order follows the hidden permutation. Browser/CLI add hidden-package and witness checks for 11 total checks. Invalid evidence withholds published-number cards and result-image export.
+Each receipt has `{record,uuid,entry}`. The full receipt is included for signature and inclusion verification, but only its fixed JCS record-content hash enters the seed. JSON property order, refreshed valid checkpoints, Merkle paths or signature encodings cannot select a different seed. Signed integration time remains bound through the snapshot/target validation. The snapshot stays ASCII-sorted to preserve set validation; only the v3 input price order follows the hidden permutation. Browser/CLI add hidden-package and witness checks for 11 total checks. Invalid evidence withholds published-number cards and result-image export.
 
 Rekor is an independent log, but its v1 integration time still trusts Rekor's clock/signing key. Inclusion alone does not prove global log consistency, truthful prices, public availability at every earlier instant, every ticket or every payout. Logs contain hashed artifacts; users should save the public record and receipt together. There is no independent secret escrow: root operators can still stop, refuse to reveal or lose the encryption key. Hidden order alone is not protection against a party that knows the secret and controls prices, so the future beacon is retained. See [the v3 plan](隐藏顺序承诺与独立见证改进方案.md) for explicit limits.

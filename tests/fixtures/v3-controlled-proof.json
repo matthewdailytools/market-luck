@@ -217,182 +217,182 @@
     }
   },
   "commitment": "f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649",
-  "input": "{\"version\":3,\"round\":\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\",\"commitment\":\"f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649\",\"prices\":[{\"symbol\":\"XNAS:AAPL\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10000},{\"symbol\":\"XNAS:MSFT\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10246},{\"symbol\":\"XNYS:IBM\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10123}],\"reveal\":\"{\\\"version\\\":1,\\\"round\\\":\\\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\\\",\\\"order\\\":[\\\"XNAS:AAPL\\\",\\\"XNAS:MSFT\\\",\\\"XNYS:IBM\\\"],\\\"nonce\\\":\\\"e262a9dd6df06009e401ff3e554d22c5e0de561172282095e433192586e5d8ae\\\"}\",\"snapshot\":{\"digest\":\"22bda762f188d935809fe868f6a3fbe502cf4b02fb6e664578b63f05a77df4fa\",\"sealedAt\":1793461914805,\"witnessedAt\":1793461917000,\"beaconRound\":33552891},\"witnesses\":{\"presale\":\"35cb1ecbba55f46a00c6a8c8bcc146f68649efdf259c774627ae5ceffec470b3\",\"freeze\":\"aaba41f29fc06ad349cfeee2b642b3f209d3c0fe244ddadb2ecbcc83157ab762\"},\"beacon\":{\"chainHash\":\"52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971\",\"round\":33552891,\"signature\":\"b715cf367f48bf67aa117993d482036850a99de3945ac5d434ea069d73be4e63079d6f4204f94ec9663478dd9cce445d\",\"randomness\":\"2cd3b04f1bb701b63a0e2cb8affef28c9e6cec80a9fa885b742547b79b568493\"}}",
-  "md5": "a2249fdf69f5e6930b0dad09408e06dd",
-  "seed": "956b4a6f41aef7b8ec2e9eb6f66207a1ad70fecf7d541305e8d442c647e30018",
+  "input": "{\"version\":3,\"round\":\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\",\"commitment\":\"f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649\",\"prices\":[{\"symbol\":\"XNAS:AAPL\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10000},{\"symbol\":\"XNAS:MSFT\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10246},{\"symbol\":\"XNYS:IBM\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10123}],\"reveal\":\"{\\\"version\\\":1,\\\"round\\\":\\\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\\\",\\\"order\\\":[\\\"XNAS:AAPL\\\",\\\"XNAS:MSFT\\\",\\\"XNYS:IBM\\\"],\\\"nonce\\\":\\\"e262a9dd6df06009e401ff3e554d22c5e0de561172282095e433192586e5d8ae\\\"}\",\"snapshot\":{\"digest\":\"22bda762f188d935809fe868f6a3fbe502cf4b02fb6e664578b63f05a77df4fa\",\"sealedAt\":1793461914805,\"witnessedAt\":1793461917000,\"beaconRound\":33552891},\"witnesses\":{\"presale\":\"6e53eb3ce7a95692920cd3fb19246776fe1240d3ad95f3c4fbbbed52de99c102\",\"freeze\":\"c2e557f7867704e307a86ad80911424f3a64b6a892998e7cd1fdd1fb9d3add02\"},\"beacon\":{\"chainHash\":\"52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971\",\"round\":33552891,\"signature\":\"b715cf367f48bf67aa117993d482036850a99de3945ac5d434ea069d73be4e63079d6f4204f94ec9663478dd9cce445d\",\"randomness\":\"2cd3b04f1bb701b63a0e2cb8affef28c9e6cec80a9fa885b742547b79b568493\"}}",
+  "md5": "444721eb7cb4162516551927715bd5a5",
+  "seed": "22647ba8713d16705b31a367a9105935ba483536f3e5a2edf513939901351c56",
   "results": {
     "cn": {
       "main": [
-        1,
-        6,
-        10,
-        18,
-        27,
+        3,
+        11,
+        12,
+        23,
+        29,
         32
       ],
-      "bonus": 2
+      "bonus": 13
     },
     "us": {
       "main": [
-        16,
-        35,
-        41,
-        53,
-        66
+        11,
+        39,
+        40,
+        51,
+        58
       ],
-      "bonus": 6
+      "bonus": 17
     },
     "uk": {
       "main": [
-        9,
-        17,
-        23,
-        24,
-        38,
-        44
+        36,
+        50,
+        51,
+        53,
+        55,
+        57
       ],
       "bonus": null
     },
     "jp": {
       "main": [
-        14,
-        22,
-        31,
-        34,
-        35,
+        3,
+        9,
+        10,
+        18,
+        27,
         37
       ],
       "bonus": null
     },
     "fr": {
       "main": [
-        7,
-        15,
-        16,
-        26,
-        44
+        11,
+        21,
+        27,
+        42,
+        45
       ],
-      "bonus": 2
+      "bonus": 1
     },
     "de": {
       "main": [
-        7,
-        8,
-        27,
-        30,
-        34,
-        46
+        6,
+        11,
+        23,
+        26,
+        45,
+        47
       ],
-      "bonus": 6
+      "bonus": 0
     },
     "it": {
       "main": [
-        14,
-        33,
-        54,
-        55,
-        59,
-        87
+        1,
+        8,
+        11,
+        26,
+        62,
+        74
       ],
       "bonus": null
     },
     "es": {
       "main": [
+        5,
         6,
-        20,
-        21,
+        22,
         24,
-        27,
-        31
+        40,
+        46
       ],
       "bonus": null
     },
     "ca": {
       "main": [
+        2,
         6,
-        29,
-        32,
-        39,
-        41,
+        11,
+        15,
+        19,
         45
       ],
       "bonus": null
     },
     "au": {
       "main": [
-        8,
-        19,
-        23,
+        5,
+        13,
+        27,
         33,
-        43,
-        45,
-        46
+        34,
+        40,
+        42
       ],
       "bonus": null
     },
     "nz": {
       "main": [
-        6,
-        22,
+        2,
+        7,
+        9,
+        15,
         24,
-        25,
-        29,
-        40
+        33
       ],
       "bonus": null
     },
     "kr": {
       "main": [
-        10,
-        11,
-        34,
-        37,
-        38,
-        39
+        20,
+        25,
+        31,
+        33,
+        40,
+        43
       ],
       "bonus": null
     },
     "sg": {
       "main": [
         8,
-        19,
-        29,
-        39,
-        45,
-        46
-      ],
-      "bonus": null
-    },
-    "br": {
-      "main": [
-        1,
-        31,
-        33,
-        34,
+        15,
+        20,
+        32,
         40,
         48
       ],
       "bonus": null
     },
+    "br": {
+      "main": [
+        7,
+        8,
+        11,
+        17,
+        38,
+        45
+      ],
+      "bonus": null
+    },
     "za": {
       "main": [
-        12,
-        26,
+        1,
+        5,
+        11,
+        14,
         30,
-        32,
-        43,
-        51
+        52
       ],
       "bonus": null
     },
     "ph": {
       "main": [
-        21,
-        37,
-        40,
-        43,
+        9,
+        16,
+        18,
         48,
-        58
+        50,
+        54
       ],
       "bonus": null
     }
