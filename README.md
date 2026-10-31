@@ -56,6 +56,7 @@ npm run deploy
 - [HTTP API](API.md)
 - [普通用户核验页](https://luck.onlinefreetools.org/verify.html)：本期规则、来源、时间线与浏览器独立复算，保留原始 JSON 下载
 - [公开期次分享卡](https://luck.onlinefreetools.org/share.html)：无需登录，固定期号与玩法，中英日切换、复制链接及保存 PNG；已公布号码须先通过本页复算，明确区分 LIVE、DEMO 和回放。
+- [公开分享卡与传播入口上线验收](公开分享卡与传播入口上线验收.md)
 - [可读核验页上线验收](可读核验页上线验收.md)
 - [行情源配置](行情数据源接入.md)
 - [贡献指南](CONTRIBUTING.md) / [安全边界](SECURITY.md) / [MIT 许可证](LICENSE)

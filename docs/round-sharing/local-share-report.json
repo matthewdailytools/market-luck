@@ -1,0 +1,984 @@
+{
+  "codeCommit": "05548b13db60b5e3cf573a5fa6da0648dcdeb156",
+  "runId": "41207316421",
+  "browserVersions": {
+    "chromium": "156.0.8078.4",
+    "webkit": "27.2"
+  },
+  "ticketLayoutCases": 441,
+  "ticketFlows": 5,
+  "chromium": {
+    "engine": "chromium",
+    "provenance": "isolated GitHub-hosted browser",
+    "online": false,
+    "cases": [
+      {
+        "label": "controlled-pending",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-passed",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-tampered",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-replay",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "status": "passed"
+      },
+      {
+        "label": "invalid-link-and-unavailable-record",
+        "status": "passed"
+      },
+      {
+        "label": "local-real-api/published-proof-from-R2",
+        "status": "passed",
+        "round": "66ebc4a1-7399-49c1-aa6c-676a617946a0",
+        "mode": "DEMO"
+      },
+      {
+        "label": "local-real-api",
+        "status": "passed"
+      }
+    ],
+    "layouts": [
+      {
+        "label": "controlled-pending",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "zh-CN",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "en",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "ja",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "zh-CN",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "en",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "ja",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-passed",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "zh-CN",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "en",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "ja",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "zh-CN",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "en",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "ja",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "zh-CN",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "en",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "ja",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "zh-CN",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "en",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "ja",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-replay",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "zh-CN",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "en",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "ja",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "zh-CN",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "en",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "ja",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "zh-CN",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "en",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "ja",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "zh-CN",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "en",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "ja",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "zh-CN",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "en",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "ja",
+        "width": 768,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "zh-CN",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "en",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "ja",
+        "width": 1280,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      }
+    ],
+    "screenshots": [
+      "chromium-controlled-pending-390.png",
+      "chromium-controlled-passed-390.png",
+      "chromium-controlled-tampered-390.png",
+      "chromium-controlled-replay-390.png",
+      "chromium-controlled-wrong-copy-390.png",
+      "chromium-local-real-api-390.png",
+      "chromium-local-real-api-published-390.png"
+    ],
+    "errors": [],
+    "apiWrites": [],
+    "status": "passed"
+  },
+  "webkit": {
+    "engine": "webkit",
+    "provenance": "isolated GitHub-hosted browser",
+    "online": false,
+    "cases": [
+      {
+        "label": "controlled-pending",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-passed",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-tampered",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-replay",
+        "status": "passed"
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "status": "passed"
+      },
+      {
+        "label": "invalid-link-and-unavailable-record",
+        "status": "passed"
+      },
+      {
+        "label": "local-real-api/published-proof-from-R2",
+        "status": "passed",
+        "round": "66ebc4a1-7399-49c1-aa6c-676a617946a0",
+        "mode": "DEMO"
+      },
+      {
+        "label": "local-real-api",
+        "status": "passed"
+      }
+    ],
+    "layouts": [
+      {
+        "label": "controlled-pending",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-pending",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-passed",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-passed",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-tampered",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-replay",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-replay",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 7
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "controlled-wrong-copy",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "zh-CN",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "en",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "ja",
+        "width": 320,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "zh-CN",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "en",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      },
+      {
+        "label": "local-real-api",
+        "language": "ja",
+        "width": 390,
+        "overflow": 0,
+        "minControlHeight": 44,
+        "balls": 0
+      }
+    ],
+    "screenshots": [
+      "webkit-controlled-pending-390.png",
+      "webkit-controlled-passed-390.png",
+      "webkit-controlled-tampered-390.png",
+      "webkit-controlled-replay-390.png",
+      "webkit-controlled-wrong-copy-390.png",
+      "webkit-local-real-api-390.png",
+      "webkit-local-real-api-published-390.png"
+    ],
+    "errors": [],
+    "apiWrites": [],
+    "status": "passed"
+  }
+}

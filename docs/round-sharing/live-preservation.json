@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-31T13:57:10.895Z",
+  "poolBefore": 101000,
+  "poolAfter": 101000,
+  "rounds": [
+    {
+      "id": "1c6cb4c0-f039-4f23-a290-c303d509562a",
+      "commitment": "12e6fae3c838a77ea1b1ee6630b4f5704c200f817c5a011ed9666959886b18e1",
+      "status": "open",
+      "proofPublished": false,
+      "unchanged": true
+    }
+  ],
+  "apiWritesByShareAcceptance": 0
+}

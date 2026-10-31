@@ -41,6 +41,8 @@ The page requests existing public `/api/round/:id` and `/api/proof/:id` resource
 
 Share URLs include only the public round ID, format and language. No accounts, private tickets, balances or arbitrary incoming parameters are copied. Native sharing is optional, clipboard failures provide a selectable URL, and PNG export runs locally in the browser. No sharing rewards, additional win probability or analytics collection are introduced. Run `npm run test:share` for read-only deployed-asset and public-record checks; `TEST_BASE_URL` selects a permitted local/DEMO/LIVE origin.
 
+For locally advanced DEMO clocks, operational times may differ from the committed simulation schedule. The card explicitly labels that difference and keeps the original rules linked; it does not rewrite the manifest. LIVE operational timing must still equal the committed timing or the card rejects the record.
+
 ## Demo endpoints
 
 POST `/api/demo/create` with `{}` opens a committed simulation round, or returns the current round ID. POST `/api/demo/advance` with `{round}` advances simulation timing. POST `/api/demo/draw` with `{round}` settles it and archives evidence. They require `DEMO_MODE=true`, localhost, and a matching Origin. Live rounds cannot be advanced or drawn through these routes. Simulated prices are predictable fixtures and must never be described as live random market data.

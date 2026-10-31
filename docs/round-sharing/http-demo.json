@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "base": "https://luck-test.onlinefreetools.org",
+  "checkedAt": "2026-10-31T13:51:37.093Z",
+  "checks": 62,
+  "apiWrites": 0,
+  "round": "90256b5d-31ad-4e2f-a381-5eb0f18ed0db",
+  "mode": "DEMO",
+  "phase": "open",
+  "poolBefore": 50570,
+  "poolAfter": 50570,
+  "manifestUnchanged": true,
+  "commitmentUnchanged": true,
+  "proofRecalculated": false,
+  "proofPublished": false
+}
