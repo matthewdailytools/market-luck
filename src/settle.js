@@ -13,6 +13,11 @@ export async function settle(
     round.id,
   ).first();
   if (existing?.proof) return JSON.parse(existing.proof);
+  if (
+    JSON.parse(round.manifest).mode === "LIVE" &&
+    hash(round.manifest) !== round.commitment
+  )
+    throw Error("COMMITMENT_MISMATCH");
   assertLockedRound(round, now, {
     forCollection: JSON.parse(round.manifest).mode === "LIVE",
   });

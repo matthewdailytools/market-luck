@@ -10,7 +10,7 @@ For live rounds, cutoff is at least one hour after preparing the manifest and st
 
 ## 2. Prices / 价格口径
 
-Use raw, unadjusted daily close, not adjusted close or an intraday last trade. Identify records by instrument and exchange-local trading date. Store prices as positive safe integers in declared decimal units. USD 123.4500 with scale 2 becomes 12345; 123.451 is rejected rather than rounded.
+Use the daily close defined by the pinned source profile, never an intraday last trade. Legacy KEYED-v1 uses raw unadjusted close. PUBLIC-NOKEY-v1 uses Yahoo quote.close (not adjclose, but historical splits may be applied) cross-checked against Nasdaq Close/Last; see the profile-specific section below. Identify records by instrument and exchange-local trading date. Store prices as positive safe integers in declared decimal units. USD 123.4500 with scale 2 becomes 12345; 123.451 is rejected rather than rounded.
 
 Pin EODHD, Alpha Vantage and Twelve Data in this order. At least two distinct sources must return the specified date and exact normalized price. **Any valid conflicting observation freezes the draw**, including a 2-to-1 disagreement. A missing, rate-limited or malformed provider is recorded as unavailable; two remaining matching sources can pass. Never average, use yesterday, replace an instrument or switch source sets after sales. Sources may share upstream feeds.
 
@@ -58,3 +58,7 @@ This independently recomputes manifest commitment, canonical input, MD5, SHA-256
 ## Extended catalog
 
 The catalog now includes 16 countries. France: 5/49 + 1/10; Germany: 6/49 + a special digit 0–9; Italy: 6/90; Spain/Canada/Singapore: 6/49; Australia: 7/47; New Zealand: 6/40; Korea: 6/45; Brazil: 6/60; South Africa: explicitly labeled 6/52 format; Philippines: 6/58. See 各国玩法说明.md for limits and reference sources. Every committed round uses its own manifest.games, never a newer global catalog.
+
+## PUBLIC-NOKEY-v1 LIVE profile
+
+YahooFinance and Nasdaq are both mandatory (2/2); no keyed-source substitution. Use exact-date Yahoo quote.close and Nasdaq Close/Last. Yahoo is not adjclose but historical splits can still revise it; equality is a provider snapshot rule, not an exchange-signed final price. Millisecond cutoff is enforced by D1 at commit time; all LIVE manifest timing columns are immutable. The reviewed 2026 NY calendar sets a latest 03:30 New York cutoff, before the 04:00 premarket, and ready is close + 24 hours. See LIVE接入与线上验收.md for full timing and test boundaries. Legacy manifests preserve their original source profile.

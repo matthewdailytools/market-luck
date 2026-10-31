@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "market-luck-replay",
+  "main": "tests/replay-worker.js",
+  "account_id": "YOUR_CLOUDFLARE_ACCOUNT_ID",
+  "compatibility_date": "2026-10-01",
+  "vars": {
+    "DEMO_MODE": "false",
+    "DEMO_AUTO_DRAW": "false",
+    "INSTALLATION_KIND": "ONLINE_REPLAY",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "market-luck-replay",
+      "database_id": "YOUR_D1_DATABASE_ID",
+      "migrations_dir": "tests/replay-migrations",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "EVIDENCE",
+      "bucket_name": "market-luck-replay-evidence",
+    },
+  ],
+  "workers_dev": true,
+}

@@ -1,8 +1,9 @@
+<!-- Current LIVE rollout: see LIVE接入与线上验收.md; earlier demo notes below remain for local setup. -->
 # Market Luck
 
 [English](README.en.md) · [日本語](README.ja.md)
 
-[在线测试站](https://luck-test.onlinefreetools.org) · [GitHub 开源仓库](https://github.com/matthewdailytools/market-luck) · [线上测试报告](线上测试报告.md)
+[真实开奖站](https://luck.onlinefreetools.org) · [模拟演示站](https://luck-test.onlinefreetools.org) · [GitHub 开源仓库](https://github.com/matthewdailytools/market-luck) · [线上测试报告](线上测试报告.md)
 
 Cloudflare Workers + D1 + R2 的纯积分彩票实验，中文响应式页面，16 国虚拟选号玩法，公开奖池与中奖流水。
 
@@ -57,3 +58,9 @@ npm run deploy
 ## Anonymous market-source diagnostics
 
 No API keys are needed to test Yahoo Finance + Nasdaq historical closes: `node scripts/check-public-sources.js 2026-10-29 AAPL`. This is historical diagnostics, not an active LIVE draw profile. See [免 Key 实测](免Key行情源实测.md) and [API Key 逐步申请](免费行情API申请与配置-逐步操作.md). The owner-specific test deployment config is gitignored; copy `wrangler.test.example.jsonc` to `wrangler.test.jsonc` and use your own IDs/domain when creating your own test site.
+
+## LIVE / 真实开奖更新
+
+[真实开奖站](https://luck.onlinefreetools.org) · [LIVE接入与线上验收](LIVE接入与线上验收.md) · [主题设计评估](主题设计评估.md)
+
+Yahoo Finance + Nasdaq 免Key的 PUBLIC-NOKEY-v1 已接入真实期次；2/2价格一致，03:30纽约时间前停售，闭市后24小时才可开奖。生产LIVE与模拟站、线上历史回放安装分离。当前期最早自然开奖为北京时间2026-11-04 05:00。已完成上线售票与提前开奖拒绝，完整派奖闭环在明确标记的隔离回放中验证。详见上面的最新报告；旧文档中尚未启用LIVE的描述是上次交付记录。

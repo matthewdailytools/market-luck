@@ -60,6 +60,7 @@ export function assertLockedRound(round, now, { forCollection = false } = {}) {
   if (m.mode !== "LIVE") return m;
   const maxClose = Math.max(...m.markets.map((p) => p.closeUTC));
   if (
+    m.id !== round.id ||
     m.calendarVersion !== CALENDAR_VERSION ||
     m.confirmationDelayMs !== CONFIRMATION_MS ||
     round.cutoff !== m.cutoff ||

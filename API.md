@@ -51,3 +51,7 @@ State lists are bounded recent history, not a complete paginated export. A publi
 ## Anonymous-source research endpoint
 
 `POST /api/admin/check-public-sources` accepts `{symbol,date}` for AAPL/MSFT/IBM. It fetches Yahoo Finance and Nasdaq without API keys, archives source responses privately to R2, and returns a redacted diagnostic report. Requires the admin Bearer token. Returns 200 on two agreeing observations, 409 on unavailable/conflicting data. No tickets or payouts are created; existing LIVE manifests are unaffected.
+
+## LIVE profile update (2026-10-31)
+
+Default prepare profile is now `PUBLIC-NOKEY-v1`, sources exactly YahooFinance + Nasdaq (2/2). KEYED-v1 remains explicit opt-in. Server derives MIC/provider mappings and session UTC from the reviewed 2026 NYSE/Nasdaq calendar; cutoff must be at or before 03:30 New York, at least one hour after preparation. Unsupported calendar years fail closed. Publish now fetches the exact immutable GitHub commit manifest and verifies its bytes, with manual redirect handling. Configure COMMITMENT_REPOSITORY for a fork. `/api/admin/pause` permanently pauses an open round; there is no automatic resume or time override. State now includes serverTime and collection attempts. See LIVE接入与线上验收.md for the actual future round, separated online replay test and current rollout.

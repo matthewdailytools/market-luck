@@ -6,6 +6,24 @@ A virtual-points lottery experiment using publicly reproducible market-close inp
 
 This is **not** an official lottery, real-money service or a promise of absolute tamper resistance. No deposits, withdrawals, transfers or physical prizes. Hosting, data providers and administrators remain trust boundaries. MD5 is only a fingerprint; SHA-256 generates commitments and sampling seeds.
 
+## Live installation and current round
+
+[Live draw site](https://luck.onlinefreetools.org) · [Separate demo site](https://luck-test.onlinefreetools.org) · [LIVE implementation and acceptance report](LIVE接入与线上验收.md)
+
+The live site now uses **Yahoo Finance + Nasdaq without API keys** through the fixed `PUBLIC-NOKEY-v1` profile. Both sources must return the specified trading date and an identical normalized close: **2 of 2 are required**. Missing data, rate limits, network failures or disagreement leave the draw waiting. Prices are never averaged, substituted or taken from a previous date.
+
+The current round uses AAPL, MSFT and IBM for **November 2, 2026**. Sales close at **03:30 America/New_York**, before the 04:00 premarket session. The earliest draw is the core market close plus a fixed 24-hour confirmation window:
+
+| Event | New York time, EST | UTC | Beijing time |
+|---|---|---|---|
+| Sales close | Nov 2, 03:30 | Nov 2, 08:30 | **Nov 2, 16:30** |
+| Core market closes | Nov 2, 16:00 | Nov 2, 21:00 | Nov 3, 05:00 |
+| Earliest draw attempt | Nov 3, 16:00 | Nov 3, 21:00 | **Nov 4, 05:00** |
+
+The actual draw may take longer if consensus is unavailable. The server derives sessions from the reviewed **2026 NYSE/Nasdaq calendar** using `America/New_York`, including daylight-saving changes, holidays and early closes. Unreviewed years are rejected. D1 uses its current millisecond clock to reject purchases at or after cutoff and settlements before the confirmation window ends; committed live rules and timestamps cannot be modified.
+
+Live publication, sales, time-boundary rejection and database protections have been tested online. The complete purchase-to-payout path was tested with actual historical provider responses in a **separate replay Worker, D1 database and R2 bucket**, explicitly marked as replay with a simulated clock. This is not a claim that the future November 2 round has already completed a natural live draw. See the report for evidence and remaining boundaries.
+
 ## Install locally
 
 Requirements: Node.js 22+, npm, Git. No Cloudflare account is needed for local emulation.
@@ -26,28 +44,36 @@ npm test
 npm run test:integration
 ```
 
-## Deploy to your Cloudflare account
+## Deploy your own live installation
 
 ```sh
 npx wrangler login
-npx wrangler d1 create market-luck
-npx wrangler r2 bucket create market-luck-evidence
+cp wrangler.live.example.jsonc wrangler.live.jsonc
+npx wrangler d1 create market-luck-live
+npx wrangler r2 bucket create market-luck-live-evidence
 ```
 
-Replace the D1 ID and bucket name in `wrangler.jsonc` with the returned values. Keep `wrangler.test.jsonc` separate: it identifies this project's public test installation, not your account. Add your own custom domain with a Workers `routes` entry when needed.
+Replace the account ID, D1 ID, R2 bucket and domain in `wrangler.live.jsonc` with your own values before continuing. Use `DEMO_MODE=false` for live operation. Set `COMMITMENT_REPOSITORY=owner/repo` for your own GitHub repository; otherwise only the project's default commitment repository is accepted.
 
 ```sh
-npx wrangler d1 migrations apply DB --remote
-npx wrangler secret put ADMIN_TOKEN
-npm run deploy
+npx wrangler d1 migrations apply DB --remote --config wrangler.live.jsonc
+npx wrangler secret put ADMIN_TOKEN --config wrangler.live.jsonc
+npx wrangler deploy --config wrangler.live.jsonc
 ```
 
-For an automated simulation site, set `DEMO_MODE` and `DEMO_AUTO_DRAW` to `"true"` and a Cron schedule such as every five minutes. It will create and settle demo rounds using simulated prices. Remote demo controls additionally require the admin bearer token, which is never sent to the public UI.
+Prepare a future round through `/api/admin/prepare`. The server derives canonical symbol mappings and session times; cutoff must satisfy the reviewed calendar and premarket rule. Save the returned manifest's exact bytes in your configured GitHub repository, commit them, and provide the immutable 40-character commit URL to `/api/admin/publish`. The Worker downloads and verifies those bytes before opening sales. Cron attempts collection after the confirmation window; administrators can also call collect or pause a round without changing committed rules. Keep the admin token in Workers secrets, out of the frontend and Git.
 
-For live-market rounds set `DEMO_MODE` to `"false"`. Register free provider accounts and set `EODHD_API_KEY`, `ALPHA_VANTAGE_API_KEY`, `TWELVE_DATA_API_KEY` using `wrangler secret put`. At least two providers must return an identical valid close, and **any valid disagreement freezes settlement**. No averaging or fallback to yesterday. Free access does not automatically grant public redistribution rights. Review exchange calendars and publish an external commitment before opening live sales. Real provider-account online testing is pending until keys are supplied.
+**No market-data API keys are required for `PUBLIC-NOKEY-v1`.** The older EODHD / Alpha Vantage / Twelve Data adapters remain as an alternative keyed-source integration. Those keys are not a prerequisite for the current Yahoo/Nasdaq live site. Never replace a published round's source profile after sales begin.
+
+Keep live, demo and replay installations on **different Worker/D1/R2 resources**. Production uses `migrations/`. **Never apply `tests/replay-migrations/` to a live database.** Production has no simulated-clock advancement endpoint or replay clock table.
+
+For a demo installation, copy `wrangler.test.example.jsonc` and use your own IDs/domain. `DEMO_MODE=true` and `DEMO_AUTO_DRAW=true` enable scheduled simulation. Owner-specific deployment configuration is gitignored.
+
+Free anonymous access does not guarantee uptime, unlimited requests, exchange-final data or public redistribution rights. Providers can revise prices or share upstream data; review applicable permissions and operational safeguards for your own installation.
 
 ## Documentation
 
+- [LIVE rollout and online acceptance](LIVE接入与线上验收.md)
 - [Algorithm and independent verification](ALGORITHM.md)
 - [HTTP API](API.md)
 - [16 country formats](各国玩法说明.md)
@@ -59,4 +85,8 @@ Signup grants 1,000 points once, equivalent to 100 tickets: six trials of each o
 
 ## Anonymous market-source diagnostics
 
-No API keys are needed to test Yahoo Finance + Nasdaq historical closes: `node scripts/check-public-sources.js 2026-10-29 AAPL`. This is historical diagnostics, not an active LIVE draw profile. See [免 Key 实测](免Key行情源实测.md) and [API Key 逐步申请](免费行情API申请与配置-逐步操作.md). The owner-specific test deployment config is gitignored; copy `wrangler.test.example.jsonc` to `wrangler.test.jsonc` and use your own IDs/domain when creating your own test site.
+No API keys are needed for historical diagnostics: `node scripts/check-public-sources.js 2026-10-29 AAPL`. This command does not buy tickets or settle a round. The same Yahoo/Nasdaq sources are now integrated into live rounds, with the additional calendar, commitment and timing protections described above. See [anonymous-source test notes](免Key行情源实测.md) and the [optional API key setup guide](免费行情API申请与配置-逐步操作.md).
+
+`node tests/live-online.js` exercises live publication and sales using real clocks and requires `LIVE_ADMIN_TOKEN`; it cannot force an early draw. `node scripts/run-live-replay.js` is only for a separately installed replay environment and requires `REPLAY_ADMIN_TOKEN`. These tests create test accounts and tickets; read the acceptance report before running them against an installation.
+
+[Theme design evaluation](主题设计评估.md): the selected bright global-play direction is an expert design judgment, not a measured A/B conversion result.

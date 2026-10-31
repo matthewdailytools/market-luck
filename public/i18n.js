@@ -4,7 +4,7 @@ export const dictionary = {
     "THE CLOSE IS IN. YOUR CHANCE IS NEXT.",
     "終値が決まる。次は、あなたの番。",
   ],
-  "世界收盘了。": ["The markets close.", "市場が取引を終える。"],
+  "世界收盘后，": ["The markets close.", "市場が取引を終える。"],
   "你的好运，": ["Your next lucky", "あなたの幸運は、"],
   "才开场。": ["moment begins.", "ここから始まる。"],
   "把市场的最后一刻，变成你的下一次期待。": [

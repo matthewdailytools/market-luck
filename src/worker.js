@@ -1,6 +1,7 @@
 import { games, hash, validate } from "./engine.js";
 import { settle } from "./settle.js";
 import { liveManifest, collectAndSettle } from "./live.js";
+import { verifyPublication } from "./publication.js";
 import { assertLockedRound } from "./calendar.js";
 import { publicConsensus } from "./public-market-data.js";
 const json = (v, status = 200, headers = {}) =>
@@ -169,50 +170,44 @@ export function createWorker(clock = Date.now) {
           ).first();
           if (!r) return json({ error: "期次不存在" }, 404);
           if (p === "/api/admin/publish") {
-            if (r.status !== "draft" || clock() >= r.cutoff)
-              return json({ error: "无法发布" }, 409);
-            if (
-              typeof b.anchor !== "string" ||
-              !b.anchor.startsWith("https://")
-            )
-              return json({ error: "需要外部承诺记录 HTTPS 链接" }, 400);
-            assertLockedRound(r, clock());
-            if (
-              !/^https:\/\/raw\.githubusercontent\.com\/matthewdailytools\/market-luck\/[a-f0-9]{40}\/commitments\/[a-zA-Z0-9-]+\.json$/.test(
-                b.anchor,
+            try {
+              if (r.status !== "draft" || clock() >= r.cutoff)
+                return json({ error: "无法发布" }, 409);
+              if (
+                typeof b.anchor !== "string" ||
+                !b.anchor.startsWith("https://")
               )
-            )
-              return json(
-                { error: "需要固定GitHub提交的manifest原文链接" },
-                400,
-              );
-            const anchorResponse = await fetch(b.anchor, {
-              redirect: "error",
-              signal: AbortSignal.timeout(15000),
-            });
-            if (
-              !anchorResponse.ok ||
-              hash(await anchorResponse.text()) !== r.commitment
-            )
-              return json({ error: "外部承诺内容不匹配" }, 409);
-            if (clock() >= r.cutoff) return json({ error: "已停售" }, 409);
-            await e.DB.batch([
-              stmt(
-                e,
-                "INSERT INTO anchors(round_id,url,published,verified_hash,verified_at) VALUES(?,?,?,?,?)",
-                r.id,
+                return json({ error: "需要外部承诺记录 HTTPS 链接" }, 400);
+              assertLockedRound(r, clock());
+              await verifyPublication(
                 b.anchor,
-                clock(),
                 r.commitment,
-                clock(),
-              ),
-              stmt(
-                e,
-                "UPDATE rounds SET status='open' WHERE id=? AND status='draft'",
-                r.id,
-              ),
-            ]);
-            return json({ ok: true });
+                e.COMMITMENT_REPOSITORY,
+              );
+              if (clock() >= r.cutoff) return json({ error: "已停售" }, 409);
+              await e.DB.batch([
+                stmt(
+                  e,
+                  "INSERT INTO anchors(round_id,url,published,verified_hash,verified_at) VALUES(?,?,?,?,?)",
+                  r.id,
+                  b.anchor,
+                  clock(),
+                  r.commitment,
+                  clock(),
+                ),
+                stmt(
+                  e,
+                  "UPDATE rounds SET status='open' WHERE id=? AND status='draft'",
+                  r.id,
+                ),
+              ]);
+              return json({ ok: true });
+            } catch (error) {
+              return json(
+                { error: "PUBLICATION_FAILED", detail: error.message },
+                409,
+              );
+            }
           }
           if (p === "/api/admin/pause") {
             if (r.status !== "open")
@@ -552,6 +547,13 @@ export function createWorker(clock = Date.now) {
             if (manifest.mode !== "LIVE") continue;
             try {
               await collectAndSettle(e, r, fetch, clock());
+              await stmt(
+                e,
+                "INSERT INTO collection_attempts(round_id,attempted,ok,reason) VALUES(?,?,1,?)",
+                r.id,
+                clock(),
+                "CONSENSUS",
+              ).run();
             } catch {
               await stmt(
                 e,

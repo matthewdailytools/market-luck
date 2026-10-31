@@ -59,5 +59,7 @@ for (const g of proof.manifest.games) {
 }
 console.log(
   "VERIFIED: commitment, canonical input, MD5, SHA-256 and all game results. Mode: " +
-    proof.mode,
+    proof.mode +
+    "; Execution: " +
+    (proof.execution || "legacy/unspecified"),
 );
