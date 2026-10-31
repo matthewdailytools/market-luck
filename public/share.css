@@ -91,6 +91,7 @@ h1 {
 .intro > p:last-child {
   color: #505774;
   line-height: 1.8;
+  text-wrap: balance;
 }
 #roundCard {
   background:

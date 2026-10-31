@@ -6,6 +6,8 @@ A virtual-points lottery experiment using publicly reproducible market-close inp
 
 This is **not** an official lottery, real-money service or a promise of absolute tamper resistance. No deposits, withdrawals, transfers or physical prizes. Hosting, data providers and administrators remain trust boundaries. MD5 is only a fingerprint; SHA-256 generates commitments and sampling seeds.
 
+[Public round cards](https://luck.onlinefreetools.org/share.html?lang=en) need no sign-in. Links pin the round and format; cards support three languages, link sharing and PNG downloads. Published numbers appear only after browser recalculation passes. LIVE, DEMO and replay labels stay visible, and cards contain no private tickets or balances.
+
 ## Live installation and current round
 
 [Live draw site](https://luck.onlinefreetools.org) · [Separate demo site](https://luck-test.onlinefreetools.org) · [LIVE implementation and acceptance report](LIVE接入与线上验收.md)

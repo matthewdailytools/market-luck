@@ -33,6 +33,14 @@ curl -b cookies.txt -H 'Origin: http://127.0.0.1:8787' -H 'Content-Type: applica
   http://127.0.0.1:8787/api/buy
 ```
 
+## Public sharing page
+
+GET `/share.html?round=ROUND_ID&game=de&lang=zh-CN` opens a read-only page, not a new purchase API. `lang` supports `zh-CN`, `en`, and `ja`; `game` must belong to that exact round's committed catalog. Without a round parameter, the page selects the displayed public round and then pins its ID in the URL. A supplied invalid, missing or unpublished ID shows an error instead of borrowing another round. Cloudflare Assets may canonicalize the HTML path; the query parameters are preserved.
+
+The page requests existing public `/api/round/:id` and `/api/proof/:id` resources with credentials omitted. Settled rounds require the proof copies to match and all browser-side `verifyProof` checks to pass before showing numbers or exporting a result image. Pending cards show no predicted numbers. A passed check means consistency of published evidence, not independent authentication of source prices, timestamps, individual payouts or the whole ledger. DEMO and replay remain labelled simulations.
+
+Share URLs include only the public round ID, format and language. No accounts, private tickets, balances or arbitrary incoming parameters are copied. Native sharing is optional, clipboard failures provide a selectable URL, and PNG export runs locally in the browser. No sharing rewards, additional win probability or analytics collection are introduced. Run `npm run test:share` for read-only deployed-asset and public-record checks; `TEST_BASE_URL` selects a permitted local/DEMO/LIVE origin.
+
 ## Demo endpoints
 
 POST `/api/demo/create` with `{}` opens a committed simulation round, or returns the current round ID. POST `/api/demo/advance` with `{round}` advances simulation timing. POST `/api/demo/draw` with `{round}` settles it and archives evidence. They require `DEMO_MODE=true`, localhost, and a matching Origin. Live rounds cannot be advanced or drawn through these routes. Simulated prices are predictable fixtures and must never be described as live random market data.

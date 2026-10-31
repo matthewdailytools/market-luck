@@ -6,6 +6,8 @@ Cloudflare Workers・D1・R2を使った仮想ポイント抽選実験。16か�
 
 公式宝くじではありません。入金・出金・現金や物品への交換はありません。完全な改ざん防止は保証しません。MD5は指紋として、SHA-256はコミットメントと抽選シードに使用します。
 
+[公開カード](https://luck.onlinefreetools.org/share.html?lang=ja)はログイン不要です。回と形式を固定し、3言語、リンク共有、PNG保存に対応します。公開番号はブラウザでの再計算に合格後に表示し、LIVE・DEMO・リプレイを明示します。個人の購入券や残高は含みません。
+
 ## 実データ版と現在の抽選回
 
 [実データ抽選サイト](https://luck.onlinefreetools.org) · [独立したデモサイト](https://luck-test.onlinefreetools.org) · [LIVE接続・オンライン検証報告](LIVE接入与线上验收.md)
