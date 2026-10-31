@@ -28,8 +28,17 @@ assert(
     health.historicalSelfTest.tamperRejected,
 );
 if (!/^http:/.test(base)) assert(health.abuseProtectionConfigured);
+assert.deepEqual(health.installedAlgorithms, [1, 2, 3]);
+assert.equal(health.newRoundVersion, 3);
+assert(
+  health.witnessGuardsInstalled &&
+    health.witnessSelfTest.validAccepted &&
+    health.witnessSelfTest.tamperRejected,
+);
+if (!/^http:/.test(base)) assert(health.hiddenCommitmentsConfigured);
 for (const file of [
   "beacon-verifier.js",
+  "commitment-verifier.js",
   "entropy-view.js",
   "proof-verifier.js",
   "verify.js",
@@ -60,6 +69,18 @@ assert.equal(
   404,
 );
 const after = await (await get("/api/state")).json();
+const witnesses = await (
+  await get("/api/round/" + round.id + "/witnesses")
+).json();
+assert.equal(witnesses.roundId, round.id);
+if (round.manifest.version < 3) {
+  assert.deepEqual(witnesses.witnesses, {});
+  assert.equal(witnesses.reveal, null);
+}
+assert.equal(
+  (await get("/api/round/security-missing-round/witnesses")).status,
+  404,
+);
 const current = after.rounds.find((r) => r.id === round.id);
 assert(current);
 assert.deepEqual(current.manifest, round.manifest);

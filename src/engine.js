@@ -2,6 +2,7 @@ import { md5 } from "@noble/hashes/legacy.js";
 import { sha256 } from "@noble/hashes/sha2.js";
 import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils.js";
 import { canonicalV2, seedV2 } from "./beacon.js";
+import { canonicalV3, seedV3 } from "./commitment.js";
 export const games = [
   { id: "cn", name: "中国 · 双星", flag: "🇨🇳", count: 6, max: 33, bonus: 16 },
   { id: "us", name: "美国 · 超级球", flag: "🇺🇸", count: 5, max: 69, bonus: 26 },
@@ -172,21 +173,29 @@ export function validate(game, main, bonus, catalog = games) {
 export function evidence(round, prices, entropy = {}) {
   const manifest = JSON.parse(round.manifest);
   const version = manifest.version ?? 1;
-  if (![1, 2].includes(version)) throw Error("UNSUPPORTED_ALGORITHM_VERSION");
+  if (![1, 2, 3].includes(version))
+    throw Error("UNSUPPORTED_ALGORITHM_VERSION");
   const input =
-    manifest.version === 2
-      ? canonicalV2(
-          round.id,
-          round.commitment,
-          prices,
-          entropy.snapshot,
-          entropy.beacon,
-        )
-      : canonical(round.id, round.commitment, prices);
-  const seed = manifest.version === 2 ? seedV2(input) : hash(input);
+    manifest.version === 3
+      ? canonicalV3(round, prices, entropy)
+      : manifest.version === 2
+        ? canonicalV2(
+            round.id,
+            round.commitment,
+            prices,
+            entropy.snapshot,
+            entropy.beacon,
+          )
+        : canonical(round.id, round.commitment, prices);
+  const seed =
+    manifest.version === 3
+      ? seedV3(input)
+      : manifest.version === 2
+        ? seedV2(input)
+        : hash(input);
   return {
     version,
-    mode: manifest.version === 2 ? manifest.mode : "DEMO",
+    mode: manifest.version >= 2 ? manifest.mode : "DEMO",
     manifest,
     commitment: round.commitment,
     input,
@@ -195,8 +204,11 @@ export function evidence(round, prices, entropy = {}) {
     results: Object.fromEntries(
       (manifest.games ?? games).map((g) => [g.id, draw(seed, g)]),
     ),
-    ...(manifest.version === 2
+    ...(manifest.version >= 2
       ? { snapshot: entropy.snapshot, beacon: entropy.beacon }
+      : {}),
+    ...(manifest.version === 3
+      ? { reveal: entropy.reveal, witnesses: entropy.witnesses }
       : {}),
   };
 }

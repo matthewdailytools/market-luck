@@ -230,7 +230,7 @@ export function describeHomeRound(
   } else phase = "waiting";
 
   const formatter = clockFormat(lang, timeZone);
-  const v2 = round?.manifest?.version === 2;
+  const v2 = [2, 3].includes(round?.manifest?.version);
   const entropyLabels = {
     "zh-CN": "等待一致行情或未来信标",
     en: "Awaiting consensus or future beacon",

@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { ticketFixture } from "./ticket-fixtures.mjs";
 import { runShareAcceptance } from "./share-acceptance.mjs";
 import { runSecurityAcceptance } from "./security-acceptance.mjs";
+import { runWitnessAcceptance } from "./witness-acceptance.mjs";
 
 // This runner uses an isolated GitHub-hosted Linux browser, never the user's
 // desktop browser, profile, extensions or the desktop app's disabled controls.
@@ -650,6 +651,17 @@ for (const [engine, type] of [
     });
     if (security.status !== "passed")
       fail(engine + "/security", JSON.stringify(security.errors));
+    report.witnessAcceptance ||= [];
+    const witness = await runWitnessAcceptance({ browser, engine, base, out });
+    report.witnessAcceptance.push({
+      engine,
+      status: witness.status,
+      cases: witness.cases.length,
+      layouts: witness.layouts.length,
+      errors: witness.errors,
+    });
+    if (witness.status !== "passed")
+      fail(engine + "/witness", JSON.stringify(witness.errors));
     report.shareAcceptance ||= [];
     const share = await runShareAcceptance({
       browser,

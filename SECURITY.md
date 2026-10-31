@@ -18,7 +18,7 @@ Security-sensitive changes require relevant tests and an explicit update to the 
 
 ## Versioned hardening
 
-Already sold v1 rounds retain their original input, seed, mapping and payouts. New LIVE preparation produces v2 only. v2 freezes the first exact two-source consensus in an insert-once D1 row, derives a specific quicknet round at least 120 seconds after the database seal time, and verifies the pinned chain's BLS signature before settlement. It never selects a newer beacon on failure or re-collects a different price snapshot. API/SQL pause is refused after a v2 snapshot exists. Cloudflare account owners can still stop the service or remove protections; the database timestamp is not an independent timestamp.
+Existing v1/v2 rounds retain their original input, seed, mapping and payouts. v2 freezes the first exact two-source consensus in an insert-once D1 row, derives a specific quicknet round at least 120 seconds after the database seal time, and verifies the pinned chain's BLS signature before settlement. New preparation now creates v3, described below. It never selects a newer beacon on failure or re-collects a different price snapshot. API/SQL pause is refused after a v2/v3 snapshot exists. Cloudflare account owners can still stop the service or remove protections; database time alone is not an independent timestamp.
 
 BLS work runs in a same-account SQLite Durable Object, whose execution budget supports verification on the Free plan. The normal Worker cannot substitute a boolean from a browser request or pick a public key. Browser and CLI verification perform BLS verification themselves. This object is computation isolation, not an independent operator or witness. Quota exhaustion leaves a v2 round waiting.
 
@@ -28,4 +28,14 @@ Ticket terms, settlement authorizations, public round deletion, published proof 
 
 New sessions store only `s2:` plus a domain-separated SHA-256 token digest. Existing raw sessions are recognized and transparently converted on first legitimate use without changing their cookies or expiry. A stored digest cannot be used as a Cookie. Already stolen raw cookies still require revocation, and database write/deployment privileges remain trusted. This is not a full password, account-recovery or identity audit.
 
-Read the threat model in [随机性与防作弊改进方案.md](随机性与防作弊改进方案.md). No new independent timestamping service, per-person identity guarantee or professional penetration test is claimed.
+Read the earlier threat model in [随机性与防作弊改进方案.md](随机性与防作弊改进方案.md). No per-person identity guarantee or professional penetration test is claimed.
+
+## v3 independent witnesses and hidden commitments
+
+v3 binds a CSPRNG permutation plus 256-bit nonce with both MD5 and SHA-256. MD5 alone is not binding. AES-256-GCM protects private D1 envelopes from a read-only database leak without the deployment secret; it does not hide them from a root operator. Preserve and securely back up `COMMIT_ENCRYPTION_KEY`; never blindly regenerate it for an existing installation with unrevealed rounds. Key loss or intentional withholding can prevent settlement. There is no independent secret escrow or forced reveal.
+
+Presale rules and the first frozen price snapshot obtain external Rekor v1 hashedrekord receipts. Upload intent bytes are fixed before sending, and receipts cannot be replaced. Validate the artifact signature, pinned independent log key/ID, signed integration time, Merkle inclusion, shard and checkpoint signature. v3 selects the future beacon from the conservative end of the independently signed freeze second; a root operator cannot merely backdate D1 to obtain a past beacon under the published protocol. Reveals and settlement/payment changes commit atomically. Public verification remains versioned.
+
+Rekor's key is not controlled by this project's Cloudflare/GitHub accounts, but its v1 clock and log honesty are trusted. A valid inclusion is not a global consistency or availability proof, nor proof of truthful stock data, continuous public visibility or the complete ledger. The log stores hashes of public artifacts; preserve record contents with receipts. Rekor v1 is maintained, not an interchangeable service: later key/log migrations require a new protocol, never a silent sold-round change. Root operators can still stop or fork service, refuse to reveal, or remove application protections. Future-beacon unpredictability remains essential even when the operator knows the hidden nonce.
+
+See [v3 plan and remaining limits](隐藏顺序承诺与独立见证改进方案.md). Controlled expedited-calendar replays and synthetic failure-injection log tests are clearly labelled and never claim a natural market draw.

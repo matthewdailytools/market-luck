@@ -9,7 +9,42 @@ import {
 } from "./beacon.js";
 import { readSnapshot, freezeSnapshot, fetchBeacon } from "./entropy.js";
 import { recordGuardsReady } from "./record-guards.js";
-export function prepareLiveManifest(body, now = Date.now()) {
+import {
+  prepareCommitment,
+  decryptSecret,
+  validateReveal,
+  validateV3Witnesses,
+} from "./commitment.js";
+import {
+  ensureWitness,
+  readWitnesses,
+  witnessOnServer,
+  v3GuardsReady,
+} from "./witness-store.js";
+import { beaconTime } from "./beacon.js";
+export function prepareLiveRound(body, now = Date.now()) {
+  if (body?.version !== undefined && body.version !== 3)
+    throw Error("NEW_ROUNDS_REQUIRE_V3");
+  if (body?.sourceProfile && body.sourceProfile !== "PUBLIC-NOKEY-v1")
+    throw Error("V3_REQUIRES_PUBLIC_SOURCE_PROFILE");
+  if (
+    [
+      "secret",
+      "hidden",
+      "order",
+      "nonce",
+      "randomness",
+      "witness",
+      "reveal",
+    ].some((k) => body?.[k] !== undefined)
+  )
+    throw Error("ADMIN_SECRET_OVERRIDE_FORBIDDEN");
+  return prepareCommitment(liveManifest(body, now));
+}
+export const prepareLiveManifest = (body, now = Date.now()) =>
+  prepareLiveRound(body, now).manifest;
+// Compatibility constructor for already committed v2 fixtures; never exposed by prepare API.
+export function prepareV2Manifest(body, now = Date.now()) {
   if (body?.version !== undefined && body.version !== 2)
     throw Error("NEW_ROUNDS_REQUIRE_V2");
   if (body?.sourceProfile && body.sourceProfile !== "PUBLIC-NOKEY-v1")
@@ -121,7 +156,9 @@ export async function collectAndSettle(
   if (hash(round.manifest) !== round.commitment)
     throw Error("COMMITMENT_MISMATCH");
   assertLockedRound(round, now, { forCollection: true });
-  if (![1, 2].includes(m.version)) throw Error("UNSUPPORTED_ALGORITHM_VERSION");
+  if (![1, 2, 3].includes(m.version))
+    throw Error("UNSUPPORTED_ALGORITHM_VERSION");
+  if (m.version === 3) return collectV3(env, round, fetcher, now);
   let snapshot = null;
   if (m.version === 2) {
     if (!(await recordGuardsReady(env)))
@@ -222,6 +259,88 @@ export async function collectAndSettle(
           : "LIVE_REAL_CLOCK",
       sources,
       dataNote: data.note,
+    },
+    now,
+  );
+}
+
+async function collectV3(env, round, fetcher, now) {
+  const m = JSON.parse(round.manifest);
+  if (!(await recordGuardsReady(env)) || !(await v3GuardsReady(env)))
+    throw Error("RECORD_GUARDS_UNAVAILABLE");
+  const row = await env.DB.prepare(
+    "SELECT envelope FROM round_secrets WHERE round_id=?",
+  )
+    .bind(round.id)
+    .first();
+  const reveal = await decryptSecret(
+    row?.envelope,
+    m,
+    env.COMMIT_ENCRYPTION_KEY,
+  );
+  validateReveal(reveal, m);
+  let snapshot = await readSnapshot(env, round.id);
+  if (!snapshot) {
+    const prices = [],
+      sources = [];
+    for (const p of m.markets) {
+      const result = await publicConsensus(
+        p.symbol.split(":")[1],
+        p.date,
+        fetcher,
+        now,
+      );
+      if (!result.ok) throw Error(result.reason);
+      prices.push({
+        symbol: p.symbol,
+        date: p.date,
+        currency: p.currency,
+        scale: p.scale,
+        close: result.closeMinorUnits,
+      });
+      for (const o of result.observations)
+        await env.EVIDENCE.put(
+          `raw/${round.id}/${p.symbol}/${o.provider}/${o.sha256}.json`,
+          o.raw,
+        );
+      sources.push({
+        symbol: p.symbol,
+        sources: result.observations.map(({ raw, ...o }) => ({
+          ...o,
+          close: o.closeMinorUnits,
+        })),
+        failures: result.unavailable,
+      });
+    }
+    snapshot = await freezeSnapshot(env, round, prices, sources);
+  }
+  await ensureWitness(env, round, "freeze", snapshot, fetcher);
+  snapshot = await readSnapshot(env, round.id);
+  const witnesses = await readWitnesses(env, round.id);
+  await validateV3Witnesses(round, snapshot, witnesses, (r, s) =>
+    witnessOnServer(env, r, s),
+  );
+  const frozen = validateSnapshot(snapshot, m),
+    beacon = await fetchBeacon(env, snapshot, fetcher, now);
+  if (now < beaconTime(snapshot.beaconRound))
+    throw Error("WAITING_FOR_FUTURE_BEACON");
+  return settle(
+    env,
+    round,
+    frozen.prices,
+    {
+      snapshot,
+      beacon,
+      reveal,
+      witnesses,
+      sources: frozen.sources,
+      observedAt: new Date(now).toISOString(),
+      execution:
+        env.INSTALLATION_KIND === "ONLINE_REPLAY"
+          ? "ONLINE_REPLAY_SIMULATED_CLOCK"
+          : "LIVE_REAL_CLOCK",
+      dataNote:
+        "v3 hidden order committed before sales; first consensus witnessed by pinned Rekor before the derived future beacon.",
     },
     now,
   );

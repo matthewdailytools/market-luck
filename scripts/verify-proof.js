@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { verifyProof } from "../public/proof-verifier.js";
+import { canonicalV3 } from "../src/commitment.js";
 const proof = JSON.parse(await readFile(process.argv[2], "utf8"));
 const digest = (algorithm, s) =>
   createHash(algorithm).update(s, "utf8").digest("hex");
@@ -12,43 +13,58 @@ assert.equal(
 const parsed = JSON.parse(proof.input);
 assert.equal(parsed.round, proof.manifest.id);
 assert.equal(parsed.commitment, proof.commitment);
-const canonical = JSON.stringify({
-  version: proof.manifest.version,
-  round: parsed.round,
-  commitment: parsed.commitment,
-  prices: [...parsed.prices]
-    .sort((a, b) => (a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0))
-    .map((p) => ({
-      symbol: p.symbol,
-      date: p.date,
-      currency: p.currency,
-      scale: p.scale,
-      close: p.close,
-    })),
-  ...(proof.version === 2
-    ? {
-        snapshot: {
-          digest: proof.snapshot?.digest,
-          sealedAt: proof.snapshot?.sealedAt,
-          beaconRound: proof.snapshot?.beaconRound,
+const canonical =
+  proof.version === 3
+    ? canonicalV3(
+        {
+          id: proof.manifest.id,
+          manifest: JSON.stringify(proof.manifest),
+          commitment: proof.commitment,
         },
-        beacon: parsed.beacon,
-      }
-    : {}),
-});
+        parsed.prices,
+        proof,
+      )
+    : JSON.stringify({
+        version: proof.manifest.version,
+        round: parsed.round,
+        commitment: parsed.commitment,
+        prices: [...parsed.prices]
+          .sort((a, b) =>
+            a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0,
+          )
+          .map((p) => ({
+            symbol: p.symbol,
+            date: p.date,
+            currency: p.currency,
+            scale: p.scale,
+            close: p.close,
+          })),
+        ...(proof.version === 2
+          ? {
+              snapshot: {
+                digest: proof.snapshot?.digest,
+                sealedAt: proof.snapshot?.sealedAt,
+                beaconRound: proof.snapshot?.beaconRound,
+              },
+              beacon: parsed.beacon,
+            }
+          : {}),
+      });
 assert.equal(canonical, proof.input);
 assert.equal(digest("md5", canonical), proof.md5);
 assert(
-  [1, 2].includes(proof.version) && proof.version === proof.manifest.version,
+  [1, 2, 3].includes(proof.version) && proof.version === proof.manifest.version,
 );
 assert.equal(
   digest(
     "sha256",
-    proof.version === 2 ? "market-luck/draw/v2\n" + canonical : canonical,
+    proof.version >= 2
+      ? `market-luck/draw/v${proof.version}\n` + canonical
+      : canonical,
   ),
   proof.seed,
 );
-if (proof.version === 2) {
+if (proof.version >= 2) {
   const verified = await verifyProof(proof, {
     roundId: proof.manifest.id,
     manifest: proof.manifest,

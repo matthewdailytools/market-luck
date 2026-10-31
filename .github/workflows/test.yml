@@ -12,13 +12,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build:crypto && git diff --exit-code -- public/beacon-verifier.js
+      - run: npm run build:crypto && git diff --exit-code -- public/beacon-verifier.js public/commitment-verifier.js
       - run: npm test
       - run: npm run db:migrate
       - name: Integration with local D1 and R2
         shell: bash
         run: |
-          npm run dev > /tmp/market-luck.log 2>&1 &
+          npx wrangler dev --port 8787 --var ADMIN_TOKEN:local-v3-only --var COMMIT_ENCRYPTION_KEY:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb > /tmp/market-luck.log 2>&1 &
           PID=$!
           trap 'kill "$PID" || true' EXIT
           for i in $(seq 1 40); do
@@ -29,3 +29,4 @@ jobs:
           npx wrangler d1 execute DB --local --file tests/fixtures/audit-draft.sql
           TEST_DRAFT_ROUND=audit-draft-visibility-fixture npm run test:readable || { cat /tmp/market-luck.log; exit 1; }
           TEST_BASE_URL=http://127.0.0.1:8787 npm run test:security || { cat /tmp/market-luck.log; exit 1; }
+          TEST_BASE_URL=http://127.0.0.1:8787 node tests/witness-local.js || { cat /tmp/market-luck.log; exit 1; }

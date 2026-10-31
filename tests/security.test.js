@@ -6,12 +6,13 @@ import { spawnSync } from "node:child_process";
 import { testDatabase } from "./fixtures/sqlite-d1.js";
 import {
   liveManifest,
-  prepareLiveManifest,
+  prepareV2Manifest as prepareLiveManifest,
   collectAndSettle,
 } from "../src/live.js";
 import { evidence, hash } from "../src/engine.js";
 import {
   RANDOMNESS_POLICY,
+  RANDOMNESS_POLICY_V3,
   futureBeaconRound,
   beaconTime,
   verifyBeacon,
@@ -512,10 +513,14 @@ test("chunked oversized JSON bodies are rejected before account creation", async
   assert.equal(response.status, 413);
   assert.equal(s.db.prepare("SELECT COUNT(*) AS n FROM users").get().n, 1);
 });
-test("HTTP preparation always pins v2, rejects downgrade and keeps draft entropy private", async () => {
+test("HTTP preparation always pins v3, rejects downgrade and keeps draft secrets private", async () => {
   const s = setup(),
     worker = createWorker(s.now),
-    env = { ...s.env, ADMIN_TOKEN: "isolated-admin-test-only" };
+    env = {
+      ...s.env,
+      ADMIN_TOKEN: "isolated-admin-test-only",
+      COMMIT_ENCRYPTION_KEY: "a".repeat(64),
+    };
   const call = (body) =>
     worker.fetch(
       new Request("https://admin.example/api/admin/prepare", {
@@ -529,11 +534,14 @@ test("HTTP preparation always pins v2, rejects downgrade and keeps draft entropy
       env,
     );
   assert.equal((await call({ version: 1 })).status, 400);
+  assert.equal((await call({ version: 2 })).status, 400);
   const response = await call({});
   assert.equal(response.status, 200);
   const prepared = await response.json();
-  assert.equal(prepared.manifest.version, 2);
-  assert.deepEqual(prepared.manifest.randomness, RANDOMNESS_POLICY);
+  assert.equal(prepared.manifest.version, 3);
+  assert.deepEqual(prepared.manifest.randomness, RANDOMNESS_POLICY_V3);
+  assert(!JSON.stringify(prepared).includes("ciphertext"));
+  assert(!JSON.stringify(prepared).includes('"nonce":'));
   const unpublished = await worker.fetch(
     new Request(
       "https://admin.example/api/round/" + prepared.manifest.id + "/entropy",

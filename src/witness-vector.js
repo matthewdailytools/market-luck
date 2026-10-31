@@ -1,0 +1,41 @@
+// Official public log receipt for a labelled readiness test; no private keys.
+export const WITNESS_VECTOR = {
+  record:
+    '{"domain":"market-luck/witness-readiness-test/v1","purpose":"controlled public software audit-record test; not a lottery round","testId":"e68b5635-3b66-48b6-b95f-d7e8d04f665f"}',
+  uuid: "108e9186e8c5677ae2c63dea2f03b3d131abbb13cce2268dba9178608f0a1cd4c78f8dbfed8c6b47",
+  entry: {
+    body: "eyJhcGlWZXJzaW9uIjoiMC4wLjEiLCJraW5kIjoiaGFzaGVkcmVrb3JkIiwic3BlYyI6eyJkYXRhIjp7Imhhc2giOnsiYWxnb3JpdGhtIjoic2hhMjU2IiwidmFsdWUiOiI2MDgyZmNmMjBhZDZiY2ZjNDE5YjllOGYxZmY5NjkxYzMxOWIyNDEzYWNlMGI5MDcyYzQwYmQ2M2EzYTkzZDg5In19LCJzaWduYXR1cmUiOnsiY29udGVudCI6Ik1FUUNJQ0gxaDBpbENhSDJVbCsyV2hpdDE3OGI1ZExMVEhUeS9SMW1vSUFUMkhoSUFpQm9WRGtVaElQQ0hrVVE4eTlTQjcwblR3SlhjREFHZHF4SWQvOW5jdVh1N1E9PSIsInB1YmxpY0tleSI6eyJjb250ZW50IjoiTFMwdExTMUNSVWRKVGlCUVZVSk1TVU1nUzBWWkxTMHRMUzBLVFVacmQwVjNXVWhMYjFwSmVtb3dRMEZSV1VsTGIxcEplbW93UkVGUlkwUlJaMEZGVWxoMU0wOXdiVzB4TW01blVUWTFTekJLS3pFelNXRlJjRVJLVEFvd05qVllObGR2WW1wd1NsZHZhbFJMVjJ4emRqRkdlbXBSY0hnME5XNXZVVE50V0hwNmVYaGhWV3AyTUM5aWJrOTFjR0pQVW05TE4xUjNQVDBLTFMwdExTMUZUa1FnVUZWQ1RFbERJRXRGV1MwdExTMHRDZz09In19fX0=",
+    integratedTime: 1793461485,
+    logID: "c0d23d6ad406973f9559f3ba2d1ca01f84147d8ffc5b8445c224f98b9591801d",
+    logIndex: 3614403764,
+    verification: {
+      inclusionProof: {
+        checkpoint:
+          "rekor.sigstore.dev - 1193050959916656506\n3492499508\nd8DQXdTUMy5g5BHJZ4FHVVlmGxcj7fBwaixWl5E7w4E=\n\n— rekor.sigstore.dev wNI9ajBGAiEAyWLnbQ3QNUbtF0Hjs1w/1vI8Z4tqxEy4R/3BeOBq9D8CIQDSuy39hUEH+9sfrGWpkFYiu9GohpxwoctYpxBs8flzoA==\n",
+        hashes: [
+          "dd4095e5b0b73691987ee7d24cfd96267b983ed1517801602caf13319ee4f958",
+          "d9fc73a24e2199340ed7f3f4092f5d121a0f8968712d1de518ebd6bde53b91e6",
+          "c705ac7ae3ced5e86d16b580dffaf9a5dcc5396497801bda566d34e79d524fa7",
+          "892d457b88ecad9d1023521aa18a2b517dc2261ccbaa90b88e0fae174933bcdf",
+          "c67496fea6069633306b4e7d108e23fede6c966194977127534b2379cde6bd3d",
+          "98ff518113ecd9da22c1c4e8af56c4d8c92600c2449d54f06f9854516b86b94e",
+          "4c4baceac3af8508380680190ad6782f0191c10dc28d70ef9cc3b9215ff887a7",
+          "c2f4e5bfc48de5134092104a5b6f2f443255337b61b92cc2ad3c9ea46dca5a0a",
+          "75f906c755fc9e67c6df1d490faf4df43132f0e47ad4e0fd3e95d9f06ef1b975",
+          "548d76d7f3eece8d5af102f4d88f3fca114bb4b2e0441b800d0220a6c97b5cc7",
+          "4a371932249a98c5a4b7f01164b3eb9b92df8afb7c80e944b4fbcd2d20787d25",
+          "9b7b974f1c6018748130b8fa1ecb70c04b7ac15d2bfa5b598f3600ec5b17eee9",
+          "4a58b19d2df806100efb2448d856863d23a1f55e8949534f7cb9756c7c6b7106",
+          "d436832b3ac234d061992758e6f163cfe369026c6661f60480109d3cbacc3f50",
+          "c47fc30ac78b1ebf5e2a8613f2ab0e4592bbcd5744198587b95b6c56b0fde706",
+        ],
+        logIndex: 3492499502,
+        rootHash:
+          "77c0d05dd4d4332e60e411c96781475559661b1723edf0706a2c5697913bc381",
+        treeSize: 3492499508,
+      },
+      signedEntryTimestamp:
+        "MEUCIQDd2jaa5/qbzF291uKWbhq8VKd/bg41vPUB5Szb7dTAGQIgTQ9Ej6V/PJATO1jcdsueIhiKaSqgbXH5b+K26PsqQDM=",
+    },
+  },
+};

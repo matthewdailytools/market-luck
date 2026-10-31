@@ -5,6 +5,11 @@ import {
   verifyBeacon,
   beaconTime,
 } from "./beacon-verifier.js";
+import {
+  canonicalV3,
+  validateReveal,
+  validateV3Witnesses,
+} from "./commitment-verifier.js";
 
 const ids = [
   "manifest",
@@ -191,7 +196,8 @@ function sourcesMatch(proof, manifest, prices) {
 export async function verifyProof(proof, expected = {}) {
   const checks = [
       ...ids,
-      ...(proof?.version === 2 ? ["snapshot", "beacon"] : []),
+      ...([2, 3].includes(proof?.version) ? ["snapshot", "beacon"] : []),
+      ...(proof?.version === 3 ? ["hidden", "witnesses"] : []),
     ].map((id) => ({ id, ok: false })),
     errors = [],
     results = {};
@@ -216,7 +222,7 @@ export async function verifyProof(proof, expected = {}) {
       throw Error("INVALID_PROOF");
     const manifest = proof.manifest;
     if (
-      ![1, 2].includes(proof.version) ||
+      ![1, 2, 3].includes(proof.version) ||
       manifest.version !== proof.version ||
       !Array.isArray(manifest.games) ||
       manifest.games.length < 1 ||
@@ -253,33 +259,44 @@ export async function verifyProof(proof, expected = {}) {
     const prices = [...input.prices].sort((a, b) =>
       a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0,
     );
-    const canonical = JSON.stringify({
-      version: manifest.version,
-      round: manifest.id,
-      commitment: proof.commitment,
-      prices: prices.map(({ symbol, date, currency, scale, close }) => ({
-        symbol,
-        date,
-        currency,
-        scale,
-        close,
-      })),
-      ...(manifest.version === 2
-        ? {
-            snapshot: {
-              digest: proof.snapshot?.digest,
-              sealedAt: proof.snapshot?.sealedAt,
-              beaconRound: proof.snapshot?.beaconRound,
+    const canonical =
+      manifest.version === 3
+        ? canonicalV3(
+            {
+              id: manifest.id,
+              manifest: JSON.stringify(manifest),
+              commitment: proof.commitment,
             },
-            beacon: {
-              chainHash: RANDOMNESS_POLICY.chainHash,
-              round: proof.beacon?.round,
-              signature: proof.beacon?.signature,
-              randomness: proof.beacon?.randomness,
-            },
-          }
-        : {}),
-    });
+            prices,
+            proof,
+          )
+        : JSON.stringify({
+            version: manifest.version,
+            round: manifest.id,
+            commitment: proof.commitment,
+            prices: prices.map(({ symbol, date, currency, scale, close }) => ({
+              symbol,
+              date,
+              currency,
+              scale,
+              close,
+            })),
+            ...(manifest.version === 2
+              ? {
+                  snapshot: {
+                    digest: proof.snapshot?.digest,
+                    sealedAt: proof.snapshot?.sealedAt,
+                    beaconRound: proof.snapshot?.beaconRound,
+                  },
+                  beacon: {
+                    chainHash: RANDOMNESS_POLICY.chainHash,
+                    round: proof.beacon?.round,
+                    signature: proof.beacon?.signature,
+                    randomness: proof.beacon?.randomness,
+                  },
+                }
+              : {}),
+          });
     const marketsMatch =
       prices.length === manifest.markets.length &&
       prices.every((p) =>
@@ -299,7 +316,21 @@ export async function verifyProof(proof, expected = {}) {
         proof.input === canonical &&
         marketsMatch,
     );
-    if (manifest.version === 2) {
+    if (manifest.version === 2 || manifest.version === 3) {
+      if (manifest.version === 3) {
+        validateReveal(proof.reveal, manifest);
+        checked("hidden", true);
+        await validateV3Witnesses(
+          {
+            id: manifest.id,
+            manifest: JSON.stringify(manifest),
+            commitment: proof.commitment,
+          },
+          proof.snapshot,
+          proof.witnesses,
+        );
+        checked("witnesses", true);
+      }
       const frozen = validateSnapshot(proof.snapshot, manifest);
       checked(
         "snapshot",
@@ -313,7 +344,9 @@ export async function verifyProof(proof, expected = {}) {
       );
     }
     const seed = await sha256Hex(
-      manifest.version === 2 ? "market-luck/draw/v2\n" + canonical : canonical,
+      manifest.version >= 2
+        ? `market-luck/draw/v${manifest.version}\n` + canonical
+        : canonical,
     );
     checked("hashes", seed === proof.seed && md5Hex(canonical) === proof.md5);
     for (const game of manifest.games)

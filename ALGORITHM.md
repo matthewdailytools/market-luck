@@ -69,9 +69,9 @@ The catalog now includes 16 countries. France: 5/49 + 1/10; Germany: 6/49 + a sp
 
 YahooFinance and Nasdaq are both mandatory (2/2); no keyed-source substitution. Use exact-date Yahoo quote.close and Nasdaq Close/Last. Yahoo is not adjclose but historical splits can still revise it; equality is a provider snapshot rule, not an exchange-signed final price. Millisecond cutoff is enforced by D1 at commit time; all LIVE manifest timing columns are immutable. The reviewed 2026 NY calendar sets a latest 03:30 New York cutoff, before the 04:00 premarket, and ready is close + 24 hours. See LIVE接入与线上验收.md for full timing and test boundaries. Legacy manifests preserve their original source profile.
 
-## v2: first price freeze and a future verified beacon
+## v2: first price freeze and a future verified beacon (retained compatibility)
 
-New LIVE manifests have `version: 2`, the same price, game definitions, cutoff, 24-hour market-confirmation minimum and payout policy, plus a fixed `randomness` object from `src/beacon.js`. `prepareLiveManifest` refuses new v1 or KEYED-v1 preparation. The legacy constructor remains available to isolated compatibility tests.
+Existing v2 manifests keep the same price, game definitions, cutoff, 24-hour market-confirmation minimum and payout policy, plus a fixed `randomness` object from `src/beacon.js`. Its compatibility constructor remains available to isolated tests. New production preparation now creates v3, described below; no already prepared v1/v2 manifest is upgraded.
 
 After `ready`, the first successful exact Yahoo/Nasdaq consensus is stored once in `entropy_snapshots`. The snapshot payload is compact UTF-8 JSON with fields in this order: `version:1`, `round`, `commitment`, `prices`, `sources`. Prices use the same six fields and ASCII symbol order as v1. Source groups are sorted by symbol; their captured metadata order is preserved. `digest = SHA256(payload)` in lowercase hexadecimal. `sealedAt` is the D1-generated millisecond time; neither an API caller nor a retry may replace it or the payload. Raw market responses remain private content-addressed R2 records.
 
@@ -95,3 +95,52 @@ v2 canonical input is compact JSON in the following field order:
 `md5 = MD5(input)` remains a compatibility fingerprint. `seed = SHA256(UTF8("market-luck/draw/v2\n" + input))`; the `\n` denotes one newline byte. Sampling and grading stay unchanged. A v2 proof includes the full snapshot payload and digest, seal time and target round, the beacon response, source metadata and observation time. Browser/CLI checks bind the snapshot, prices, source metadata, round policy, BLS signature and domain-separated seed before reproducing all numbers.
 
 The Free Worker invokes a same-account SQLite Durable Object for BLS execution; no paid-plan upgrade is required. The object uses the same pinned verification rules. It is not an independent witness. The public health endpoint verifies a real historical signature and rejects the same signature relabelled as another round; it does not represent a future natural draw. Database time, key governance, source truth and root-operator availability remain explicit trust assumptions. Reference: [drand protocol](https://docs.drand.love/docs/specification/).
+
+## v3: hidden order, nonce and independently witnessed records
+
+New preparation creates version 3 only. Existing v1/v2 input bytes and rules remain unchanged. The complete market set, price precision, approved calendar, cutoff, 24-hour confirmation delay, games and payouts remain publicly committed. A CSPRNG Fisher–Yates permutation uses rejection sampling for each shuffle index. The hidden package is compact UTF-8 JSON, in this exact property order:
+
+```text
+{"version":1,"round":"ROUND_ID","order":["MIC:TICKER",...],"nonce":"64_lowercase_hex_characters"}
+```
+
+`manifest.hidden` pins the hidden-order-nonce-v1 policy, 32-byte nonce, reveal timing, and both MD5/SHA-256 hashes of these exact bytes. MD5 is a compatibility fingerprint; SHA-256 supplies the binding commitment. The server rejects caller-selected secrets, order or policy. It encrypts the secret with AES-256-GCM, a random 12-byte IV and installation-specific `COMMIT_ENCRYPTION_KEY`; associated data is `market-luck/secret/v3\n` + round ID + `\n` + manifest SHA-256. The private D1 envelope is never returned by public or prepare APIs.
+
+The original GitHub immutable-manifest publication is retained. Before opening v3 sales, independently witness the following JCS-sorted record in production Rekor:
+
+```text
+{domain:"market-luck/presale/v3", round, manifestSha256, secretMd5, secretSha256}
+```
+
+After the first exact price consensus is frozen using the v2 snapshot payload format, independently witness:
+
+```text
+{domain:"market-luck/freeze/v3", round, manifestSha256, snapshotSha256, sealedAt}
+```
+
+Each record is uploaded as hashedrekord 0.0.1, signed using an ephemeral P-256 artifact key. This key is transport signing, not an independently certified project identity. Before any upload, D1 fixes one exact signed request per round/stage. Retries reuse those bytes; duplicate responses retrieve the same leaf. Verify the artifact signature, record hash, pinned Rekor log ID/key, Signed Entry Timestamp (SET), RFC6962 inclusion path, shard identity and signed checkpoint. A later checkpoint for the same leaf is acceptable; its original signed integration time stays fixed. No alternate service, key or unsigned result is accepted. A receipt is inserted once, stored in content-addressed R2, and made downloadable. No API key is needed.
+
+Rekor key pin is `WITNESS_POLICY.publicKey` in `src/witness.js`, also published in [Sigstore's official trust root](https://github.com/sigstore/root-signing/blob/main/targets/trusted_root.json). It is not obtained from an incoming response. Hash prefixes are 0x00 for leaves and 0x01 for nodes. SET uses JCS for `{body,integratedTime,logID,logIndex}`; shard-local inclusion index can differ from the virtual SET index. The canonical leaf SHA-256 must match the UUID suffix, and the UUID shard prefix must match the signed checkpoint origin.
+
+Presale signed time must be within the preparation/sales window. Freeze signed time must be after ready and its conservative second-end upper bound must be at least `sealedAt`. With `integratedTime` in seconds:
+
+```text
+witnessedAt = integratedTime * 1000 + 1000
+beaconRound = ceil((witnessedAt + 120000 - 1692803367000) / 3000) + 1
+```
+
+The extra second prevents rounding the witness second down from shortening the future delay. Verify the same pinned quicknet signature rules as v2. Reveal only when both witnesses and the target beacon verify. The reveal row and settlement/payments commit in the same D1 transaction, so a failed settlement does not publish a partial reveal. v3 input is compact JSON in this property order:
+
+```text
+{version:3,round,commitment,
+ prices:[six price fields, now in the revealed stock order],
+ reveal:"EXACT_SECRET_JSON_STRING",
+ snapshot:{digest,sealedAt,witnessedAt,beaconRound},
+ witnesses:{presale:SHA256(JSON.stringify(presaleReceipt)),freeze:SHA256(JSON.stringify(freezeReceipt))},
+ beacon:{chainHash,round,signature,randomness}}
+seed = SHA256(UTF8("market-luck/draw/v3\n" + input))
+```
+
+Each receipt has `{record,uuid,entry}` in that order, preserving Rekor's returned entry fields in the stored JSON. Its hash is reproducible from the full receipt included in the proof. The snapshot stays ASCII-sorted to preserve set validation; only the v3 input price order follows the hidden permutation. Browser/CLI add hidden-package and witness checks for 11 total checks. Invalid evidence withholds published-number cards and result-image export.
+
+Rekor is an independent log, but its v1 integration time still trusts Rekor's clock/signing key. Inclusion alone does not prove global log consistency, truthful prices, public availability at every earlier instant, every ticket or every payout. Logs contain hashed artifacts; users should save the public record and receipt together. There is no independent secret escrow: root operators can still stop, refuse to reveal or lose the encryption key. Hidden order alone is not protection against a party that knows the secret and controls prices, so the future beacon is retained. See [the v3 plan](隐藏顺序承诺与独立见证改进方案.md) for explicit limits.

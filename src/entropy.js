@@ -7,6 +7,7 @@ import {
   validateSnapshot,
   digest,
 } from "./beacon.js";
+import { readWitnesses } from "./witness-store.js";
 
 export const BEACON_VECTOR = Object.freeze({
   round: 1000,
@@ -30,6 +31,22 @@ export async function readSnapshot(env, id) {
   )
     .bind(id)
     .first();
+  if (row) {
+    const round = await env.DB.prepare("SELECT manifest FROM rounds WHERE id=?")
+      .bind(id)
+      .first();
+    if (JSON.parse(round.manifest).version === 3) {
+      const witness = (await readWitnesses(env, id)).freeze;
+      const time = witness ? witness.entry.integratedTime * 1000 + 1000 : null;
+      return {
+        payload: row.payload,
+        digest: row.digest,
+        sealedAt: row.sealed_at,
+        witnessedAt: time,
+        beaconRound: time === null ? null : futureBeaconRound(time),
+      };
+    }
+  }
   return row
     ? {
         payload: row.payload,
@@ -49,7 +66,9 @@ export async function freezeSnapshot(env, round, prices, sources) {
     .bind(round.id, payload, digest(payload))
     .run();
   const snapshot = await readSnapshot(env, round.id);
-  validateSnapshot(snapshot, manifest);
+  validateSnapshot(snapshot, manifest, {
+    allowUnwitnessed: manifest.version === 3,
+  });
   return snapshot;
 }
 export async function fetchBeacon(

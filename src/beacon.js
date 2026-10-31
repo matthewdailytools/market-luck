@@ -15,12 +15,19 @@ export const RANDOMNESS_POLICY = Object.freeze({
   afterFreeze: "settle-or-wait-no-admin-pause",
 });
 export const digest = (value) => bytesToHex(sha256(utf8ToBytes(value)));
+export const RANDOMNESS_POLICY_V3 = Object.freeze({
+  ...RANDOMNESS_POLICY,
+  selection: "rekor-first-freeze-future-round-v1",
+});
 export function assertRandomnessPolicy(manifest) {
   if (
-    manifest?.version !== 2 ||
+    ![2, 3].includes(manifest?.version) ||
     manifest.mode !== "LIVE" ||
     manifest.sourceProfile !== "PUBLIC-NOKEY-v1" ||
-    JSON.stringify(manifest.randomness) !== JSON.stringify(RANDOMNESS_POLICY)
+    JSON.stringify(manifest.randomness) !==
+      JSON.stringify(
+        manifest.version === 3 ? RANDOMNESS_POLICY_V3 : RANDOMNESS_POLICY,
+      )
   )
     throw Error("RANDOMNESS_POLICY_MISMATCH");
 }
@@ -91,7 +98,11 @@ export function snapshotPayload(round, prices, sources) {
     ),
   });
 }
-export function validateSnapshot(snapshot, manifest) {
+export function validateSnapshot(
+  snapshot,
+  manifest,
+  { allowUnwitnessed = false } = {},
+) {
   assertRandomnessPolicy(manifest);
   if (
     !snapshot ||
@@ -101,7 +112,16 @@ export function validateSnapshot(snapshot, manifest) {
     !Number.isSafeInteger(snapshot.sealedAt) ||
     snapshot.sealedAt < manifest.ready ||
     snapshot.sealedAt <= manifest.cutoff ||
-    snapshot.beaconRound !== futureBeaconRound(snapshot.sealedAt)
+    (manifest.version === 2
+      ? snapshot.beaconRound !== futureBeaconRound(snapshot.sealedAt)
+      : !(
+          allowUnwitnessed &&
+          snapshot.witnessedAt === null &&
+          snapshot.beaconRound === null
+        ) &&
+        (!Number.isSafeInteger(snapshot.witnessedAt) ||
+          snapshot.witnessedAt < snapshot.sealedAt ||
+          snapshot.beaconRound !== futureBeaconRound(snapshot.witnessedAt)))
   )
     throw Error("INVALID_ENTROPY_SNAPSHOT");
   const payload = JSON.parse(snapshot.payload);

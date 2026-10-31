@@ -1,13 +1,26 @@
 import { games, hash, validate } from "./engine.js";
 import { settle } from "./settle.js";
-import { prepareLiveManifest, collectAndSettle } from "./live.js";
+import { prepareLiveRound, collectAndSettle } from "./live.js";
 import { verifyPublication } from "./publication.js";
 import { assertLockedRound } from "./calendar.js";
 import { publicConsensus } from "./public-market-data.js";
 import { attemptLimit } from "./abuse.js";
 import { readSnapshot, verifyOnServer, BEACON_VECTOR } from "./entropy.js";
-import { RANDOMNESS_POLICY, beaconTime } from "./beacon.js";
+import {
+  RANDOMNESS_POLICY,
+  RANDOMNESS_POLICY_V3,
+  beaconTime,
+} from "./beacon.js";
 import { recordGuardsReady } from "./record-guards.js";
+import { encryptSecret, decryptSecret } from "./commitment.js";
+import {
+  readWitnesses,
+  ensureWitness,
+  witnessOnServer,
+  v3GuardsReady,
+} from "./witness-store.js";
+import { WITNESS_POLICY } from "./witness.js";
+import { WITNESS_VECTOR } from "./witness-vector.js";
 const json = (v, status = 200, headers = {}) =>
   new Response(JSON.stringify(v), {
     status,
@@ -180,13 +193,36 @@ export function createWorker(clock = Date.now) {
             Boolean(e.ABUSE_IP_KEY) ||
             (e.DEMO_MODE === "true" &&
               ["localhost", "127.0.0.1"].includes(u.hostname));
-          const ready = valid && !invalid && guards && authReady;
+          const witnessValid = await witnessOnServer(
+            e,
+            WITNESS_VECTOR,
+            WITNESS_VECTOR.record,
+          );
+          const bad = structuredClone(WITNESS_VECTOR);
+          bad.entry.integratedTime++;
+          const witnessInvalid = await witnessOnServer(e, bad, bad.record);
+          const witnessGuards = await v3GuardsReady(e);
+          const secretReady = /^[a-f0-9]{64}$/.test(
+            e.COMMIT_ENCRYPTION_KEY || "",
+          );
+          const localDemo =
+            e.DEMO_MODE === "true" &&
+            ["localhost", "127.0.0.1"].includes(u.hostname);
+          const ready =
+            valid &&
+            !invalid &&
+            guards &&
+            authReady &&
+            Boolean(witnessValid) &&
+            !witnessInvalid &&
+            witnessGuards &&
+            (secretReady || localDemo);
           return json(
             {
               ready,
               recordGuardsInstalled: guards,
-              installedAlgorithms: [1, 2],
-              newRoundVersion: 2,
+              installedAlgorithms: [1, 2, 3],
+              newRoundVersion: 3,
               verification: "SQLite Durable Object BLS",
               historicalSelfTest: {
                 round: 1000,
@@ -194,7 +230,15 @@ export function createWorker(clock = Date.now) {
                 tamperRejected: !invalid,
               },
               abuseProtectionConfigured: Boolean(e.ABUSE_IP_KEY),
-              policy: RANDOMNESS_POLICY,
+              policy: RANDOMNESS_POLICY_V3,
+              legacyV2Policy: RANDOMNESS_POLICY,
+              witnessPolicy: WITNESS_POLICY,
+              witnessSelfTest: {
+                validAccepted: Boolean(witnessValid),
+                tamperRejected: !witnessInvalid,
+              },
+              witnessGuardsInstalled: witnessGuards,
+              hiddenCommitmentsConfigured: secretReady,
             },
             ready ? 200 : 503,
           );
@@ -231,16 +275,36 @@ export function createWorker(clock = Date.now) {
               !(await verifyOnServer(e, BEACON_VECTOR, 1000))
             )
               return json({ error: "BEACON_VERIFIER_UNAVAILABLE" }, 503);
-            const m = prepareLiveManifest(await readJson(req), clock());
-            await stmt(
-              e,
-              "INSERT INTO rounds(id,manifest,commitment,cutoff,ready,status) VALUES(?,?,?,?,?,'draft')",
-              m.id,
-              JSON.stringify(m),
-              hash(JSON.stringify(m)),
-              m.cutoff,
-              m.ready,
-            ).run();
+            if (!(await v3GuardsReady(e)))
+              return json({ error: "WITNESS_GUARDS_UNAVAILABLE" }, 503);
+            if (!/^[a-f0-9]{64}$/.test(e.COMMIT_ENCRYPTION_KEY || ""))
+              return json({ error: "COMMIT_ENCRYPTION_KEY_UNAVAILABLE" }, 503);
+            const { manifest: m, secret } = prepareLiveRound(
+              await readJson(req),
+              clock(),
+            );
+            const envelope = await encryptSecret(
+              secret,
+              m,
+              e.COMMIT_ENCRYPTION_KEY,
+            );
+            await e.DB.batch([
+              stmt(
+                e,
+                "INSERT INTO rounds(id,manifest,commitment,cutoff,ready,status) VALUES(?,?,?,?,?,'draft')",
+                m.id,
+                JSON.stringify(m),
+                hash(JSON.stringify(m)),
+                m.cutoff,
+                m.ready,
+              ),
+              stmt(
+                e,
+                "INSERT INTO round_secrets(round_id,envelope) VALUES(?,?)",
+                m.id,
+                envelope,
+              ),
+            ]);
             return json({
               manifest: m,
               commitment: hash(JSON.stringify(m)),
@@ -265,7 +329,7 @@ export function createWorker(clock = Date.now) {
                 return json({ error: "需要外部承诺记录 HTTPS 链接" }, 400);
               assertLockedRound(r, clock());
               if (
-                JSON.parse(r.manifest).version === 2 &&
+                JSON.parse(r.manifest).version >= 2 &&
                 !(await verifyOnServer(e, BEACON_VECTOR, 1000))
               )
                 throw Error("BEACON_VERIFIER_UNAVAILABLE");
@@ -274,6 +338,19 @@ export function createWorker(clock = Date.now) {
                 r.commitment,
                 e.COMMITMENT_REPOSITORY,
               );
+              if (JSON.parse(r.manifest).version === 3) {
+                const s = await stmt(
+                  e,
+                  "SELECT envelope FROM round_secrets WHERE round_id=?",
+                  r.id,
+                ).first();
+                await decryptSecret(
+                  s?.envelope,
+                  JSON.parse(r.manifest),
+                  e.COMMIT_ENCRYPTION_KEY,
+                );
+                await ensureWitness(e, r, "presale", null);
+              }
               if (clock() >= r.cutoff) return json({ error: "已停售" }, 409);
               await e.DB.batch([
                 stmt(
@@ -301,7 +378,7 @@ export function createWorker(clock = Date.now) {
           }
           if (p === "/api/admin/pause") {
             if (
-              JSON.parse(r.manifest).version === 2 &&
+              JSON.parse(r.manifest).version >= 2 &&
               (await readSnapshot(e, r.id))
             ) {
               await stmt(
@@ -361,7 +438,7 @@ export function createWorker(clock = Date.now) {
           }
         }
         const roundResource = p.match(
-          /^\/api\/round\/([A-Za-z0-9-]{1,80})(\/manifest|\/entropy)?$/,
+          /^\/api\/round\/([A-Za-z0-9-]{1,80})(\/manifest|\/entropy|\/witnesses)?$/,
         );
         if (roundResource && req.method === "GET") {
           const row = await stmt(
@@ -372,14 +449,36 @@ export function createWorker(clock = Date.now) {
           if (!row) return json({ error: "期次不存在或尚未公开" }, 404);
           if (roundResource[2] === "/entropy") {
             const snapshot =
-              JSON.parse(row.manifest).version === 2
+              JSON.parse(row.manifest).version >= 2
                 ? await readSnapshot(e, row.id)
                 : null;
             return json({
               roundId: row.id,
               version: JSON.parse(row.manifest).version,
               snapshot,
-              beaconTime: snapshot ? beaconTime(snapshot.beaconRound) : null,
+              beaconTime: snapshot?.beaconRound
+                ? beaconTime(snapshot.beaconRound)
+                : null,
+            });
+          }
+          if (roundResource[2] === "/witnesses") {
+            const version = JSON.parse(row.manifest).version;
+            const receipts =
+              version === 3 ? await readWitnesses(e, row.id) : {};
+            const reveal =
+              version === 3
+                ? await stmt(
+                    e,
+                    "SELECT payload FROM round_reveals WHERE round_id=?",
+                    row.id,
+                  ).first()
+                : null;
+            return json({
+              roundId: row.id,
+              version,
+              commitment: row.commitment,
+              witnesses: receipts,
+              reveal: reveal?.payload || null,
             });
           }
           if (roundResource[2] === "/manifest")

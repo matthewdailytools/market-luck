@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { prepareLiveManifest } from "../../src/live.js";
+import { prepareV2Manifest as prepareLiveManifest } from "../../src/live.js";
 import { evidence, hash } from "../../src/engine.js";
 import {
   snapshotPayload,

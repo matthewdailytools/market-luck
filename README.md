@@ -6,7 +6,7 @@
 
 Cloudflare Workers + D1 + R2 的纯积分彩票实验，中英日响应式页面，16 国虚拟选号玩法，公开奖池与近期中奖流水。
 
-新增 v2：首次双源行情冻结后，等待指定的未来 drand quicknet 轮次并验证 BLS 签名。免费计划使用 SQLite Durable Object 隔离验签计算；原有 D1/R2 保留。已售 v1 期不追加信标、不改变输入或派奖。见[改进方案](随机性与防作弊改进方案.md)和[上线验收与证据](随机性与防作弊改进上线验收.md)。
+新增 v3：售前随机确定隐藏股票顺序与 256 位随机数，公开 MD5 和 SHA-256 承诺；售前规则、首次行情冻结分别取得独立 Rekor 透明日志见证，再等待指定的未来 drand 信标，结算事务同时揭晓秘密。v1/v2 原规则保留，免费计划使用 SQLite Durable Object 验签。见[新方案](隐藏顺序承诺与独立见证改进方案.md)、[算法规范](ALGORITHM.md)及[此前 v2 验收](随机性与防作弊改进上线验收.md)。
 
 ## 本地运行
 
@@ -29,7 +29,7 @@ npm test
 npm run test:integration
 ```
 
-单测覆盖抽号、行情适配及防作弊约束；集成测试在本地 workerd 使用真实 D1/R2 模拟绑定运行。下载 JSON 中的 input 可复算：MD5(input) 是公开指纹；v1 使用 SHA256(input) 为 seed，v2 使用 SHA256("market-luck/draw/v2\n" + input)。见 [算法](ALGORITHM.md)。不要把模拟行情视作真实随机源，模拟价格可预测。
+单测覆盖抽号、行情适配及防作弊约束；集成测试在本地 workerd 使用真实 D1/R2 模拟绑定运行。下载 JSON 中的 input 可复算：MD5(input) 是公开指纹；v1 使用 SHA256(input) 为 seed，v2/v3 分别使用 SHA256("market-luck/draw/v2\n" + input) / SHA256("market-luck/draw/v3\n" + input)。见 [算法](ALGORITHM.md)。不要把模拟行情视作真实随机源，模拟价格可预测。
 
 ## 真实行情
 
@@ -37,16 +37,17 @@ npm run test:integration
 
 ## Cloudflare 部署准备
 
-当前版本还需要配置 `BEACON_VERIFIER` SQLite Durable Object（示例配置已包含绑定与 class migration），并为每个公网安装设置独立的 `ABUSE_IP_KEY`。这是本地生成的服务器 HMAC 密钥，不是行情服务 API Key。不要将它提交仓库或发到聊天中。可直接通过管道生成并传给 Wrangler：
+当前版本需要配置 `BEACON_VERIFIER` SQLite Durable Object（示例配置已包含绑定与 class migration），并为每个公网安装设置独立的 `ABUSE_IP_KEY` 和 `COMMIT_ENCRYPTION_KEY`。它们分别用于限流 HMAC 与 AES-256-GCM 秘密包加密，不是行情服务 API Key；Rekor 不需账户或 Key。不要将密钥提交仓库或发到聊天中。首次安装时可直接通过管道生成：
 
 ```powershell
 node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('hex'))" | npx wrangler secret put ABUSE_IP_KEY --config wrangler.live.jsonc
+node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('hex'))" | npx wrangler secret put COMMIT_ENCRYPTION_KEY --config wrangler.live.jsonc
 npm run build:crypto
 npx wrangler d1 migrations apply DB --remote --config wrangler.live.jsonc
 npx wrangler deploy --config wrangler.live.jsonc
 ```
 
-DEMO 使用其自己的配置和另一把随机密钥。迁移与代码需配套发布；旧代码没有逐票结算授权写入步骤，迁移后会安全拒绝其派奖，而不会部分结算。部署后访问 `/api/randomness-health` 检查验签与配置，再检查现有期次。不要把新 v2 写回已售 v1 manifest。
+DEMO 使用自己的配置与不同密钥。**现有安装先检查 secret 名称；已配置的加密密钥要保留，不要重复执行生成命令覆盖。**未揭晓 v3 期依赖原密钥，丢失或随意轮换会阻止其解密；须以独立受控方式备份并保护密钥。迁移与代码配套发布（包括 `0008_commitment_witnesses.sql`）；旧代码不支持新 v3。部署后访问 `/api/randomness-health` 检查信标/见证验签与保护配置。不要把新规则写回旧 manifest，不要用回滚应用代码来绕过已发布规则。
 
 创建自己的 D1 数据库和 R2 桶，替换 wrangler.jsonc 中的数据库 ID。正式环境将 DEMO_MODE 改为 false，再执行远端迁移和部署：
 

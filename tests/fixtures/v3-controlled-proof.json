@@ -1,0 +1,548 @@
+{
+  "version": 3,
+  "mode": "LIVE",
+  "manifest": {
+    "id": "v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3",
+    "mode": "LIVE",
+    "price": 10,
+    "games": [
+      {
+        "id": "cn",
+        "name": "中国 · 双星",
+        "flag": "🇨🇳",
+        "count": 6,
+        "max": 33,
+        "bonus": 16
+      },
+      {
+        "id": "us",
+        "name": "美国 · 超级球",
+        "flag": "🇺🇸",
+        "count": 5,
+        "max": 69,
+        "bonus": 26
+      },
+      {
+        "id": "uk",
+        "name": "英国 · 六重奏",
+        "flag": "🇬🇧",
+        "count": 6,
+        "max": 59,
+        "bonus": 0
+      },
+      {
+        "id": "jp",
+        "name": "日本 · 六之幸",
+        "flag": "🇯🇵",
+        "count": 6,
+        "max": 43,
+        "bonus": 0
+      },
+      {
+        "id": "fr",
+        "name": "法国 · 幸运星",
+        "flag": "🇫🇷",
+        "count": 5,
+        "max": 49,
+        "bonus": 10,
+        "minMatch": 2
+      },
+      {
+        "id": "de",
+        "name": "德国 · 超级数",
+        "flag": "🇩🇪",
+        "count": 6,
+        "max": 49,
+        "bonus": 10,
+        "bonusMin": 0
+      },
+      {
+        "id": "it",
+        "name": "意大利 · 九十之选",
+        "flag": "🇮🇹",
+        "count": 6,
+        "max": 90,
+        "bonus": 0,
+        "minMatch": 2
+      },
+      {
+        "id": "es",
+        "name": "西班牙 · 原野六",
+        "flag": "🇪🇸",
+        "count": 6,
+        "max": 49,
+        "bonus": 0
+      },
+      {
+        "id": "ca",
+        "name": "加拿大 · 枫叶六",
+        "flag": "🇨🇦",
+        "count": 6,
+        "max": 49,
+        "bonus": 0
+      },
+      {
+        "id": "au",
+        "name": "澳大利亚 · 南十字七",
+        "flag": "🇦🇺",
+        "count": 7,
+        "max": 47,
+        "bonus": 0
+      },
+      {
+        "id": "nz",
+        "name": "新西兰 · 云帆六",
+        "flag": "🇳🇿",
+        "count": 6,
+        "max": 40,
+        "bonus": 0
+      },
+      {
+        "id": "kr",
+        "name": "韩国 · 四五之约",
+        "flag": "🇰🇷",
+        "count": 6,
+        "max": 45,
+        "bonus": 0
+      },
+      {
+        "id": "sg",
+        "name": "新加坡 · 狮城六",
+        "flag": "🇸🇬",
+        "count": 6,
+        "max": 49,
+        "bonus": 0
+      },
+      {
+        "id": "br",
+        "name": "巴西 · 森林六",
+        "flag": "🇧🇷",
+        "count": 6,
+        "max": 60,
+        "bonus": 0,
+        "minMatch": 4
+      },
+      {
+        "id": "za",
+        "name": "南非 · 彩虹六",
+        "flag": "🇿🇦",
+        "count": 6,
+        "max": 52,
+        "bonus": 0
+      },
+      {
+        "id": "ph",
+        "name": "菲律宾 · 群岛六",
+        "flag": "🇵🇭",
+        "count": 6,
+        "max": 58,
+        "bonus": 0
+      }
+    ],
+    "cutoff": 1793461909301,
+    "ready": 1793461913301,
+    "preparedAt": 1793461895301,
+    "sourceProfile": "PUBLIC-NOKEY-v1",
+    "calendarVersion": "CONTROLLED-EXPEDITED-TEST-v1",
+    "confirmationDelayMs": 1000,
+    "sources": [
+      "YahooFinance",
+      "Nasdaq"
+    ],
+    "quorum": 2,
+    "markets": [
+      {
+        "symbol": "XNAS:AAPL",
+        "date": "2026-10-31",
+        "currency": "USD",
+        "scale": 2,
+        "openUTC": 1793461910301,
+        "closeUTC": 1793461912301
+      },
+      {
+        "symbol": "XNYS:IBM",
+        "date": "2026-10-31",
+        "currency": "USD",
+        "scale": 2,
+        "openUTC": 1793461910301,
+        "closeUTC": 1793461912301
+      },
+      {
+        "symbol": "XNAS:MSFT",
+        "date": "2026-10-31",
+        "currency": "USD",
+        "scale": 2,
+        "openUTC": 1793461910301,
+        "closeUTC": 1793461912301
+      }
+    ],
+    "payout": [
+      50,
+      30,
+      20
+    ],
+    "missing": "wait",
+    "version": 3,
+    "randomness": {
+      "type": "drand-quicknet-v1",
+      "chainHash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+      "publicKey": "83cf0f2896adee7eb8b5f01fcad3912212c437e0073e911fb90022d3e760183c8c4b450b6a0a6c3ac6a5776a2d1064510d1fec758c921cc22b0e17e63aaf4bcb5ed66304de9cf809bd274ca73bab4af5a6e9c76a4bc09e76eae8991ef5ece45a",
+      "scheme": "bls-unchained-g1-rfc9380",
+      "genesis": 1692803367,
+      "period": 3,
+      "delayMs": 120000,
+      "selection": "rekor-first-freeze-future-round-v1",
+      "afterFreeze": "settle-or-wait-no-admin-pause"
+    },
+    "hidden": {
+      "type": "hidden-order-nonce-v1",
+      "nonceBytes": 32,
+      "reveal": "after-verified-future-beacon",
+      "hashes": [
+        "md5",
+        "sha256"
+      ],
+      "md5": "524787e9bc8457f0adfba4d4fca19f7c",
+      "sha256": "c07d3df3046c78e211c572d19013425e8553f20b82fb6d9037ae955a8f332b1a"
+    },
+    "witness": {
+      "type": "rekor-v1-set-inclusion",
+      "origin": "https://rekor.sigstore.dev",
+      "publicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2G2Y+2tabdTV5BcGiBIx0a9fAFwrkBbmLSGtks4L3qX6yYY0zufBnhC8Ur/iy55GhWP/9A/bY2LhC30M9+RYtw==",
+      "stages": [
+        "presale",
+        "freeze"
+      ],
+      "delayMs": 120000
+    }
+  },
+  "commitment": "f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649",
+  "input": "{\"version\":3,\"round\":\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\",\"commitment\":\"f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649\",\"prices\":[{\"symbol\":\"XNAS:AAPL\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10000},{\"symbol\":\"XNAS:MSFT\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10246},{\"symbol\":\"XNYS:IBM\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10123}],\"reveal\":\"{\\\"version\\\":1,\\\"round\\\":\\\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\\\",\\\"order\\\":[\\\"XNAS:AAPL\\\",\\\"XNAS:MSFT\\\",\\\"XNYS:IBM\\\"],\\\"nonce\\\":\\\"e262a9dd6df06009e401ff3e554d22c5e0de561172282095e433192586e5d8ae\\\"}\",\"snapshot\":{\"digest\":\"22bda762f188d935809fe868f6a3fbe502cf4b02fb6e664578b63f05a77df4fa\",\"sealedAt\":1793461914805,\"witnessedAt\":1793461917000,\"beaconRound\":33552891},\"witnesses\":{\"presale\":\"35cb1ecbba55f46a00c6a8c8bcc146f68649efdf259c774627ae5ceffec470b3\",\"freeze\":\"aaba41f29fc06ad349cfeee2b642b3f209d3c0fe244ddadb2ecbcc83157ab762\"},\"beacon\":{\"chainHash\":\"52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971\",\"round\":33552891,\"signature\":\"b715cf367f48bf67aa117993d482036850a99de3945ac5d434ea069d73be4e63079d6f4204f94ec9663478dd9cce445d\",\"randomness\":\"2cd3b04f1bb701b63a0e2cb8affef28c9e6cec80a9fa885b742547b79b568493\"}}",
+  "md5": "a2249fdf69f5e6930b0dad09408e06dd",
+  "seed": "956b4a6f41aef7b8ec2e9eb6f66207a1ad70fecf7d541305e8d442c647e30018",
+  "results": {
+    "cn": {
+      "main": [
+        1,
+        6,
+        10,
+        18,
+        27,
+        32
+      ],
+      "bonus": 2
+    },
+    "us": {
+      "main": [
+        16,
+        35,
+        41,
+        53,
+        66
+      ],
+      "bonus": 6
+    },
+    "uk": {
+      "main": [
+        9,
+        17,
+        23,
+        24,
+        38,
+        44
+      ],
+      "bonus": null
+    },
+    "jp": {
+      "main": [
+        14,
+        22,
+        31,
+        34,
+        35,
+        37
+      ],
+      "bonus": null
+    },
+    "fr": {
+      "main": [
+        7,
+        15,
+        16,
+        26,
+        44
+      ],
+      "bonus": 2
+    },
+    "de": {
+      "main": [
+        7,
+        8,
+        27,
+        30,
+        34,
+        46
+      ],
+      "bonus": 6
+    },
+    "it": {
+      "main": [
+        14,
+        33,
+        54,
+        55,
+        59,
+        87
+      ],
+      "bonus": null
+    },
+    "es": {
+      "main": [
+        6,
+        20,
+        21,
+        24,
+        27,
+        31
+      ],
+      "bonus": null
+    },
+    "ca": {
+      "main": [
+        6,
+        29,
+        32,
+        39,
+        41,
+        45
+      ],
+      "bonus": null
+    },
+    "au": {
+      "main": [
+        8,
+        19,
+        23,
+        33,
+        43,
+        45,
+        46
+      ],
+      "bonus": null
+    },
+    "nz": {
+      "main": [
+        6,
+        22,
+        24,
+        25,
+        29,
+        40
+      ],
+      "bonus": null
+    },
+    "kr": {
+      "main": [
+        10,
+        11,
+        34,
+        37,
+        38,
+        39
+      ],
+      "bonus": null
+    },
+    "sg": {
+      "main": [
+        8,
+        19,
+        29,
+        39,
+        45,
+        46
+      ],
+      "bonus": null
+    },
+    "br": {
+      "main": [
+        1,
+        31,
+        33,
+        34,
+        40,
+        48
+      ],
+      "bonus": null
+    },
+    "za": {
+      "main": [
+        12,
+        26,
+        30,
+        32,
+        43,
+        51
+      ],
+      "bonus": null
+    },
+    "ph": {
+      "main": [
+        21,
+        37,
+        40,
+        43,
+        48,
+        58
+      ],
+      "bonus": null
+    }
+  },
+  "snapshot": {
+    "payload": "{\"version\":1,\"round\":\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\",\"commitment\":\"f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649\",\"prices\":[{\"symbol\":\"XNAS:AAPL\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10000},{\"symbol\":\"XNAS:MSFT\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10246},{\"symbol\":\"XNYS:IBM\",\"date\":\"2026-10-31\",\"currency\":\"USD\",\"scale\":2,\"close\":10123}],\"sources\":[{\"symbol\":\"XNAS:AAPL\",\"sources\":[{\"provider\":\"YahooFinance\",\"close\":10000,\"sha256\":\"aa827b494f5fbd6a18d44c6c7b00eb2ab197429aae4cbb8d5b641f82a118eaeb\"},{\"provider\":\"Nasdaq\",\"close\":10000,\"sha256\":\"cb8969f6a0291eb3d2c14cefdc6765a8881a936454d2096d9370fb9a3456a871\"}],\"failures\":[]},{\"symbol\":\"XNAS:MSFT\",\"sources\":[{\"provider\":\"YahooFinance\",\"close\":10246,\"sha256\":\"31ac402a41831a1322797e6b5d062c7da20b28672f0a0792f6a829dc129ea87f\"},{\"provider\":\"Nasdaq\",\"close\":10246,\"sha256\":\"13df396f9bc7b08f6799ce2faf74830470c4bd105f0a48298c8b656976847e6f\"}],\"failures\":[]},{\"symbol\":\"XNYS:IBM\",\"sources\":[{\"provider\":\"YahooFinance\",\"close\":10123,\"sha256\":\"2dc1d21c39721b5c4267cb88d447b59b6adc02f4575111438a22d4d184deccbf\"},{\"provider\":\"Nasdaq\",\"close\":10123,\"sha256\":\"8482c25974a1bf756c3243248f39efdec7290512da22cff079714439ee19cf5a\"}],\"failures\":[]}]}",
+    "digest": "22bda762f188d935809fe868f6a3fbe502cf4b02fb6e664578b63f05a77df4fa",
+    "sealedAt": 1793461914805,
+    "witnessedAt": 1793461917000,
+    "beaconRound": 33552891
+  },
+  "beacon": {
+    "round": 33552891,
+    "signature": "b715cf367f48bf67aa117993d482036850a99de3945ac5d434ea069d73be4e63079d6f4204f94ec9663478dd9cce445d",
+    "randomness": "2cd3b04f1bb701b63a0e2cb8affef28c9e6cec80a9fa885b742547b79b568493"
+  },
+  "reveal": "{\"version\":1,\"round\":\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\",\"order\":[\"XNAS:AAPL\",\"XNAS:MSFT\",\"XNYS:IBM\"],\"nonce\":\"e262a9dd6df06009e401ff3e554d22c5e0de561172282095e433192586e5d8ae\"}",
+  "witnesses": {
+    "presale": {
+      "record": "{\"domain\":\"market-luck/presale/v3\",\"manifestSha256\":\"f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649\",\"round\":\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\",\"secretMd5\":\"524787e9bc8457f0adfba4d4fca19f7c\",\"secretSha256\":\"c07d3df3046c78e211c572d19013425e8553f20b82fb6d9037ae955a8f332b1a\"}",
+      "uuid": "108e9186e8c5677a0b3c6415281fc3b5387e7cd8ee2f571e87fe12af51ad8012f09d6f58e2a69f5f",
+      "entry": {
+        "body": "eyJhcGlWZXJzaW9uIjoiMC4wLjEiLCJraW5kIjoiaGFzaGVkcmVrb3JkIiwic3BlYyI6eyJkYXRhIjp7Imhhc2giOnsiYWxnb3JpdGhtIjoic2hhMjU2IiwidmFsdWUiOiI2ZTUzZWIzY2U3YTk1NjkyOTIwY2QzZmIxOTI0Njc3NmZlMTI0MGQzYWQ5NWYzYzRmYmJiZWQ1MmRlOTljMTAyIn19LCJzaWduYXR1cmUiOnsiY29udGVudCI6Ik1FVUNJQzROSFpjemx6dThhS3cwSkg4VkxIVGNobzI3OUFZeFZsOFZRSlFrUEpCSUFpRUE4b0pTaEFKQXhONkxjQjFHLzQ4YThaTnd5c2NXNHMrdThBL0IrcG9wa2o4PSIsInB1YmxpY0tleSI6eyJjb250ZW50IjoiTFMwdExTMUNSVWRKVGlCUVZVSk1TVU1nUzBWWkxTMHRMUzBLVFVacmQwVjNXVWhMYjFwSmVtb3dRMEZSV1VsTGIxcEplbW93UkVGUlkwUlJaMEZGWmpGSk5qQmhTbVp0VDBkc01FcFpORWhPYWpSMFFVOUJSVXhtTWdvNGJEUnlURWs0VldweE56bFJiblpYYlVaNFZEVnFlWEk0VjNFMFNXNU9VVlptYmt3elNYYzFOVGt4U2tkdFFtZElTakZYYkZOSmVIZG5QVDBLTFMwdExTMUZUa1FnVUZWQ1RFbERJRXRGV1MwdExTMHRDZz09In19fX0=",
+        "integratedTime": 1793461897,
+        "logID": "c0d23d6ad406973f9559f3ba2d1ca01f84147d8ffc5b8445c224f98b9591801d",
+        "logIndex": 3614412905,
+        "verification": {
+          "inclusionProof": {
+            "checkpoint": "rekor.sigstore.dev - 1193050959916656506\n3492508646\nSQQk2GygV4vdoBvMZJvkntMv3EZh/k32ocNaePAznOE=\n\n— rekor.sigstore.dev wNI9ajBEAiABPE3QgaWd0lHc/oamv00StoM4WxIW1LTx0Gqci41mkwIgBaINQQLZXsv2JLxGHmx+dA8CE0XBnLNpittiv7mJDpE=\n",
+            "hashes": [
+              "0b361fdd673e11696d3551a1b2c3863318bc45600cdca64de6acfa3644d60aff",
+              "8ea8608310c1666e05c255d98e6f6edbac1dd2c17f866e412679cb51559ebff9",
+              "29a87b1e78722c3c6110500ba1552e4f1bc3a834f80be4cffa4649a6246c9eb4",
+              "22e6e3311a2134a7361b7e132acec0206c62fb0f04fd31b7bd2932de03938e46",
+              "14a92445e8af10f68999ad658e182b1a91491c2587c8f2d88cdfc79ba05fbec6",
+              "73d05cb29806851d47fb09f3125aa2d39aa6ff6101def2c7f3fb3118f9d27ea9",
+              "871efbebd79befbef2af6c6a2411cceb24c147c92b499ae2e6666472a87706d1",
+              "1f072fb717d98193cffe105a2a237112fff03f699d9da29d7553981d70fab562",
+              "9210084c24b93693d730e8302ebc0789304342d09aef9e6de9f85c44c43b348b",
+              "da14be93dc9267a54529fd1099c0a21043049eca5484b4a14459cc7b8f39c211",
+              "c2f4e5bfc48de5134092104a5b6f2f443255337b61b92cc2ad3c9ea46dca5a0a",
+              "75f906c755fc9e67c6df1d490faf4df43132f0e47ad4e0fd3e95d9f06ef1b975",
+              "548d76d7f3eece8d5af102f4d88f3fca114bb4b2e0441b800d0220a6c97b5cc7",
+              "4a371932249a98c5a4b7f01164b3eb9b92df8afb7c80e944b4fbcd2d20787d25",
+              "9b7b974f1c6018748130b8fa1ecb70c04b7ac15d2bfa5b598f3600ec5b17eee9",
+              "4a58b19d2df806100efb2448d856863d23a1f55e8949534f7cb9756c7c6b7106",
+              "d436832b3ac234d061992758e6f163cfe369026c6661f60480109d3cbacc3f50",
+              "c47fc30ac78b1ebf5e2a8613f2ab0e4592bbcd5744198587b95b6c56b0fde706"
+            ],
+            "logIndex": 3492508643,
+            "rootHash": "490424d86ca0578bdda01bcc649be49ed32fdc4661fe4df6a1c35a78f0339ce1",
+            "treeSize": 3492508646
+          },
+          "signedEntryTimestamp": "MEUCIQD0O0HBLjCjqg8qR1hXGw0z0onh/AqCQmqy8cBs5JkbtQIgYwFYQLdtlu7NWu+QCAklMm/JSIMiiUsrqzQNyBjSXuQ="
+        }
+      }
+    },
+    "freeze": {
+      "record": "{\"domain\":\"market-luck/freeze/v3\",\"manifestSha256\":\"f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649\",\"round\":\"v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3\",\"sealedAt\":1793461914805,\"snapshotSha256\":\"22bda762f188d935809fe868f6a3fbe502cf4b02fb6e664578b63f05a77df4fa\"}",
+      "uuid": "108e9186e8c5677a69b11fd185ad8753e7646bf20038b1d36fe293d257edd7b4d2be240150c72b6c",
+      "entry": {
+        "body": "eyJhcGlWZXJzaW9uIjoiMC4wLjEiLCJraW5kIjoiaGFzaGVkcmVrb3JkIiwic3BlYyI6eyJkYXRhIjp7Imhhc2giOnsiYWxnb3JpdGhtIjoic2hhMjU2IiwidmFsdWUiOiJjMmU1NTdmNzg2NzcwNGUzMDdhODZhZDgwOTExNDI0ZjNhNjRiNmE4OTI5OThlN2NkMWZkZDFmYjlkM2FkZDAyIn19LCJzaWduYXR1cmUiOnsiY29udGVudCI6Ik1FWUNJUURxTVM0VnloQlRQZjBRRFBRdzhJZGltWi9oQnJCM2pBbzh6ZHcxajNKSkFRSWhBT3lMTHRxelhDV2VDTWtIZjNzRUpXbDJEcE1RdUh5UzQ4SWh1c2pFRzg2dyIsInB1YmxpY0tleSI6eyJjb250ZW50IjoiTFMwdExTMUNSVWRKVGlCUVZVSk1TVU1nUzBWWkxTMHRMUzBLVFVacmQwVjNXVWhMYjFwSmVtb3dRMEZSV1VsTGIxcEplbW93UkVGUlkwUlJaMEZGTWxBelluWlhUeXROVTNaNlRVczBRakpOTkRseFVISlJPRnA1UXdvMVNXVnBTVEUzV2t4aGMwVnpTVFUwV21SaU9HbEdkMWd3UTNoNFRERjJlWGNyUTI1aU1IUnBWV1ZsZFhSaU5HUm1UV2xsZWsxcWFYWm5QVDBLTFMwdExTMUZUa1FnVUZWQ1RFbERJRXRGV1MwdExTMHRDZz09In19fX0=",
+        "integratedTime": 1793461916,
+        "logID": "c0d23d6ad406973f9559f3ba2d1ca01f84147d8ffc5b8445c224f98b9591801d",
+        "logIndex": 3614413398,
+        "verification": {
+          "inclusionProof": {
+            "checkpoint": "rekor.sigstore.dev - 1193050959916656506\n3492509138\nT4FfUYFgGR6lAL4pAF3nDn404pjyIhLIlr7TqMn2aW4=\n\n— rekor.sigstore.dev wNI9ajBEAiB42Y+HdIOZRQcmQaVr6srTilkyNyuUyzepzIGGYX49OQIgLu2Xq2xpKRu968Gx3WYKiYYfAWB/r2x9n4y7n6b6ZAM=\n",
+            "hashes": [
+              "1277d1cabd843d8babccc9d4d0261785eb5228378bd11f32ae7170b9815e4975",
+              "ea5f79478cf66af2b94d237785ac115ed6dc41a8538789a16bd8860f7eb0956a",
+              "e1d2949ff52dbbfdf2bec56a271e8eca6617f9301c12e3b6876957c379a70ed2",
+              "bc6fec0699f5cbcb73e377f675fd36666a6f2f83496cc98e8241031da0ed9e60",
+              "83e71977524af37412d3cc3261a5c1291df92cefc95955256cd472903674e412",
+              "e0a2b03f43a62925bbb6d5ed28d638662000014f34b702cefa82232cb2f1e1f5",
+              "9210084c24b93693d730e8302ebc0789304342d09aef9e6de9f85c44c43b348b",
+              "da14be93dc9267a54529fd1099c0a21043049eca5484b4a14459cc7b8f39c211",
+              "c2f4e5bfc48de5134092104a5b6f2f443255337b61b92cc2ad3c9ea46dca5a0a",
+              "75f906c755fc9e67c6df1d490faf4df43132f0e47ad4e0fd3e95d9f06ef1b975",
+              "548d76d7f3eece8d5af102f4d88f3fca114bb4b2e0441b800d0220a6c97b5cc7",
+              "4a371932249a98c5a4b7f01164b3eb9b92df8afb7c80e944b4fbcd2d20787d25",
+              "9b7b974f1c6018748130b8fa1ecb70c04b7ac15d2bfa5b598f3600ec5b17eee9",
+              "4a58b19d2df806100efb2448d856863d23a1f55e8949534f7cb9756c7c6b7106",
+              "d436832b3ac234d061992758e6f163cfe369026c6661f60480109d3cbacc3f50",
+              "c47fc30ac78b1ebf5e2a8613f2ab0e4592bbcd5744198587b95b6c56b0fde706"
+            ],
+            "logIndex": 3492509136,
+            "rootHash": "4f815f518160191ea500be29005de70e7e34e298f22212c896bed3a8c9f6696e",
+            "treeSize": 3492509138
+          },
+          "signedEntryTimestamp": "MEQCIAeIQTcKypKjf9ngfzR4DyJhE7DHuFSFVTtoqxFFrUl7AiBYnMvOM6l9xtNzyYmdDRmRfdhHBoq7+Q44bqY2D6ymFA=="
+        }
+      }
+    }
+  },
+  "sources": [
+    {
+      "symbol": "XNAS:AAPL",
+      "sources": [
+        {
+          "provider": "YahooFinance",
+          "close": 10000,
+          "sha256": "aa827b494f5fbd6a18d44c6c7b00eb2ab197429aae4cbb8d5b641f82a118eaeb"
+        },
+        {
+          "provider": "Nasdaq",
+          "close": 10000,
+          "sha256": "cb8969f6a0291eb3d2c14cefdc6765a8881a936454d2096d9370fb9a3456a871"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "symbol": "XNAS:MSFT",
+      "sources": [
+        {
+          "provider": "YahooFinance",
+          "close": 10246,
+          "sha256": "31ac402a41831a1322797e6b5d062c7da20b28672f0a0792f6a829dc129ea87f"
+        },
+        {
+          "provider": "Nasdaq",
+          "close": 10246,
+          "sha256": "13df396f9bc7b08f6799ce2faf74830470c4bd105f0a48298c8b656976847e6f"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "symbol": "XNYS:IBM",
+      "sources": [
+        {
+          "provider": "YahooFinance",
+          "close": 10123,
+          "sha256": "2dc1d21c39721b5c4267cb88d447b59b6adc02f4575111438a22d4d184deccbf"
+        },
+        {
+          "provider": "Nasdaq",
+          "close": 10123,
+          "sha256": "8482c25974a1bf756c3243248f39efdec7290512da22cff079714439ee19cf5a"
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "observedAt": "2026-10-31T15:54:01.844Z",
+  "execution": "ONLINE_REPLAY_SIMULATED_CLOCK",
+  "simulatedClock": true,
+  "dataNote": "CONTROLLED EXPEDITED CALENDAR AND SYNTHETIC PRICES. Genuine independent Rekor receipts and a genuine future drand signature. Not a natural market draw.",
+  "poolBefore": 100000,
+  "payout": 0,
+  "poolAfter": 100000
+}

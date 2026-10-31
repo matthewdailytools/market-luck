@@ -19,7 +19,7 @@
     "test:online": "node tests/online-checks.js",
     "check:sources": "node scripts/check-market-sources.js",
     "check:public-sources": "node scripts/check-public-sources.js",
-    "build:crypto": "esbuild src/beacon.js --bundle --format=esm --target=es2022 --minify --legal-comments=inline --outfile=public/beacon-verifier.js"
+    "build:crypto": "esbuild src/beacon.js --bundle --format=esm --target=es2022 --minify --legal-comments=inline --outfile=public/beacon-verifier.js && esbuild src/commitment.js --bundle --format=esm --target=es2022 --minify --legal-comments=inline --outfile=public/commitment-verifier.js"
   },
   "dependencies": {
     "@noble/curves": "2.4.0",

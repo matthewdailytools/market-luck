@@ -2,6 +2,8 @@ import { evidence, tier, hash } from "./engine.js";
 import { assertLockedRound } from "./calendar.js";
 import { validateSnapshot, beaconTime } from "./beacon.js";
 import { verifyOnServer } from "./entropy.js";
+import { validateReveal, validateV3Witnesses } from "./commitment.js";
+import { witnessOnServer } from "./witness-store.js";
 export async function settle(
   env,
   round,
@@ -25,7 +27,16 @@ export async function settle(
   });
   if (now < round.cutoff || now < round.ready) throw Error("MARKETS_NOT_FINAL");
   const manifest = JSON.parse(round.manifest);
-  if (manifest.version === 2) {
+  if (manifest.version === 2 || manifest.version === 3) {
+    if (manifest.version === 3) {
+      validateReveal(metadata.reveal, manifest);
+      await validateV3Witnesses(
+        round,
+        metadata.snapshot,
+        metadata.witnesses,
+        (r, s) => witnessOnServer(env, r, s),
+      );
+    }
     const frozen = validateSnapshot(metadata.snapshot, manifest);
     if (
       JSON.stringify(frozen.prices) !==
@@ -103,6 +114,15 @@ export async function settle(
       round.id,
       tickets.length,
     ),
+    ...(manifest.version === 3
+      ? [
+          q(
+            "INSERT INTO round_reveals(round_id,payload) VALUES(?,?)",
+            round.id,
+            metadata.reveal,
+          ),
+        ]
+      : []),
     q(
       "INSERT INTO settlement_payments(ticket_id,round_id,prize,tier) SELECT json_extract(value,'$.id'),?,json_extract(value,'$.prize'),json_extract(value,'$.tier') FROM json_each(?)",
       round.id,

@@ -427,6 +427,26 @@ const words = {
   allocation: ["共享奖池分配", "Shared-pool allocation", "共有プール配分"],
 };
 const checks = {
+  hidden: [
+    ["隐藏顺序与随机数承诺", "Hidden order and nonce", "非公開の順序と乱数"],
+    [
+      "核对揭晓包 MD5、SHA-256、完整股票排列及随机数。",
+      "Checks the revealed MD5, SHA-256, complete permutation and nonce.",
+      "公開されたMD5・SHA-256・銘柄順・乱数を確認します。",
+    ],
+  ],
+  witnesses: [
+    [
+      "独立日志双阶段见证",
+      "Independent two-stage witnesses",
+      "独立ログの二段階記録",
+    ],
+    [
+      "验证售前与冻结记录的外部签名、包含证明和未来选轮时间。",
+      "Verifies independent signatures, inclusion and times for presale and freeze.",
+      "販売前と固定時の独立署名・包含証明・時刻を確認します。",
+    ],
+  ],
   snapshot: [
     ["首次行情快照", "First price snapshot", "最初の相場固定"],
     [
