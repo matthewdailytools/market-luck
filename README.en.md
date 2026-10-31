@@ -91,6 +91,6 @@ No API keys are needed for historical diagnostics: `node scripts/check-public-so
 
 [Theme design evaluation](主题设计评估.md): the selected bright global-play direction is an expert design judgment, not a measured A/B conversion result.
 
-The default for new visitors is now **Try with points**, with a visible link to draw verification. Users can still select Verify the draw or Explore formats. See the [three-theme evaluation](三主题吸引力与信任感评估.md) for the independent AI reviews, scores and limits; this is not a measured conversion result.
+The default for new visitors remains **Try with points** after the [updated review including the readable verification page](三主题复评-可读核验页版.md). Its rules-and-timing link is now a more visible secondary button, stacked below the play button on mobile. Verify the draw and Explore formats remain selectable. These are independent AI design judgments, not measured conversion results.
 
 The [readable verification page](https://luck.onlinefreetools.org/verify.html) explains each round's rules, sources and timeline, then reproduces published results locally in the browser. Original manifest and proof JSON downloads remain available. Pending, simulated and replay results are clearly distinguished; local consistency checks do not authenticate private source responses or audit all payouts.

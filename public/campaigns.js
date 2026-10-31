@@ -61,12 +61,12 @@ const copy = {
     points: {
       kicker: "给期待一个轻松的开始",
       title: ["花一点积分，", "留一份期待。"],
-      intro: "把花费规则看清楚，再开始体验。",
+      intro: "免费试试手气，开奖依据自己看。",
       description:
         "纯虚拟积分，无现金价值。注册一次性领取1,000积分，每注10分。无充值、无提现；先看规则与概率，再挑选你的号码。",
       primary: "免费体验积分玩法 ↗",
       memberPrimary: "用积分体验玩法 ↗",
-      secondary: "了解如何公开核验 →",
+      secondary: "查看本期规则与时间 →",
       secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
       evidenceTitle: "体验预算，明明白白。",
@@ -187,12 +187,12 @@ const copy = {
     points: {
       kicker: "A LIGHTER WAY TO BEGIN",
       title: ["A few points.", "A little anticipation."],
-      intro: "Know the cost before you join in.",
+      intro: "Try with free points. See the basis for each draw.",
       description:
         "Virtual points only, with no cash value. Registration grants 1,000 points once. Each ticket costs 10 points. No deposits or withdrawals: read the rules and odds before choosing your numbers.",
       primary: "Try points games for free ↗",
       memberPrimary: "Explore with your points ↗",
-      secondary: "Learn how public verification works →",
+      secondary: "See this round’s rules and timing →",
       secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
       evidenceTitle: "An experience budget you can understand.",
@@ -308,12 +308,12 @@ const copy = {
     points: {
       kicker: "気軽に始める、小さな楽しみ。",
       title: ["少しのポイントで、", "次の楽しみを。"],
-      intro: "使うポイントを理解してから体験。",
+      intro: "無料ポイントで運試し。抽選の根拠も自分で確認。",
       description:
         "仮想ポイントのみで、金銭的価値はありません。登録時に1,000ポイントを1回付与。1口10ポイントで、入金・出金はありません。ルールと確率を見てから番号を選べます。",
       primary: "ポイントゲームを無料体験 ↗",
       memberPrimary: "ポイントで体験する ↗",
-      secondary: "公開検証の仕組みを知る →",
+      secondary: "今回のルールと時刻を見る →",
       secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
       evidenceTitle: "体験の予算を、わかりやすく。",

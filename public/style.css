@@ -1678,6 +1678,25 @@ body[data-campaign] .hero-actions .primary {
 body[data-campaign] .hero-actions .primary:hover {
   background: #ffd76e;
 }
+body[data-campaign="points"] .hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 16px;
+  border: 1px solid #398c80;
+  border-radius: 8px;
+  background: #ffffff66;
+  color: #175b50;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+body[data-campaign="points"] .hero-secondary:hover {
+  background: #ffffffb3;
+  color: #124d43;
+  border-color: #176b5e;
+}
 .campaign-evidence {
   margin: 27px 0 10px;
 }
@@ -1748,6 +1767,11 @@ body[data-campaign] .hero-actions .primary:hover {
   margin: 14px 4px 0;
 }
 @media (max-width: 720px) {
+  body[data-campaign="points"] .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
   .campaign-switcher {
     margin: 0 3px 15px;
     gap: 9px;
