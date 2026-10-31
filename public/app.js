@@ -211,7 +211,7 @@ function picker() {
   purchaseFlow.render();
 }
 async function refresh() {
-  await stateReader.refresh();
+  return stateReader.refresh();
 }
 function applyState(snapshot) {
   state = snapshot;

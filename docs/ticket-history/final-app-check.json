@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-31T10:14:27.060Z",
+  "purpose": "Final refresh-result forwarding fix; unchanged proof and assets retain the preceding full HTTP checks",
+  "checks": [
+    {
+      "origin": "https://luck.onlinefreetools.org",
+      "status": 200,
+      "appSha256": "60c74c88fa1f5328630ba031c793d7f32e3b12f6f50d40646f42e6bc72a8505f",
+      "matchesLocal": true
+    },
+    {
+      "origin": "https://luck-test.onlinefreetools.org",
+      "status": 200,
+      "appSha256": "60c74c88fa1f5328630ba031c793d7f32e3b12f6f50d40646f42e6bc72a8505f",
+      "matchesLocal": true
+    }
+  ]
+}
