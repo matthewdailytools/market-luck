@@ -244,12 +244,55 @@ export function createWorker(clock = Date.now) {
             }
           }
         }
+        const roundResource = p.match(
+          /^\/api\/round\/([A-Za-z0-9-]{1,80})(\/manifest)?$/,
+        );
+        if (roundResource && req.method === "GET") {
+          const row = await stmt(
+            e,
+            "SELECT id,status,manifest,commitment,cutoff,ready,proof FROM rounds WHERE id=? AND status!='draft'",
+            roundResource[1],
+          ).first();
+          if (!row) return json({ error: "期次不存在或尚未公开" }, 404);
+          if (roundResource[2])
+            return new Response(row.manifest, {
+              headers: {
+                "content-type": "application/json; charset=utf-8",
+                "content-disposition": `attachment; filename="manifest-${row.id}.json"`,
+                "cache-control": "no-store",
+                "x-content-type-options": "nosniff",
+              },
+            });
+          const [anchor, attempts] = await Promise.all([
+            stmt(
+              e,
+              "SELECT round_id,url,published,verified_hash,verified_at FROM anchors WHERE round_id=?",
+              row.id,
+            ).first(),
+            stmt(
+              e,
+              "SELECT attempted,ok,reason FROM collection_attempts WHERE round_id=? ORDER BY id DESC LIMIT 10",
+              row.id,
+            ).all(),
+          ]);
+          return json({
+            serverTime: clock(),
+            demo: e.DEMO_MODE === "true",
+            round: {
+              ...row,
+              manifest: JSON.parse(row.manifest),
+              proof: row.proof ? JSON.parse(row.proof) : null,
+            },
+            anchor,
+            attempts: attempts.results,
+          });
+        }
         const me = await user(req, e, clock());
         if (p === "/api/state" && req.method === "GET") {
           const rounds = (
             await stmt(
               e,
-              "SELECT * FROM rounds ORDER BY rowid DESC LIMIT 20",
+              "SELECT * FROM rounds WHERE status!='draft' ORDER BY rowid DESC LIMIT 20",
             ).all()
           ).results;
           return json({

@@ -1459,6 +1459,12 @@ html[lang="ja"] .hero-perks {
     transition: none;
   }
 }
+.round-guide-link,
+.raw-json-link {
+  display: block;
+  margin-top: 9px;
+  overflow-wrap: anywhere;
+}
 
 :root {
   scroll-padding-top: 20px;

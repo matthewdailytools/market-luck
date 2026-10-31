@@ -31,7 +31,7 @@ const copy = {
       intro: "先看清开奖，再试试手气。",
       description:
         "本期规则售票前锁定，指定收盘行情核验后生成号码。输入与结果，可在开奖后自行复算。",
-      primary: "查看本期承诺 ↗",
+      primary: "看懂本期开奖依据 ↗",
       fallback: "先看核验流程 ↗",
       secondary: "用积分试试手气 →",
       secondaryHref: "#play",
@@ -157,7 +157,7 @@ const copy = {
       intro: "Understand the draw before making your picks.",
       description:
         "Rules are committed before ticket sales. Specified closing prices are checked before numbers are generated. Reproduce the input and result after the draw.",
-      primary: "View this round’s commitment ↗",
+      primary: "Understand this round’s draw ↗",
       fallback: "Inspect the process ↗",
       secondary: "Try your luck with points →",
       secondaryHref: "#play",
@@ -278,7 +278,7 @@ const copy = {
       intro: "仕組みを知ってから、運を試す。",
       description:
         "販売前にルールを固定し、指定された終値を照合してから番号を生成します。抽選後は入力と結果をご自身で再計算できます。",
-      primary: "今回のコミットメントを見る ↗",
+      primary: "今回の抽選の仕組みを見る ↗",
       fallback: "検証の流れを見る ↗",
       secondary: "ポイントで運を試す →",
       secondaryHref: "#play",
@@ -457,6 +457,8 @@ function render() {
   const campaign = words[selected];
   const round = currentRound();
   const anchor = publicationLink(round);
+  const guideHref =
+    "/verify.html" + (round ? "?round=" + encodeURIComponent(round.id) : "");
   document.body.dataset.campaign = selected;
   document
     .querySelector(".campaign-switcher")
@@ -479,13 +481,11 @@ function render() {
   document.querySelector(".hero-intro").textContent = campaign.intro;
   document.querySelector(".hero-description").textContent =
     campaign.description;
-  const primaryHref = selected === "verify" ? anchor || "#audit" : "#play";
+  const primaryHref = selected === "verify" ? guideHref : "#play";
   const primaryText =
-    selected === "verify" && !anchor
-      ? campaign.fallback
-      : selected === "points" && latestState?.me
-        ? campaign.memberPrimary
-        : campaign.primary;
+    selected === "points" && latestState?.me
+      ? campaign.memberPrimary
+      : campaign.primary;
   setLink(
     document.querySelector(".hero-actions .primary"),
     primaryText,
@@ -494,7 +494,7 @@ function render() {
   setLink(
     document.querySelector(".hero-secondary"),
     campaign.secondary,
-    campaign.secondaryHref,
+    selected === "points" ? guideHref : campaign.secondaryHref,
   );
   document.querySelector("#campaignEvidenceEyebrow").textContent =
     campaign.eyebrow;
@@ -516,8 +516,14 @@ function render() {
     const link = document.createElement("a");
     setLink(
       link,
-      href === "anchor" && !anchor ? campaign.fallback : label,
-      href === "anchor" ? anchor || "#audit" : href,
+      label,
+      href === "anchor"
+        ? guideHref + "#rules"
+        : href === "#audit" || href === "#markets"
+          ? guideHref + "#sources"
+          : href === "#proofs"
+            ? guideHref + "#results"
+            : href,
     );
     article.append(link);
     cards.append(article);

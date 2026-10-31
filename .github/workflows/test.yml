@@ -25,3 +25,5 @@ jobs:
             sleep 1
           done
           npm run test:integration || { cat /tmp/market-luck.log; exit 1; }
+          npx wrangler d1 execute DB --local --file tests/fixtures/audit-draft.sql
+          TEST_DRAFT_ROUND=audit-draft-visibility-fixture npm run test:readable || { cat /tmp/market-luck.log; exit 1; }

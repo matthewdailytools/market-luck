@@ -122,18 +122,30 @@ async function refresh() {
   const publication = state.anchors?.find(
     (a) => a.round_id === (r || state.rounds[0])?.id,
   );
+  const targetRound = r || state.rounds[0];
+  let guideLink = document.querySelector("#roundGuideLink");
+  if (!guideLink) {
+    guideLink = make("a", "", "round-guide-link");
+    guideLink.id = "roundGuideLink";
+    document.querySelector("#commitment").after(guideLink);
+  }
+  guideLink.hidden = !targetRound;
+  if (targetRound) {
+    guideLink.href = "/verify.html?round=" + encodeURIComponent(targetRound.id);
+    guideLink.textContent = translate("看懂本期规则与核验 →");
+  }
   let anchorLink = document.querySelector("#anchorLink");
   if (!anchorLink) {
-    anchorLink = make("a", "");
+    anchorLink = make("a", "", "raw-json-link");
     anchorLink.id = "anchorLink";
     anchorLink.target = "_blank";
     anchorLink.rel = "noopener noreferrer";
-    document.querySelector("#commitment").after(anchorLink);
+    guideLink.after(anchorLink);
   }
   anchorLink.hidden = !publication;
   if (publication) {
     anchorLink.href = publication.url;
-    anchorLink.textContent = translate("查看事前承诺 ↗");
+    anchorLink.textContent = translate("原始承诺 JSON ↗");
   }
   if (r?.manifest.mode === "LIVE")
     $("#deadline").textContent =
@@ -231,6 +243,14 @@ async function refresh() {
       const a = make("a", "下载证据 / " + r.id.slice(0, 8));
       a.href = "/api/proof/" + r.id;
       box.append(a);
+      const guide = make(
+        "a",
+        translate("查看本期复算说明 →"),
+        "round-guide-link",
+      );
+      guide.href =
+        "/verify.html?round=" + encodeURIComponent(r.id) + "#results";
+      box.append(guide);
       return box;
     },
   );

@@ -52,6 +52,8 @@ npm run deploy
 - [注册赠分测算与发行机制](注册赠分测算.md)
 - [开奖算法规范](ALGORITHM.md)
 - [HTTP API](API.md)
+- [普通用户核验页](https://luck.onlinefreetools.org/verify.html)：本期规则、来源、时间线与浏览器独立复算，保留原始 JSON 下载
+- [可读核验页上线验收](可读核验页上线验收.md)
 - [行情源配置](行情数据源接入.md)
 - [贡献指南](CONTRIBUTING.md) / [安全边界](SECURITY.md) / [MIT 许可证](LICENSE)
 
@@ -68,3 +70,5 @@ No API keys are needed to test Yahoo Finance + Nasdaq historical closes: `node s
 Yahoo Finance + Nasdaq 免Key的 PUBLIC-NOKEY-v1 已接入真实期次；2/2价格一致，03:30纽约时间前停售，闭市后24小时才可开奖。生产LIVE与模拟站、线上历史回放安装分离。当前期最早自然开奖为北京时间2026-11-04 05:00。已完成上线售票与提前开奖拒绝，完整派奖闭环在明确标记的隔离回放中验证。详见上面的最新报告；旧文档中尚未启用LIVE的描述是上次交付记录。
 
 首页提供“积分体验”（新访客默认）、“公开核验”“全球玩法”三种主题，支持中文、English、日本語。可用 `?theme=verify`、`?theme=points`、`?theme=world` 分享各主题。默认选择依据见[三主题吸引力与信任感评估](三主题吸引力与信任感评估.md)，痛点研究见[主题策略](彩票用户痛点与主题策略.md)；当前没有真实用户 A/B 转化结论。
+
+公开核验入口现在进入站内可读页面，原始承诺 JSON 和开奖证明 JSON 放在下载区。尚未开奖时显示等待，开奖后浏览器独立计算 MD5、SHA-256 和各玩法号码，并分别说明数据源、时间与奖池检查的含义边界。

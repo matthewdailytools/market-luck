@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Market Luck · 看懂本期开奖</title>
+    <link rel="stylesheet" href="/verify.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"
+        >◈ MARKET LUCK<small data-t="brandSub">让过程看得懂</small></a
+      >
+      <nav>
+        <select id="verifyLanguage" aria-label="Language">
+          <option value="zh-CN">中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option></select
+        ><a href="/#play" data-t="backPlay">返回选号</a>
+      </nav>
+    </header>
+    <main>
+      <section class="intro">
+        <p class="eyebrow">UNDERSTAND. CHECK. REPRODUCE.</p>
+        <h1 data-t="title">本期开奖，一步步看清楚。</h1>
+        <p class="intro-copy" data-t="intro">
+          先看固定规则和时间，再看行情如何生成号码。开奖后，这个页面会在你的浏览器中重新计算结果。
+        </p>
+        <p class="plain-boundary" data-t="pointsBoundary">
+          纯虚拟积分，无现金价值；各国玩法为选号结构模拟，不是官方彩票。
+        </p>
+      </section>
+      <div class="page-controls">
+        <label for="roundSelect" data-t="roundLabel">查看期次</label
+        ><select id="roundSelect" disabled>
+          <option data-t="loading">正在载入…</option>
+        </select>
+        <button id="refreshVerify" type="button" data-t="refresh">
+          刷新状态 ↻
+        </button>
+      </div>
+      <p id="loadStatus" class="load-status" role="status" data-t="loading">
+        正在载入…
+      </p>
+      <section id="loadError" class="error-box" role="alert" hidden>
+        <h2 data-t="loadFailed">暂时无法读取这期数据</h2>
+        <p data-t="retryHelp">
+          请稍后刷新。当前不会展示上一期的证明或核验结论。
+        </p>
+        <details>
+          <summary data-t="errorDetails">错误详情</summary>
+          <p id="errorText"></p>
+        </details>
+      </section>
+      <noscript
+        ><p class="error-box">
+          此页面需要 JavaScript 从公开 API
+          读取本期规则并在本机复算。你仍可从首页进入原始 JSON 下载。
+        </p></noscript
+      >
+      <div id="auditContent" hidden>
+        <section class="round-overview" aria-labelledby="phaseTitle">
+          <div>
+            <span id="stageBadge" class="badge"></span>
+            <h2 id="phaseTitle"></h2>
+            <p id="phaseDescription"></p>
+            <p id="modeNotice" class="mode-notice"></p>
+          </div>
+          <div class="overview-facts">
+            <div>
+              <span data-t="ticketCost">每注积分</span
+              ><strong id="ticketPrice"></strong>
+            </div>
+            <div>
+              <span data-t="sourceRule">固定核验来源</span
+              ><strong id="sourceCount"></strong>
+            </div>
+            <div>
+              <span data-t="earliest">最早开始核验</span
+              ><strong id="earliestTime"></strong>
+            </div>
+          </div>
+        </section>
+        <nav class="section-nav" aria-label="Page sections">
+          <a href="#rules" data-t="rules">本期规则</a
+          ><a href="#sources" data-t="sources">行情来源</a
+          ><a href="#timeline" data-t="timeline">停售与开奖时间</a
+          ><a href="#results" data-t="results">号码与本机复算</a
+          ><a href="#downloads" data-t="downloads">原始文件</a>
+        </nav>
+        <section id="rules" class="panel" aria-labelledby="rulesTitle">
+          <p class="eyebrow">01 · THE RULES</p>
+          <h2 id="rulesTitle" data-t="rules">本期规则</h2>
+          <p id="ruleSummary"></p>
+          <label for="auditGame" data-t="gameLabel">选择一种玩法查看条件</label
+          ><select id="auditGame"></select>
+          <div id="gameExplanation" class="rule-grid"></div>
+          <p class="muted" data-t="payoutBoundary">
+            每张票只计最高档；同档均分、向下取整，未分配部分结转。命中奖档不保证返奖高于每注成本。
+          </p>
+        </section>
+        <section id="sources" class="panel" aria-labelledby="sourcesTitle">
+          <p class="eyebrow">02 · THE INPUT</p>
+          <h2 id="sourcesTitle" data-t="sources">行情来源</h2>
+          <p id="sourceExplanation"></p>
+          <div id="marketCards" class="market-grid"></div>
+          <p class="muted" data-t="sourceBoundary">
+            这里展示固定采集范围与证明中声明的来源记录。双源一致不等于交易所签名；私有
+            R2 中的原始响应没有在本页公开验证。
+          </p>
+        </section>
+        <section id="timeline" class="panel" aria-labelledby="timelineTitle">
+          <p class="eyebrow">03 · THE TIMELINE</p>
+          <h2 id="timelineTitle" data-t="timeline">停售与开奖时间</h2>
+          <p data-t="windowHelp">
+            “最早开始核验”不是保证开奖时刻。确认窗口结束后，只有固定来源达成共识才会开奖；缺失或分歧就继续等待。
+          </p>
+          <p id="timezoneNote" class="muted"></p>
+          <p id="simulatedClockNotice" class="mode-notice" hidden></p>
+          <ol id="drawTimeline" class="timeline"></ol>
+          <div id="attemptsBox" class="attempts">
+            <h3 data-t="latestChecks">最近采集记录</h3>
+            <div id="collectionAttempts"></div>
+          </div>
+        </section>
+        <section id="results" class="panel" aria-labelledby="resultsTitle">
+          <p class="eyebrow">04 · REPRODUCE IN YOUR BROWSER</p>
+          <h2 id="resultsTitle" data-t="results">号码与本机复算</h2>
+          <p id="resultModeNotice" class="mode-notice" hidden></p>
+          <p id="resultIntro"></p>
+          <div class="verify-action">
+            <button
+              id="recalculate"
+              class="primary"
+              type="button"
+              disabled
+              data-t="recalculate"
+            >
+              在本机重新计算</button
+            ><span id="verificationStatus" role="status"></span>
+          </div>
+          <div id="verificationChecks" class="check-grid"></div>
+          <p class="muted" data-t="verifyBoundary">
+            复算一致表示这份证明的规则、输入与号码相互吻合，不证明数据商原始响应的真实性，也不是全部用户派奖与全账本的审计。
+          </p>
+          <div id="drawResults" class="draw-results"></div>
+          <div id="poolResult" class="pool-result"></div>
+        </section>
+        <section id="downloads" class="panel" aria-labelledby="downloadsTitle">
+          <p class="eyebrow">05 · KEEP THE ORIGINALS</p>
+          <h2 id="downloadsTitle" data-t="downloads">原始文件</h2>
+          <p data-t="downloadHelp">
+            想保留证据或使用开源脚本独立核对，可以下载原始文件。原始 JSON
+            与本页的人话说明同时保留。
+          </p>
+          <div class="download-links">
+            <a
+              id="manifestDownload"
+              class="secondary-link"
+              download
+              data-t="manifestDownload"
+              >下载本期规则 JSON</a
+            ><a
+              id="proofDownload"
+              class="secondary-link"
+              download
+              data-t="proofDownload"
+              hidden
+              >下载开奖证明 JSON</a
+            ><a
+              id="publishedManifest"
+              class="secondary-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-t="publishedManifest"
+              hidden
+              >查看售前固定提交 ↗</a
+            >
+          </div>
+          <details class="technical">
+            <summary data-t="technical">展开技术细节与核验边界</summary>
+            <dl id="technicalDetails"></dl>
+            <p data-t="hashHelp">
+              MD5 是输入指纹，SHA-256
+              产生种子；各玩法按固定顺序和拒绝采样生成号码。公开算法不能消除托管、管理员及行情来源的全部信任边界。
+            </p>
+            <p data-t="platformTime">
+              发布时间、采集时间由平台记录；本页不将它们当作独立可信时间戳。
+            </p>
+            <a
+              href="https://github.com/matthewdailytools/market-luck/blob/main/ALGORITHM.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-t="algorithm"
+              >阅读开源算法说明 ↗</a
+            >
+          </details>
+        </section>
+      </div>
+      <footer>
+        <a href="/" data-t="backHome">返回首页</a
+        ><a
+          href="https://github.com/matthewdailytools/market-luck"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub · MIT · Open source ↗</a
+        >
+      </footer>
+    </main>
+    <script type="module" src="/verify.js"></script>
+  </body>
+</html>

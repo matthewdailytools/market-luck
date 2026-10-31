@@ -1,5 +1,18 @@
 export const languages = ["zh-CN", "en", "ja"];
 export const dictionary = {
+  开奖核验: ["Verify the draw", "抽選の検証"],
+  "看懂本期规则与核验 →": [
+    "Understand this round and verify →",
+    "今回のルールと検証を見る →",
+  ],
+  "原始承诺 JSON ↗": [
+    "Original commitment JSON ↗",
+    "元のコミットメント JSON ↗",
+  ],
+  "查看本期复算说明 →": [
+    "View this round’s verification →",
+    "今回の再計算を見る →",
+  ],
   "行情落定，好运待启": [
     "THE CLOSE IS IN. YOUR CHANCE IS NEXT.",
     "終値が決まる。次は、あなたの番。",

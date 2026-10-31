@@ -35,6 +35,22 @@ await call("demo/draw", { round }, 409);
 s = await call("state");
 const r = s.rounds.find((r) => r.id === round);
 assert.equal(hash(JSON.stringify(r.manifest)), r.commitment);
+const roundDetail = await call("round/" + round, undefined, 200, false);
+assert.equal(roundDetail.round.id, round);
+assert.equal(roundDetail.round.proof, null);
+assert.equal(roundDetail.anchor, null);
+assert(!("me" in roundDetail) && !("tickets" in roundDetail));
+const rawManifestResponse = await fetch(
+  base + "/api/round/" + round + "/manifest",
+);
+assert.equal(rawManifestResponse.status, 200);
+assert(
+  rawManifestResponse.headers.get("content-disposition").includes("attachment"),
+);
+assert.equal(hash(await rawManifestResponse.text()), r.commitment);
+checks++;
+await call("round/unknown-public-round", undefined, 404, false);
+await call("round/unknown-public-round/manifest", undefined, 404, false);
 const prices = r.manifest.markets.map((x, i) => ({
   ...x,
   close: 10000 + (parseInt(hash(round + ":" + i).slice(0, 6), 16) % 100000),
@@ -105,6 +121,8 @@ assert(
   settled.winners.some((t) => t.user_id === settled.me.id && t.tier === 1),
 );
 const downloaded = await call("proof/" + round);
+const settledDetail = await call("round/" + round, undefined, 200, false);
+assert.deepEqual(settledDetail.round.proof, downloaded);
 assert.equal(downloaded.seed, hash(downloaded.input));
 for (const g of games)
   assert.deepEqual(downloaded.results[g.id], draw(downloaded.seed, g));

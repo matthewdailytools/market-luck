@@ -7,6 +7,8 @@ Base URL: local `http://127.0.0.1:8787`, or your deployed HTTPS origin. Response
 | Method | Path | Request | Result |
 |---|---|---|---|
 | GET | `/api/state` | Session cookie optional | `me`, `games`, `demo`, `pool`, latest 20 rounds and anchors, latest 100 own tickets, public winners and pool ledger |
+| GET | `/api/round/{round}` | Public, no session needed | Exact public round, its anchor and latest 10 collection attempts; supports history outside the state list |
+| GET | `/api/round/{round}/manifest` | Public, no session needed | Original committed manifest JSON bytes as an attachment; SHA-256 equals the round commitment |
 | POST | `/api/register` | `{name,password}` | Creates account, issues 1000 points once, sets session cookie |
 | POST | `/api/login` | `{name,password}` | Sets session cookie; no extra points |
 | POST | `/api/logout` | `{}` | Revokes session and clears cookie |
@@ -47,6 +49,14 @@ All admin POST calls require `Authorization: Bearer ADMIN_TOKEN`. The token is a
 Errors return `{error:"message"}`. Typical statuses: 400 invalid input, duplicate registration, insufficient points or provider failure; 401 missing login/admin credentials; 403 Origin failure or disabled demo; 404 missing endpoint/round/proof; 409 draw too early or invalid round state; 413 oversized declared request body; 503 missing stored evidence. Error messages currently use Chinese and are translated by the UI.
 
 State lists are bounded recent history, not a complete paginated export. A public archive/pagination endpoint has not yet been implemented. Large-scale operation also needs explicit request/registration rate limits and settlement batch sizing; current local testing covers 100 tickets per round. Do not describe this API as production-audited.
+
+## Readable verification page
+
+`/verify.html?round=ROUND_ID` explains a selected public round in Chinese, English or Japanese. Without an ID it selects a current public round from `/api/state`. Rules, source requirements and times come from that round's manifest, not a separate marketing configuration. The page downloads settled evidence from `/api/proof/{round}` and independently recalculates the hashes and all game numbers in the browser.
+
+`GET /api/round/{round}` returns `{serverTime,demo,round,anchor,attempts}`. The `round` object contains only `id,status,manifest,commitment,cutoff,ready,proof`; `manifest` and `proof` are parsed objects, and `proof` is null before settlement. Attempts are scoped to the requested round. No user accounts, sessions, private source response bodies or per-user tickets are returned. Both this endpoint and the manifest attachment return 404 for unknown or draft rounds. IDs contain 1–80 ASCII letters, digits or hyphens. Responses use `Cache-Control: no-store`.
+
+The manifest attachment returns the stored original string without pretty-printing, so its exact bytes can be checked against the published commitment. The existing proof download remains the original R2 archive. Local browser checks establish consistency with the selected public manifest, deterministic numbers, declared source metadata, recorded timing and proof-internal pool arithmetic. They do not authenticate private source responses, establish an independent trusted timestamp or audit every ticket and payment. DEMO and ONLINE_REPLAY remain visibly identified.
 
 ## Anonymous-source research endpoint
 

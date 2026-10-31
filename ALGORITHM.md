@@ -35,7 +35,7 @@ counter = counter + 1
 
 Interpret each block as eight unsigned 32-bit big-endian words, in order. To select from `n` choices, let `limit = floor(2^32 / n) * n`. Discard words `x >= limit`. Use `x % n` as the zero-based choice. This avoids modulo bias.
 
-Start a pool `[1, …, max]`. Remove the chosen element from the remaining pool and repeat until `count` main balls have been selected, then sort ascending. For games with a special ball, consume the same game's **next words** with `n = bonusMax`, then add `bonusMin` (default 1; Germany uses 0). The special ball is independent of main-ball uniqueness, so it can equal a main-ball number. Game IDs separate the streams; there is no separate special-ball hash domain in v1.
+Start a pool `[1, …, max]`. Remove the chosen element from the remaining pool and repeat until `count` main balls have been selected, then sort ascending. For games with a special ball, consume the same game's **next words** with `n = bonus` (the number of allowed special values), then add `bonusMin` (default 1; Germany uses 0). The special ball is independent of main-ball uniqueness, so it can equal a main-ball number. Game IDs separate the streams; there is no separate special-ball hash domain in v1.
 
 Formats: `cn` = 6/33 + 1/16; `us` = 5/69 + 1/26; `uk` = 6/59; `jp` = 6/43. These simulate number formats, not complete official lottery rules or prize schedules.
 
@@ -54,6 +54,10 @@ node scripts/verify-proof.js path/to/proof.json
 ```
 
 This independently recomputes manifest commitment, canonical input, MD5, SHA-256, and every game's numbers. It does **not** prove that a provider told the truth, that a calendar is accurate, or that the commitment existed at an independently verified earlier time. Audit those against raw provider response hashes, exchange records and an external timestamped publication.
+
+The [readable verification page](https://luck.onlinefreetools.org/verify.html) also performs independent browser-side recalculation using `public/proof-verifier.js` and Web Crypto. It reads the exact selected public round, downloads its original R2 proof, checks both copies agree, and recalculates all game results. Original rules bytes remain downloadable at `/api/round/ROUND_ID/manifest`; SHA-256 of these bytes must equal the commitment.
+
+The browser also checks declared source metadata, recorded timing and `poolBefore - payout = poolAfter`. These are separate consistency checks, not authentication of private provider responses, trusted external time, per-ticket payouts or full-ledger conservation. DEMO checks only simulated time/source markers, and ONLINE_REPLAY remains explicitly identified. No published proof means no successful-recalculation claim.
 
 ## Extended catalog
 
