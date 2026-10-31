@@ -58,6 +58,9 @@
           <h1 id="campaignTitle" data-campaign-copy>
             花一点积分，<br /><span>留一份期待。</span>
           </h1>
+          <p id="heroPointsNote" class="hero-points-note" data-campaign-copy>
+            纯积分 · 注册一次赠1,000分 · 每注10分 · 无现金价值
+          </p>
           <p class="hero-intro" data-campaign-copy>
             免费试试手气，开奖依据自己看。
           </p>
@@ -77,19 +80,41 @@
           </div>
         </div>
         <aside class="luck-stage">
-          <div class="stage-grid" aria-hidden="true"></div>
-          <div class="stage-orbit orbit-one" aria-hidden="true"></div>
-          <div class="stage-orbit orbit-two" aria-hidden="true"></div>
-          <div class="signal-label">
-            <span class="signal-dot"></span>THE NEXT POSSIBILITY
+          <div class="sphere-scene" aria-hidden="true">
+            <div class="stage-grid"></div>
+            <div class="stage-orbit orbit-one"></div>
+            <div class="stage-orbit orbit-two"></div>
+            <div class="signal-label">
+              <span class="signal-dot"></span>THE NEXT POSSIBILITY
+            </div>
+            <div class="lucky-sphere sphere-small">16</div>
+            <div class="lucky-sphere sphere-main">10</div>
+            <div class="lucky-sphere sphere-coral">✦</div>
           </div>
-          <div class="lucky-sphere sphere-small" aria-hidden="true">16</div>
-          <div class="lucky-sphere sphere-main" aria-hidden="true">10</div>
-          <div class="lucky-sphere sphere-coral" aria-hidden="true">✦</div>
           <div class="draw-glass">
-            <div class="draw-glass-label">下一次幸运，等待揭晓</div>
+            <div class="draw-glass-label" data-campaign-copy>本期开奖安排</div>
             <strong id="drawCountdown">等待下一期开售</strong
             ><span id="sourceStatus">公开行情 · 公开算法 · 公开结果</span>
+            <div id="heroSchedule" class="hero-schedule" data-campaign-copy>
+              <div>
+                <span id="heroCutoffLabel">停售</span>
+                <time id="heroCutoff">载入中…</time>
+              </div>
+              <div>
+                <span id="heroReadyLabel">最早核验</span>
+                <time id="heroReady">载入中…</time>
+              </div>
+            </div>
+            <p id="heroTimingNote" class="hero-timing-note" data-campaign-copy>
+              最早时间不是保证开奖时间，数据缺失或分歧就继续等待。
+            </p>
+            <a
+              id="heroAuditLink"
+              class="hero-audit-link"
+              href="/verify.html"
+              data-campaign-copy
+              >查看本期规则与时间 →</a
+            >
           </div>
           <div class="stage-caption">PUBLIC INPUT. SHARED EXCITEMENT.</div>
         </aside>

@@ -150,6 +150,10 @@ const pageText = await page.text();
 ok(pageText.includes("verify.js"), "Readable page script is not loaded");
 ok(pageText.includes("verify.css"), "Readable page styles are not loaded");
 for (const asset of [
+  "app.js",
+  "campaigns.js",
+  "round-summary.js",
+  "style.css",
   "verify.js",
   "verify.css",
   "proof-verifier.js",

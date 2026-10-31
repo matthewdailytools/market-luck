@@ -1,5 +1,6 @@
 // Campaign copy changes presentation only. Timing, sources, purchases and draws
 // remain controlled by app.js and the server's committed round manifest.
+import { selectDisplayRound } from "./round-summary.js";
 const allowed = new Set(["verify", "points", "world"]);
 const storageKey = "market-luck-campaign";
 const DEFAULT_CAMPAIGN = "points";
@@ -394,12 +395,7 @@ function requestedSelection() {
 }
 
 function currentRound() {
-  const rounds = latestState?.rounds || [];
-  return (
-    rounds.find((r) => r.status === "open") ||
-    rounds.find((r) => r.status === "paused") ||
-    rounds[0]
-  );
+  return selectDisplayRound(latestState?.rounds);
 }
 
 function publicationLink(round) {

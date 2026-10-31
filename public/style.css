@@ -1815,3 +1815,276 @@ body[data-campaign="points"] .hero-secondary:hover {
     font-size: 10px;
   }
 }
+
+/* Keep the desktop stage, but give mobile visitors facts before decoration. */
+.sphere-scene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero .hero-points-note,
+.hero-schedule,
+.hero .hero-timing-note,
+.hero-audit-link {
+  display: none;
+}
+@media (max-width: 720px) {
+  header {
+    height: 69px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+  .campaign-switcher {
+    margin-bottom: 12px;
+    gap: 7px;
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 9px;
+    padding: 20px 18px 14px;
+    overflow: hidden;
+  }
+  .hero-copy,
+  .luck-stage {
+    display: contents;
+  }
+  .hero-kicker {
+    order: 0;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    line-height: 1.5;
+  }
+  .hero h1 {
+    order: 1;
+    min-width: 0;
+    margin: 3px 0 1px;
+    font-size: clamp(28px, 8.4vw, 36px);
+    line-height: 1.16;
+    letter-spacing: -1.2px;
+    text-wrap: balance;
+  }
+  html[lang="zh-CN"] .hero h1 span {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  html[lang="en"] .hero h1 {
+    font-size: clamp(25px, 7.1vw, 34px);
+    line-height: 1.14;
+    letter-spacing: -0.9px;
+    overflow-wrap: normal;
+  }
+  html[lang="ja"] .hero h1 {
+    font-size: clamp(24px, 6.9vw, 31px);
+    line-height: 1.22;
+    letter-spacing: -0.7px;
+  }
+  .hero .hero-points-note {
+    order: 2;
+    display: block;
+    font-size: 12px;
+    line-height: 1.6;
+    font-weight: 600;
+    color: #3c4963;
+    padding: 8px 10px;
+    border-left: 3px solid #f4bb36;
+    background: #ffffff70;
+    border-radius: 0 6px 6px 0;
+  }
+  .hero .hero-intro {
+    order: 3;
+    max-width: none;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .hero > .luck-stage > .draw-glass {
+    order: 4;
+    position: static;
+    min-width: 0;
+    margin: 2px 0 0;
+    padding: 12px 13px;
+    background: #ffffffd9;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 14px #5043820a;
+    backdrop-filter: none;
+    z-index: 1;
+  }
+  .draw-glass-label {
+    font-size: 9px;
+    letter-spacing: 0.7px;
+  }
+  .draw-glass strong {
+    font-size: 16px;
+    margin: 5px 0;
+    line-height: 1.4;
+    font-weight: 650;
+  }
+  .draw-glass > span {
+    font-size: 10px;
+    line-height: 1.5;
+    color: #655d77;
+  }
+  .hero-schedule {
+    display: grid;
+    gap: 6px;
+    margin-top: 9px;
+    padding-top: 9px;
+    border-top: 1px solid #e9e5ee;
+  }
+  .hero-schedule > div {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .hero-schedule > div > span {
+    color: #716782;
+  }
+  .hero-schedule time {
+    text-align: right;
+    color: #353d59;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .hero .hero-timing-note {
+    display: block;
+    margin-top: 7px;
+    color: #696177;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .hero-audit-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    margin-top: 8px;
+    padding: 9px 13px;
+    border: 1px solid #526eb5;
+    border-radius: 7px;
+    color: #2c4e96;
+    background: #f4f6ff;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .hero-actions,
+  body[data-campaign="points"] .hero-actions,
+  html[lang="en"] .hero-actions {
+    order: 5;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 1px 0 0;
+  }
+  .hero-actions > a,
+  body[data-campaign="points"] .hero-actions .hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 11px 13px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .hero-actions .primary {
+    flex: 1 1 160px;
+  }
+  .hero-actions .hero-secondary {
+    flex: 1 1 140px;
+    border: 1px solid #a8a0bc;
+    border-radius: 7px;
+    color: #4f4670;
+    text-align: center;
+  }
+  .hero .hero-description {
+    order: 6;
+    max-width: none;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #696177;
+  }
+  .hero-perks {
+    display: none;
+  }
+  .sphere-scene {
+    order: 7;
+    position: relative;
+    inset: auto;
+    height: 84px;
+    width: 100%;
+    max-width: 260px;
+    justify-self: center;
+    margin-top: 1px;
+    overflow: hidden;
+  }
+  .sphere-scene .sphere-main {
+    width: 72px;
+    height: 72px;
+    font-size: 42px;
+    top: 5px;
+    box-shadow:
+      inset -5px -6px 9px #34207b30,
+      5px 5px 15px #6c58a92b;
+  }
+  .sphere-scene .sphere-small {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+    top: 28px;
+    left: 17%;
+    box-shadow: 3px 4px 8px #b17c3526;
+  }
+  .sphere-scene .sphere-coral {
+    width: 42px;
+    height: 42px;
+    font-size: 28px;
+    top: 21px;
+    right: 14%;
+    box-shadow: 3px 4px 8px #a9995726;
+  }
+  .sphere-scene .stage-grid,
+  .sphere-scene .stage-orbit,
+  .sphere-scene .signal-label,
+  .stage-caption {
+    display: none;
+  }
+}
+@media (max-width: 360px) {
+  header {
+    padding-right: 13px;
+    padding-left: 13px;
+    gap: 6px;
+  }
+  .brand {
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+  .brand small {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  nav {
+    gap: 5px;
+  }
+  nav select {
+    max-width: 64px;
+  }
+  nav #account {
+    max-width: 84px;
+    padding: 8px 7px;
+    font-size: 9px;
+    line-height: 1.4;
+    white-space: normal;
+    text-align: center;
+  }
+}

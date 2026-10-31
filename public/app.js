@@ -1,5 +1,6 @@
 import { renderGameRules } from "./game-rules.js";
 import { initLanguages, translate } from "./i18n.js";
+import { describeHomeRound, selectDisplayRound } from "./round-summary.js";
 import {
   initCampaigns,
   syncCampaigns,
@@ -14,6 +15,7 @@ let state,
   special = null;
 let serverOffset = 0;
 const serverNow = () => Date.now() + serverOffset;
+updateHeroSummary();
 const toast = (s) => {
   $("#toast").textContent = s;
   $("#toast").style.display = "block";
@@ -109,20 +111,12 @@ async function refresh() {
     ? "实验环境 / 模拟行情与模拟时钟，不代表真实股市开奖。公开复算让信任边界可见。"
     : "真实开奖 / Yahoo Finance + Nasdaq 双源一致后开奖。停售、闭市与24小时确认窗口提前锁定；缺失或分歧就等待。积分无现金价值。";
   const r = current();
-  $("#status").textContent = r
-    ? serverNow() < r.cutoff
-      ? "正在售票"
-      : "等待开奖"
-    : "等待开期";
-  $("#deadline").textContent = r
-    ? "停售 " + new Date(r.cutoff).toLocaleString(document.documentElement.lang)
-    : "创建新期开始体验";
   $("#commitment").textContent =
     r?.commitment || state.rounds[0]?.commitment || "尚未开期";
   const publication = state.anchors?.find(
     (a) => a.round_id === (r || state.rounds[0])?.id,
   );
-  const targetRound = r || state.rounds[0];
+  const targetRound = selectDisplayRound(state.rounds);
   let guideLink = document.querySelector("#roundGuideLink");
   if (!guideLink) {
     guideLink = make("a", "", "round-guide-link");
@@ -147,27 +141,6 @@ async function refresh() {
     anchorLink.href = publication.url;
     anchorLink.textContent = translate("原始承诺 JSON ↗");
   }
-  if (r?.manifest.mode === "LIVE")
-    $("#deadline").textContent =
-      ["停售", "Sales close", "販売終了"][
-        document.documentElement.lang === "en"
-          ? 1
-          : document.documentElement.lang === "ja"
-            ? 2
-            : 0
-      ] +
-      " " +
-      new Date(r.cutoff).toLocaleString(document.documentElement.lang) +
-      " · " +
-      ["最早开奖", "Earliest draw", "抽選開始"][
-        document.documentElement.lang === "en"
-          ? 1
-          : document.documentElement.lang === "ja"
-            ? 2
-            : 0
-      ] +
-      " " +
-      new Date(r.ready).toLocaleString(document.documentElement.lang);
   rows("#markets", r?.manifest.markets || [], (x) =>
     make(
       "div",
@@ -255,8 +228,8 @@ async function refresh() {
     },
   );
   picker();
-  tickCountdown();
   syncCampaigns(state);
+  tickCountdown();
 }
 const fail = (e) => toast(e.message);
 $("#account").onclick = () => {
@@ -346,54 +319,60 @@ document.querySelector("#language").addEventListener("change", () => {
   tickCountdown();
 });
 
+function updateHeroSummary() {
+  const summary = describeHomeRound(
+    state,
+    serverNow(),
+    document.documentElement.lang,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+  );
+  for (const [selector, value] of [
+    ["#heroPointsNote", summary.pointsNote],
+    [".draw-glass-label", summary.cardTitle],
+    ["#heroCutoffLabel", summary.cutoffLabel],
+    ["#heroReadyLabel", summary.readyLabel],
+    ["#heroCutoff", summary.cutoffText],
+    ["#heroReady", summary.readyText],
+    ["#heroTimingNote", summary.timingNote],
+    ["#heroAuditLink", summary.auditLabel],
+    ["#status", summary.statusLabel],
+    [
+      "#deadline",
+      summary.round
+        ? `${summary.cutoffLabel} ${summary.cutoffText} · ${summary.readyLabel} ${summary.readyText} (${summary.timeZone})`
+        : summary.timingNote,
+    ],
+  ]) {
+    const el = $(selector);
+    if (el && el.textContent !== value) el.textContent = value;
+  }
+  for (const [selector, ms] of [
+    ["#heroCutoff", summary.cutoff],
+    ["#heroReady", summary.ready],
+  ]) {
+    const el = $(selector);
+    if (el && ms) el.setAttribute("datetime", new Date(ms).toISOString());
+    else el?.removeAttribute("datetime");
+  }
+  const link = $("#heroAuditLink");
+  if (link) link.setAttribute("href", summary.auditHref);
+  return summary;
+}
 function tickCountdown() {
   const el = document.querySelector("#drawCountdown"),
     source = document.querySelector("#sourceStatus");
-  if (!el || !state) return;
-  const r = current();
-  const language = document.documentElement.lang;
-  const i = language === "en" ? 1 : language === "ja" ? 2 : 0;
-  if (!r) {
-    el.textContent = [
-      "等待下一期开售",
-      "Next round coming soon",
-      "次回の販売を準備中",
-    ][i];
-    return;
-  }
-  const now = serverNow(),
-    close = Math.max(...r.manifest.markets.map((m) => m.closeUTC));
+  if (!el) return;
+  const summary = updateHeroSummary();
+  const now = serverNow();
   syncCampaignClock(now);
-  let label, target;
-  if (now < r.cutoff) {
-    label = ["停售倒计时", "Ticket sales close in", "販売終了まで"][i];
-    target = r.cutoff;
-  } else if (now < close) {
-    label = [
-      "已停售 · 等待收盘",
-      "Sales closed · awaiting market close",
-      "販売終了 · 取引終了待ち",
-    ][i];
-  } else if (now < r.ready) {
-    label = ["收盘确认倒计时", "Close confirmation in", "終値確認まで"][i];
-    target = r.ready;
-  } else
-    label = ["等待双源一致", "Awaiting source consensus", "2社の一致を確認中"][
-      i
-    ];
+  const target = summary.target;
   const delta = target ? Math.max(0, Math.ceil((target - now) / 1000)) : 0;
   const duration = target
     ? `${Math.floor(delta / 86400)}d ${String(Math.floor(delta / 3600) % 24).padStart(2, "0")}:${String(Math.floor(delta / 60) % 60).padStart(2, "0")}:${String(delta % 60).padStart(2, "0")}`
     : "";
-  el.textContent = label + (target ? " " + duration : "");
-  source.textContent =
-    r.manifest.mode === "LIVE"
-      ? `${r.manifest.sources.join(" + ")} · ${r.manifest.markets.map((m) => m.symbol.split(":")[1]).join(" / ")}`
-      : [
-          "模拟行情 · 纯积分体验",
-          "Simulated market · virtual points",
-          "模擬相場 · 仮想ポイント",
-        ][i];
-  if (now >= r.cutoff) document.querySelector("#buy").disabled = true;
+  el.textContent = summary.countdownLabel + (target ? " " + duration : "");
+  if (source) source.textContent = summary.sourceText;
+  if (!current() || now >= current().cutoff)
+    document.querySelector("#buy").disabled = true;
 }
 setInterval(tickCountdown, 1000);
