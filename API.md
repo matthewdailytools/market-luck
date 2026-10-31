@@ -60,6 +60,8 @@ Ticket numbers, cost and prize status use the original committed catalog. Missin
 
 `npm run test:tickets` checks an existing disposable DEMO account using a gitignored credentials file (`TEST_ACCOUNT_FILE`, default `test-output/onboarding-browser-account.json`). Obtain that file with `npm run test:onboarding` on the isolated demo first. The ticket-history check sends only public/private GET requests and test-session login/logout; it never registers, buys, advances clocks or settles. Credentials must not be committed. See [acceptance details](票据记录与开奖状态优化验收.md).
 
+The separate **Ticket browser and mobile acceptance** GitHub Actions workflow runs isolated Chromium/WebKit browsers. Pushes and PRs exercise localhost fixtures and a real local D1/R2 account. A manual `main` run with `online=true` additionally prepares one disposable DEMO ticket through the API, checks the real browser interface, and visits LIVE with API writes blocked. It uploads only measurements and PNGs, excluding credential files, cookies and authentication traces. This workflow is independent of desktop browser-control permissions; see [browser and mobile evidence](我的彩票浏览器与移动端验收.md).
+
 ## Readable verification page
 
 `/verify.html?round=ROUND_ID` explains a selected public round in Chinese, English or Japanese. Without an ID it selects a current public round from `/api/state`. Rules, source requirements and times come from that round's manifest, not a separate marketing configuration. The page downloads settled evidence from `/api/proof/{round}` and independently recalculates the hashes and all game numbers in the browser.

@@ -1,0 +1,24 @@
+{
+  "isolatedRun": "https://github.com/matthewdailytools/market-luck/actions/runs/41195515390",
+  "onlineRun": "https://github.com/matthewdailytools/market-luck/actions/runs/41195678052",
+  "commit": "2d1bb324065a95140ec6963fc1a345ca72492397",
+  "note": "A shared low-contrast style causes many failed cases; these are not hundreds of distinct defects",
+  "isolated": {
+    "status": "failed",
+    "cases": 441,
+    "failedCases": 441,
+    "horizontalOverflowCases": 9,
+    "minimumTextContrast": 3.08,
+    "runtimeErrors": 0,
+    "passedFlows": 5
+  },
+  "online": {
+    "status": "failed",
+    "cases": 144,
+    "failedCases": 144,
+    "horizontalOverflowCases": 15,
+    "minimumTextContrast": 3.08,
+    "runtimeErrors": 0,
+    "passedFlows": 5
+  }
+}
