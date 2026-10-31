@@ -22,6 +22,7 @@ import {
   witnessRecord,
   validateV3Witnesses,
   canonicalV3,
+  assertV3ProductionTiming,
 } from "../src/commitment.js";
 import { prepareLiveRound, collectAndSettle } from "../src/live.js";
 import { hash } from "../src/engine.js";
@@ -587,4 +588,22 @@ test("refreshing a genuine checkpoint or reordering receipt properties cannot ch
   assert(checked.ok, checked.errors.join(","));
   assert.equal(altered.seed, proof.seed);
   assert.deepEqual(altered.results, proof.results);
+});
+
+test("an expedited v3 replay cannot be relabelled as a production-clock draw", async () => {
+  assert.doesNotThrow(() => assertV3ProductionTiming(fresh().manifest));
+  const p = JSON.parse(
+    readFileSync(
+      new URL("./fixtures/v3-controlled-proof.json", import.meta.url),
+    ),
+  );
+  p.execution = "LIVE_REAL_CLOCK";
+  p.simulatedClock = false;
+  const checked = await verifyProof(p, {
+    roundId: p.manifest.id,
+    manifest: p.manifest,
+    commitment: p.commitment,
+  });
+  assert.equal(checked.ok, false);
+  assert(checked.errors.some((e) => /TIMING|CALENDAR/.test(e)));
 });

@@ -14,6 +14,19 @@ import {
   unbase64,
   verifyWitness,
 } from "./witness.js";
+import { assertLockedRound } from "./calendar.js";
+export function assertV3ProductionTiming(manifest) {
+  assertLockedRound(
+    {
+      id: manifest.id,
+      manifest: JSON.stringify(manifest),
+      cutoff: manifest.cutoff,
+      ready: manifest.ready,
+      status: "open",
+    },
+    0,
+  );
+}
 export { verifyWitness, WITNESS_POLICY } from "./witness.js";
 
 export const SECRET_POLICY = Object.freeze({

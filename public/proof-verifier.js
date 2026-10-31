@@ -9,6 +9,7 @@ import {
   canonicalV3,
   validateReveal,
   validateV3Witnesses,
+  assertV3ProductionTiming,
 } from "./commitment-verifier.js";
 
 const ids = [
@@ -318,6 +319,8 @@ export async function verifyProof(proof, expected = {}) {
     );
     if (manifest.version === 2 || manifest.version === 3) {
       if (manifest.version === 3) {
+        if (proof.execution === "LIVE_REAL_CLOCK")
+          assertV3ProductionTiming(manifest);
         validateReveal(proof.reveal, manifest);
         checked("hidden", true);
         await validateV3Witnesses(
