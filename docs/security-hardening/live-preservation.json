@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-31T15:30:28.784Z",
+  "originalRound": "1c6cb4c0-f039-4f23-a290-c303d509562a",
+  "originalVersion": 1,
+  "originalTickets": 100,
+  "originalUsers": 1,
+  "pool": 101000,
+  "sections": [
+    {
+      "label": "rounds",
+      "rows": 1,
+      "sha256Before": "9db13b9cdd560a44b9a1d1cde93290fd664e53ce9a4d54277cb105ffd2f2b00f",
+      "sha256After": "9db13b9cdd560a44b9a1d1cde93290fd664e53ce9a4d54277cb105ffd2f2b00f",
+      "unchanged": true
+    },
+    {
+      "label": "tickets",
+      "rows": 100,
+      "sha256Before": "0b67eb584991830b4802bcafe62ea2430514c289c89e44649365a8cc587c2b95",
+      "sha256After": "0b67eb584991830b4802bcafe62ea2430514c289c89e44649365a8cc587c2b95",
+      "unchanged": true
+    },
+    {
+      "label": "userBalances",
+      "rows": 1,
+      "sha256Before": "0aba3292e4859df73d973609223fa00321578303e0af725ae9005d8d2eee7018",
+      "sha256After": "0aba3292e4859df73d973609223fa00321578303e0af725ae9005d8d2eee7018",
+      "unchanged": true
+    },
+    {
+      "label": "pool",
+      "rows": 1,
+      "sha256Before": "3bafc2c87b47561100202480e20990121744cabb007c8f0a301e041f2230808f",
+      "sha256After": "3bafc2c87b47561100202480e20990121744cabb007c8f0a301e041f2230808f",
+      "unchanged": true
+    },
+    {
+      "label": "anchors",
+      "rows": 1,
+      "sha256Before": "8e03e963702b5ac8072dbaa64a6db8fc76edc26bf5d9af88b17afd710d882774",
+      "sha256After": "8e03e963702b5ac8072dbaa64a6db8fc76edc26bf5d9af88b17afd710d882774",
+      "unchanged": true
+    },
+    {
+      "label": "ledgerTotals",
+      "rows": 1,
+      "sha256Before": "c39049edb9a32b8bbd522755c6f06c4cd3528cf29917057a144a4358480a3466",
+      "sha256After": "c39049edb9a32b8bbd522755c6f06c4cd3528cf29917057a144a4358480a3466",
+      "unchanged": true
+    }
+  ],
+  "liveAccountOrTicketMutationsByAcceptance": 0,
+  "note": "Raw private ticket rows remain in ignored local test output; only aggregate fingerprints are published."
+}

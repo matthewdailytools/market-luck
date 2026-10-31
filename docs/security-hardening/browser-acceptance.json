@@ -1,0 +1,222 @@
+{
+  "status": "passed",
+  "runtimeCommit": "94e9d7d9214cb934af5ea893928a96e60c145168",
+  "checkedAt": "2026-10-31T15:32:21.908Z",
+  "standardCi": {
+    "runId": 41214211545,
+    "url": "https://github.com/matthewdailytools/market-luck/actions/runs/41214211545",
+    "unitTests": 130,
+    "integrationChecks": 45,
+    "concurrentRequests": 105,
+    "readableChecks": 113,
+    "securityChecks": 13
+  },
+  "reports": [
+    {
+      "mode": "local",
+      "runId": 41214211773,
+      "url": "https://github.com/matthewdailytools/market-luck/actions/runs/41214211773",
+      "commit": "94e9d7d9214cb934af5ea893928a96e60c145168",
+      "status": "passed",
+      "execution": "GitHub-hosted Linux; isolated headless Chromium and WebKit",
+      "browserVersions": {
+        "chromium": "156.0.8078.4",
+        "webkit": "27.2"
+      },
+      "startedAt": "2026-10-31T15:19:34.378Z",
+      "finishedAt": "2026-10-31T15:21:27.312Z",
+      "ticketLayouts": 441,
+      "flows": [
+        {
+          "engine": "chromium",
+          "source": "fixture",
+          "case": "keyboard focus and German zero",
+          "status": "passed"
+        },
+        {
+          "engine": "chromium",
+          "source": "local-real-api",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "chromium",
+          "source": "local-real-api",
+          "mobile": false,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "webkit",
+          "source": "fixture",
+          "case": "keyboard focus and German zero",
+          "status": "passed"
+        },
+        {
+          "engine": "webkit",
+          "source": "local-real-api",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        }
+      ],
+      "securityAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "shareAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 8,
+          "layoutCases": 72,
+          "errors": [],
+          "apiWrites": 0
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 8,
+          "layoutCases": 36,
+          "errors": [],
+          "apiWrites": 0
+        }
+      ],
+      "failures": [],
+      "runtimeErrors": []
+    },
+    {
+      "mode": "online",
+      "runId": 41214892270,
+      "url": "https://github.com/matthewdailytools/market-luck/actions/runs/41214892270",
+      "commit": "94e9d7d9214cb934af5ea893928a96e60c145168",
+      "status": "passed",
+      "execution": "GitHub-hosted Linux; isolated headless Chromium and WebKit",
+      "browserVersions": {
+        "chromium": "156.0.8078.4",
+        "webkit": "27.2"
+      },
+      "startedAt": "2026-10-31T15:28:09.775Z",
+      "finishedAt": "2026-10-31T15:30:12.759Z",
+      "ticketLayouts": 144,
+      "flows": [
+        {
+          "engine": "chromium",
+          "source": "online-demo",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "chromium",
+          "source": "online-demo",
+          "mobile": false,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "chromium",
+          "source": "online-live-readonly",
+          "case": "anonymous LIVE, zero API writes, unchanged commitments",
+          "status": "passed",
+          "poolBefore": 101000,
+          "poolAfter": 101000
+        },
+        {
+          "engine": "webkit",
+          "source": "online-demo",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "webkit",
+          "source": "online-live-readonly",
+          "case": "anonymous LIVE, zero API writes, unchanged commitments",
+          "status": "passed",
+          "poolBefore": 101000,
+          "poolAfter": 101000
+        }
+      ],
+      "securityAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "shareAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 3,
+          "layoutCases": 24,
+          "errors": [],
+          "apiWrites": 0
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 3,
+          "layoutCases": 12,
+          "errors": [],
+          "apiWrites": 0
+        }
+      ],
+      "failures": [],
+      "runtimeErrors": []
+    }
+  ],
+  "layoutObservations": 765,
+  "limitations": [
+    "v2 browser evidence uses controlled market inputs and an official historical beacon; not a natural LIVE draw",
+    "LIVE acceptance made no account, ticket or settlement writes",
+    "headless desktop/mobile viewports, not physical-device or mainland-network certification"
+  ]
+}

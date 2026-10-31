@@ -6,7 +6,7 @@
 
 Cloudflare Workers + D1 + R2 的纯积分彩票实验，中英日响应式页面，16 国虚拟选号玩法，公开奖池与近期中奖流水。
 
-新增 v2：首次双源行情冻结后，等待指定的未来 drand quicknet 轮次并验证 BLS 签名。免费计划使用 SQLite Durable Object 隔离验签计算；原有 D1/R2 保留。已售 v1 期不追加信标、不改变输入或派奖。见[改进方案](随机性与防作弊改进方案.md)。
+新增 v2：首次双源行情冻结后，等待指定的未来 drand quicknet 轮次并验证 BLS 签名。免费计划使用 SQLite Durable Object 隔离验签计算；原有 D1/R2 保留。已售 v1 期不追加信标、不改变输入或派奖。见[改进方案](随机性与防作弊改进方案.md)和[上线验收与证据](随机性与防作弊改进上线验收.md)。
 
 ## 本地运行
 
@@ -29,7 +29,7 @@ npm test
 npm run test:integration
 ```
 
-单测覆盖抽号及免费行情适配；集成测试在本地 workerd 使用真实 D1/R2 模拟绑定运行。可复算下载 JSON 中的 input，MD5(input) 是公开指纹，SHA256(input) 是 seed，见 src/engine.js。不要把模拟行情视作真实随机源，模拟价格可预测。
+单测覆盖抽号、行情适配及防作弊约束；集成测试在本地 workerd 使用真实 D1/R2 模拟绑定运行。下载 JSON 中的 input 可复算：MD5(input) 是公开指纹；v1 使用 SHA256(input) 为 seed，v2 使用 SHA256("market-luck/draw/v2\n" + input)。见 [算法](ALGORITHM.md)。不要把模拟行情视作真实随机源，模拟价格可预测。
 
 ## 真实行情
 

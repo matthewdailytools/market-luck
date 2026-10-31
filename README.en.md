@@ -8,6 +8,8 @@ New LIVE preparation uses v2: freeze the first two-source consensus, then verify
 
 This is **not** an official lottery, real-money service or a promise of absolute tamper resistance. No deposits, withdrawals, transfers or physical prizes. Hosting, data providers and administrators remain trust boundaries. MD5 is only a fingerprint; SHA-256 generates commitments and sampling seeds.
 
+[Hardening release evidence (Chinese)](随机性与防作弊改进上线验收.md) records the deployed versions, 130 unit tests, real cloud signature checks and browser acceptance. Sold v1 records were preserved; controlled historical-beacon tests do not establish a future natural v2 draw.
+
 [Public round cards](https://luck.onlinefreetools.org/share.html?lang=en) need no sign-in. Links pin the round and format; cards support three languages, link sharing and PNG downloads. Published numbers appear only after browser recalculation passes. LIVE, DEMO and replay labels stay visible, and cards contain no private tickets or balances.
 
 ## Live installation and current round

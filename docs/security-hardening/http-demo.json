@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "base": "https://luck-test.onlinefreetools.org",
+  "checkedAt": "2026-10-31T15:26:39.534Z",
+  "checks": 13,
+  "apiWrites": 0,
+  "version": 1,
+  "round": "bda3da9c-596e-4ea6-9e2e-b10ff275159f",
+  "poolBefore": 50590,
+  "poolAfter": 50590,
+  "health": {
+    "ready": true,
+    "recordGuardsInstalled": true,
+    "installedAlgorithms": [
+      1,
+      2
+    ],
+    "newRoundVersion": 2,
+    "verification": "SQLite Durable Object BLS",
+    "historicalSelfTest": {
+      "round": 1000,
+      "validAccepted": true,
+      "tamperRejected": true
+    },
+    "abuseProtectionConfigured": true,
+    "policy": {
+      "type": "drand-quicknet-v1",
+      "chainHash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+      "publicKey": "83cf0f2896adee7eb8b5f01fcad3912212c437e0073e911fb90022d3e760183c8c4b450b6a0a6c3ac6a5776a2d1064510d1fec758c921cc22b0e17e63aaf4bcb5ed66304de9cf809bd274ca73bab4af5a6e9c76a4bc09e76eae8991ef5ece45a",
+      "scheme": "bls-unchained-g1-rfc9380",
+      "genesis": 1692803367,
+      "period": 3,
+      "delayMs": 120000,
+      "selection": "first-consensus-future-round-v1",
+      "afterFreeze": "settle-or-wait-no-admin-pause"
+    }
+  },
+  "manifestUnchanged": true,
+  "commitmentUnchanged": true,
+  "legacyEntropyUnchanged": true
+}
