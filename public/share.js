@@ -269,6 +269,7 @@ $("saveShare").onclick = async () => {
       snapshot.mode === "LIVE" ? "#35418c" : "#735018",
       "700",
     );
+    y += 28;
     if (snapshot.mode !== "LIVE") {
       lines(labels.simulation, 24, "#735018");
       y += 10;
