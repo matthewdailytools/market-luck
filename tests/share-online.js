@@ -14,7 +14,12 @@ assert(
 );
 let checks = 0;
 const get = async (path) => {
-  const r = await fetch(base + path, { method: "GET", redirect: "error" });
+  const r = await fetch(base + path, { method: "GET", redirect: "follow" });
+  assert.equal(
+    new URL(r.url).origin,
+    new URL(base).origin,
+    "Unexpected cross-origin redirect",
+  );
   checks++;
   return r;
 };
@@ -33,7 +38,7 @@ const assets = [
 ];
 await Promise.all(
   assets.map(async (asset) => {
-    const r = await get("/" + asset);
+    const r = await get(asset === "index.html" ? "/" : "/" + asset);
     assert.equal(r.status, 200, asset);
     const bytes = Buffer.from(await r.arrayBuffer()),
       local = await readFile(new URL("../public/" + asset, import.meta.url));

@@ -273,6 +273,36 @@ export async function runShareAcceptance({
       await expect(page.locator("#shareGame")).toHaveValue("de");
       await page.locator("#shareRules").click();
       assert.equal(new URL(page.url()).searchParams.get("round"), round.id);
+      const completed = before.rounds.find(
+        (r) => r.status === "settled" && r.proof,
+      );
+      if (completed) {
+        await page.goto(
+          `${origin}/share.html?round=${completed.id}&game=de&lang=zh-CN`,
+        );
+        await expect(page.locator("#sharePhase")).toHaveAttribute(
+          "data-phase",
+          "passed",
+        );
+        await expect(page.locator("#shareNumbers .ball")).toHaveCount(7);
+        await expect(page.locator("#shareMode")).toHaveAttribute(
+          "data-mode",
+          completed.manifest.mode,
+        );
+        const name = `${engine}-${label}-published-390.png`;
+        await page.screenshot({
+          path: folder + "/" + name,
+          fullPage: true,
+          animations: "disabled",
+        });
+        report.screenshots.push(name);
+        report.cases.push({
+          label: label + "/published-proof-from-R2",
+          status: "passed",
+          round: completed.id,
+          mode: completed.manifest.mode,
+        });
+      }
       if (!before.demo) {
         const after = await (
           await context.request.get(origin + "/api/state")
