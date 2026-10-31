@@ -290,8 +290,16 @@ export function createWorker(clock = Date.now) {
             if (
               JSON.parse(r.manifest).version === 2 &&
               (await readSnapshot(e, r.id))
-            )
+            ) {
+              await stmt(
+                e,
+                "INSERT INTO collection_attempts(round_id,attempted,ok,reason) VALUES(?,?,0,?)",
+                r.id,
+                clock(),
+                "REJECTED_ADMIN_PAUSE_AFTER_FREEZE",
+              ).run();
               return json({ error: "FROZEN_ROUND_CANNOT_PAUSE" }, 409);
+            }
             if (r.status !== "open")
               return json({ error: "期次不可暂停" }, 409);
             await e.DB.batch([

@@ -291,6 +291,14 @@ test("invalid beacon cannot settle, replace a frozen input or make a partial pay
     () => s.db.prepare("UPDATE rounds SET status='paused'").run(),
     /CANNOT_PAUSE/,
   );
+  assert.throws(
+    () => s.db.prepare("UPDATE rounds SET status='draft'").run(),
+    /TRANSITION/,
+  );
+  assert.throws(
+    () => s.db.prepare("UPDATE rounds SET status='settled'").run(),
+    /SETTLEMENT/,
+  );
   s.setNow(beaconTime(original.beaconRound));
   s.invalidateBeacon();
   await assert.rejects(
