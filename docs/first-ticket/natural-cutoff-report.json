@@ -1,0 +1,10 @@
+{
+  "audit": "/verify.html?round=ca9fdd0c-60bd-4cd6-bfba-f5c06dee9e0d",
+  "buyDisabled": true,
+  "buyText": "本期已停售",
+  "help": "本期已停售，不能确认购票。",
+  "observedAt": "2026-10-31T09:55:29.318Z",
+  "url": "https://luck-test.onlinefreetools.org/#firstRun",
+  "cutoff": "2026-10-31T09:55:26.292Z",
+  "simulationClockAdvanced": false
+}
