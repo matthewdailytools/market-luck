@@ -1,4 +1,5 @@
 import { verifyProof } from "./proof-verifier.js";
+import { brandName, renderBrand } from "./brand.js";
 import { shareCopy, shareLanguage } from "./share-copy.js";
 import {
   describeRoundShare,
@@ -37,7 +38,8 @@ function translate() {
   } catch {}
   for (const element of document.querySelectorAll("[data-copy]"))
     element.textContent = words()[element.dataset.copy];
-  document.title = "Market Luck · " + words().title;
+  renderBrand(language);
+  document.title = brandName(language) + " · " + words().title;
   for (const key of ["description", "og:description"]) {
     const meta = document.querySelector(
       `meta[${key.startsWith("og:") ? "property" : "name"}="${key}"]`,
@@ -215,7 +217,7 @@ $("nativeShare").onclick = async () => {
   if (!navigator.share) return copyLink();
   try {
     await navigator.share({
-      title: "Market Luck · " + model.modeLabel,
+      title: brandName(language) + " · " + model.modeLabel,
       text: words().title + " " + words().money,
       url: $("shareUrl").value,
     });
@@ -261,7 +263,7 @@ $("saveShare").onclick = async () => {
         y += size * 1.5;
       }
     }
-    lines("MARKET LUCK", 26, "#35418c", "800");
+    lines(brandName(language), 26, "#35418c", "800");
     y += 22;
     lines(
       snapshot.modeLabel,

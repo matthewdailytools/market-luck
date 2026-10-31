@@ -1,8 +1,12 @@
-# Market Luck
+# OpenDraw · 公开奖
 
 [中文](README.md) · English · [日本語](README.ja.md)
 
 A virtual-points lottery experiment using publicly reproducible market-close input, built on Cloudflare Workers, D1 and R2. Includes 16 national number formats, Chinese/English/Japanese UI, signup points, atomic purchases, a shared rollover pool, winner history and downloadable proof.
+
+**Committed rules. Reproducible results.** Public evidence supports independent third-party verification. The draw algorithm does not use ticket choices as number-generation input. The repository keeps its `market-luck` identity to preserve existing commitments. [Public archives](history/README.md) · [GitHub launch plan and English draft](GitHub传播方案.md).
+
+Try `npm ci` then `node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json` for an offline controlled replay with genuine external signatures. It is not a natural market draw. GitHub history mirrors public facts with append-only checks; Workers never receive the archive write token.
 
 New LIVE preparation uses v3: commit a CSPRNG stock permutation and 256-bit nonce before sales using MD5 and binding SHA-256; independently witness the rules and first frozen price snapshot in Rekor; derive and verify a future drand round; reveal atomically with settlement. Existing v1/v2 rules stay unchanged. No Rekor API key is needed. A SQLite Durable Object verifies signatures on the Free plan. Configure separate `ABUSE_IP_KEY` and 32-byte hexadecimal `COMMIT_ENCRYPTION_KEY` secrets per installation, preserve existing encryption keys while any v3 secret remains unrevealed, apply all migrations and deploy matching code. See the Chinese installation steps, [v3 plan](隐藏顺序承诺与独立见证改进方案.md) and [algorithm](ALGORITHM.md). Node.js 22.13+ is required for SQLite security tests.
 

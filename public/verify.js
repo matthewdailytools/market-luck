@@ -1,5 +1,6 @@
 import { verifyProof } from "./proof-verifier.js";
 import { renderEntropy } from "./entropy-view.js";
+import { brandName, renderBrand } from "./brand.js";
 
 const $ = (selector) => document.querySelector(selector);
 const locales = ["zh-CN", "en", "ja"];
@@ -620,7 +621,8 @@ let roundList = [],
 if (!validRound(selectedId)) selectedId = null;
 function renderStatic() {
   document.documentElement.lang = language;
-  document.title = `Market Luck · ${t("title")}`;
+  renderBrand(language);
+  document.title = `${brandName(language)} · ${t("title")}`;
   for (const el of document.querySelectorAll("[data-t]"))
     el.textContent = t(el.dataset.t);
   $("#verifyLanguage").value = language;
@@ -1035,6 +1037,29 @@ function renderDownloads() {
   $("#publishedManifest").hidden = !url;
   if (url) $("#publishedManifest").href = url;
   else $("#publishedManifest").removeAttribute("href");
+  const archive = document.getElementById("coreArchive"),
+    note = document.getElementById("archiveNote");
+  if (archive && note) {
+    const repository =
+      data.archive?.repository || "matthewdailytools/market-luck";
+    const valid =
+      /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository) &&
+      /^[A-Za-z0-9-]{1,80}$/.test(r.id);
+    archive.hidden = !valid;
+    if (valid)
+      archive.href = `https://github.com/${repository}/tree/main/history/${r.manifest.mode === "DEMO" ? "demo" : "live"}/${r.id}`;
+    archive.textContent = {
+      "zh-CN": "GitHub 核心档案 ↗",
+      en: "GitHub core archive ↗",
+      ja: "GitHub 公開記録 ↗",
+    }[language];
+    note.textContent = {
+      "zh-CN":
+        "异步归档；新期可能尚无文件。原售前承诺、独立日志与归档提交时间分别核对。GitHub 托管不构成公平性认证。",
+      en: "Asynchronous mirror; new rounds may not have files yet. Check original commitments, independent logs and archive commit times separately. Hosting is not a fairness certification.",
+      ja: "非同期保存のため、新しい回は未保存の場合があります。事前コミットメント・独立ログ・保存コミット時刻を別々に確認してください。GitHub は公平性を認証しません。",
+    }[language];
+  }
   const entries = [
     ["roundId", r.id],
     ["commitment", r.commitment],

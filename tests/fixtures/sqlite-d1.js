@@ -51,7 +51,15 @@ export function testDatabase(initial) {
         try {
           const result = [];
           for (const query of queries) {
-            const row = db.prepare(query.sql()).run(...query.args());
+            const statement = db.prepare(query.sql());
+            if (/^\s*SELECT\b/i.test(query.sql())) {
+              result.push({
+                success: true,
+                results: statement.all(...query.args()),
+              });
+              continue;
+            }
+            const row = statement.run(...query.args());
             result.push({
               success: true,
               meta: { changes: Number(row.changes) },

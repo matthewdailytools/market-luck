@@ -1,0 +1,54 @@
+name: Public core record archive
+on:
+  workflow_dispatch:
+    inputs:
+      include_demo:
+        description: Also archive the separate DEMO history
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: public-core-record-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Read the latest archive before collecting new facts
+        run: git pull --ff-only origin main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Verify and append public core records
+        env:
+          ARCHIVE_INCLUDE_DEMO: ${{ inputs.include_demo && 'true' || 'false' }}
+          ARCHIVE_LIVE_ORIGIN: ${{ vars.ARCHIVE_LIVE_ORIGIN || 'https://luck.onlinefreetools.org' }}
+          ARCHIVE_DEMO_ORIGIN: ${{ vars.ARCHIVE_DEMO_ORIGIN || 'https://luck-test.onlinefreetools.org' }}
+        run: node scripts/core-archive.js
+      - name: Commit new facts without overwriting history
+        shell: bash
+        run: |
+          git add history
+          if git diff --cached --quiet; then
+            echo "No core records changed; no empty commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "archive: public core records (run ${GITHUB_RUN_ID})"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              git rev-parse HEAD
+              exit 0
+            fi
+          done
+          exit 1

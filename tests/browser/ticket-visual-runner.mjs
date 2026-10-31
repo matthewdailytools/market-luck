@@ -5,6 +5,7 @@ import { ticketFixture } from "./ticket-fixtures.mjs";
 import { runShareAcceptance } from "./share-acceptance.mjs";
 import { runSecurityAcceptance } from "./security-acceptance.mjs";
 import { runWitnessAcceptance } from "./witness-acceptance.mjs";
+import { runBrandArchiveAcceptance } from "./brand-archive-acceptance.mjs";
 
 // This runner uses an isolated GitHub-hosted Linux browser, never the user's
 // desktop browser, profile, extensions or the desktop app's disabled controls.
@@ -635,6 +636,22 @@ for (const [engine, type] of [
   try {
     browser = await type.launch({ headless: true });
     report.browserVersions[engine] = browser.version();
+    report.brandArchiveAcceptance ||= [];
+    const brandArchive = await runBrandArchiveAcceptance({
+      browser,
+      engine,
+      base,
+      out,
+    });
+    report.brandArchiveAcceptance.push({
+      engine,
+      status: brandArchive.status,
+      cases: brandArchive.cases.length,
+      layouts: brandArchive.layouts.length,
+      errors: brandArchive.errors,
+    });
+    if (brandArchive.status !== "passed")
+      fail(engine + "/brand-archive", JSON.stringify(brandArchive.errors));
     report.securityAcceptance ||= [];
     const security = await runSecurityAcceptance({
       browser,

@@ -3,7 +3,7 @@
 import { selectDisplayRound } from "./round-summary.js";
 const allowed = new Set(["verify", "points", "world"]);
 const storageKey = "market-luck-campaign";
-export const DEFAULT_CAMPAIGN = "points";
+export const DEFAULT_CAMPAIGN = "verify";
 export function resolveCampaign(requested, saved) {
   return allowed.has(requested)
     ? requested
@@ -34,11 +34,11 @@ const copy = {
       result: "本期结果已公布，可下载证明并自行复算。",
     },
     verify: {
-      kicker: "看得见的规则，算得出的结果",
-      title: ["好运值得期待，", "结果自己核对。"],
-      intro: "先看清开奖，再试试手气。",
+      kicker: "公平机制 · 公开记录 · 结果可追溯",
+      title: ["规则先承诺，", "结果可复算。"],
+      intro: "核心步骤公开，第三方可以独立核验。",
       description:
-        "规则售票前锁定；真实期按固定美股收盘行情生成号码。开奖后可复算公开输入与号码；原始行情及全账本仍需另行核验。",
+        "规则售前固定，结果公开复算。GitHub 保存公开核心档案；新 v3 期增加隐藏顺序承诺与独立日志见证。每期按自己的已公布版本执行，纯虚拟积分。",
       primary: "查看本期规则与核验 ↗",
       fallback: "先看核验流程 ↗",
       secondary: "每注10分，去选号 →",
@@ -53,10 +53,10 @@ const copy = {
           "anchor",
         ],
         [
-          "行情按规则核验",
-          "固定来源逐只核验；缺失或分歧就等待，不临时换日。",
-          "查看来源与时间 ↗",
-          "#audit",
+          "独立日志与公开历史",
+          "查看 GitHub 核心档案；新 v3 期另有 Rekor 签名可验。",
+          "查看 GitHub 历史 ↗",
+          "https://github.com/matthewdailytools/market-luck/tree/main/history",
         ],
         [
           "结果可以自己算",
@@ -160,11 +160,11 @@ const copy = {
         "The result is published. Download the proof and reproduce it yourself.",
     },
     verify: {
-      kicker: "VISIBLE RULES. REPRODUCIBLE RESULTS.",
-      title: ["Anticipate your luck.", "Verify the outcome."],
-      intro: "Understand the draw before making your picks.",
+      kicker: "FAIR RULES. OPEN RECORDS. TRACEABLE DRAWS.",
+      title: ["Commit the rules.", "Reproduce the result."],
+      intro: "Public steps. Independently verifiable evidence.",
       description:
-        "Rules are fixed before sales. Live rounds use a fixed US-stock basket. Reproduce published inputs and numbers after the draw; raw prices and the full ledger need separate checks.",
+        "Rules are committed before sales and results are reproducible. GitHub preserves public core records; new v3 rounds add hidden-order commitments and independent log witnesses. Each round keeps its published version. Virtual points only.",
       primary: "See this round’s rules and checks ↗",
       fallback: "Inspect the process ↗",
       secondary: "Pick numbers · 10 points a ticket →",
@@ -179,10 +179,10 @@ const copy = {
           "anchor",
         ],
         [
-          "Check the specified sources",
-          "Check every instrument. Missing or conflicting data means waiting, never silently changing the date.",
-          "Inspect sources and timing ↗",
-          "#audit",
+          "Independent logs and public history",
+          "Inspect GitHub core archives. New v3 rounds also include independently signed Rekor witnesses.",
+          "Browse GitHub history ↗",
+          "https://github.com/matthewdailytools/market-luck/tree/main/history",
         ],
         [
           "Reproduce the result",
@@ -282,11 +282,11 @@ const copy = {
       result: "結果を公開しました。証拠を保存して、ご自身で再計算できます。",
     },
     verify: {
-      kicker: "見えるルール。再計算できる結果。",
-      title: ["幸運を楽しみに、", "結果は自分で確認。"],
-      intro: "仕組みを知ってから、運を試す。",
+      kicker: "公平な仕組み・公開記録・追跡できる結果",
+      title: ["ルールを先に固定、", "結果を自分で検証。"],
+      intro: "主要な手順を公開し、第三者が独立して検証できます。",
       description:
-        "販売前にルールを固定。実抽選には固定した米国株の終値を使います。公開入力と番号は再計算でき、元の相場応答や全台帳は別途確認が必要です。",
+        "販売前にルールを固定し、結果を公開して再計算できます。GitHubに主要記録を保存し、新しいv3回には非公開順序のコミットメントと独立ログを追加。各回の公開済み方式を維持する仮想ポイント体験です。",
       primary: "今回のルールと検証を見る ↗",
       fallback: "検証の流れを見る ↗",
       secondary: "1口10ポイントで番号を選ぶ →",
@@ -301,10 +301,10 @@ const copy = {
           "anchor",
         ],
         [
-          "指定情報源を照合",
-          "銘柄ごとに確認。欠損や不一致は待機し、日付を勝手に変えません。",
-          "情報源と時刻を見る ↗",
-          "#audit",
+          "独立ログと公開履歴",
+          "GitHubの主要記録と、新しいv3回のRekor署名を確認できます。",
+          "GitHub履歴を見る ↗",
+          "https://github.com/matthewdailytools/market-luck/tree/main/history",
         ],
         [
           "自分で結果を再計算",

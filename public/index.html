@@ -3,15 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Market Luck · 全球收盘实验室</title>
+    <title>公开奖 · 规则先承诺，结果可复算</title>
     <meta
       name="description"
       content="规则提前公开，号码按公开算法生成，结果人人可复算。免费积分体验，16国模拟玩法，无充值提现或现金奖品。"
     />
-    <meta
-      property="og:title"
-      content="Market Luck · 好运值得期待，结果自己核对"
-    />
+    <meta property="og:title" content="公开奖 · 公平机制，公开可追溯" />
     <meta
       property="og:description"
       content="免费积分选号实验。查看本期规则、时间与复算依据；积分无现金价值。"
@@ -19,9 +16,12 @@
     <meta property="og:type" content="website" />
     <link rel="stylesheet" href="/style.css" />
   </head>
-  <body data-campaign="points">
+  <body data-campaign="verify">
     <header>
-      <a class="brand" href="/">◈ MARKET LUCK <small>全球收盘实验室</small></a>
+      <a class="brand" href="/"
+        >◈ <span data-brand-name>公开奖</span>
+        <small>公平机制 · 公开可追溯</small></a
+      >
       <nav>
         <select id="language" aria-label="Language">
           <option value="zh-CN">中文</option>
@@ -45,14 +45,14 @@
           <button
             type="button"
             data-campaign-choice="verify"
-            aria-pressed="false"
+            aria-pressed="true"
           >
             公开核验
           </button>
           <button
             type="button"
             data-campaign-choice="points"
-            aria-pressed="true"
+            aria-pressed="false"
           >
             积分体验
           </button>
@@ -65,13 +65,14 @@
           </button>
         </div>
       </section>
-      <section class="hero" aria-label="Market Luck">
+      <section class="hero" aria-label="公开奖">
         <div class="hero-copy">
           <div class="hero-kicker" data-campaign-copy>
-            <span class="signal-dot"></span><span>给期待一个轻松的开始</span>
+            <span class="signal-dot"></span
+            ><span>公平机制 · 公开记录 · 结果可追溯</span>
           </div>
           <h1 id="campaignTitle" data-campaign-copy>
-            花一点积分，<br /><span>留一份期待。</span>
+            规则先承诺，<br /><span>结果可复算。</span>
           </h1>
           <p id="heroPointsNote" class="hero-points-note" data-campaign-copy>
             纯积分 · 注册一次赠1,000分 · 每注10分 · 无现金价值
@@ -95,15 +96,17 @@
             <p id="heroPoolNote">共享积分余额，无现金价值。</p>
           </div>
           <p class="hero-intro" data-campaign-copy>
-            号码按公开算法生成，结果可以自己核对。
+            公开每一步，让第三方也能独立核验。
           </p>
           <p class="hero-description" data-campaign-copy>
-            注册一次赠1,000积分，每注10分，无充值提现。真实期使用固定美股篮子，公开输入与号码可复算。积分无现金价值。
+            查看本期固定规则、来源、时间与复算证据。v3
+            新期增加隐藏顺序承诺、独立日志与 GitHub
+            历史档案；已售期按原版本执行。注册赠1,000积分，每注10分，无现金价值。
           </p>
           <div class="hero-actions" data-campaign-copy>
-            <a class="primary" href="#worldFormats">选玩法，开始选号 ↗</a
-            ><a class="hero-secondary" href="/verify.html"
-              >查看本期规则与时间 →</a
+            <a class="primary" href="/verify.html">查看本期规则与核验 ↗</a
+            ><a class="hero-secondary" href="#worldFormats"
+              >每注10分，去选号 →</a
             >
           </div>
           <div
@@ -533,7 +536,7 @@
           ×
         </button>
         <div class="dialog-heading">
-          <div class="eyebrow" id="authEyebrow">WELCOME TO MARKET LUCK</div>
+          <div class="eyebrow" id="authEyebrow">OPEN DRAW. OPEN RECORDS.</div>
           <h2 id="authTitle">从 1,000 分开始。</h2>
         </div>
         <p id="authHint">

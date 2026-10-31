@@ -1,3 +1,4 @@
+import { brandName, renderBrand } from "./brand.js";
 export const languages = ["zh-CN", "en", "ja"];
 export const dictionary = {
   "尝试次数过多，请稍后重试": [
@@ -107,7 +108,10 @@ export const dictionary = {
     "Winning conditions are defined in each game’s rules panel above.",
     "当選条件は上記の各ゲームのルール欄に従います。",
   ],
-  全球收盘实验室: ["Global Closing Lab", "世界終値ラボ"],
+  "公平机制 · 公开可追溯": [
+    "Open rules · Traceable results",
+    "公開ルール・追跡できる結果",
+  ],
   选号大厅: ["Play", "番号を選ぶ"],
   透明账本: ["Public ledger", "公開台帳"],
   "登录 / 注册": ["Sign in / Register", "ログイン / 登録"],
@@ -230,7 +234,7 @@ export const dictionary = {
   "美国 · 超级球": ["USA · Super Ball", "米国 · スーパーボール"],
   "英国 · 六重奏": ["UK · Six Notes", "英国 · シックスノーツ"],
   "日本 · 六之幸": ["Japan · Lucky Six", "日本 · ラッキーシックス"],
-  "欢迎来到 Market Luck": ["Welcome to Market Luck", "Market Luckへようこそ"],
+  欢迎来到公开奖: ["Welcome to OpenDraw", "公開くじへようこそ"],
   "购票成功，祝你好运！": [
     "Ticket confirmed. Good luck!",
     "購入が完了しました。幸運を！",
@@ -372,7 +376,8 @@ function visit(root) {
   let n;
   while ((n = walker.nextNode())) {
     // Campaigns render their own complete copy in the selected language.
-    if (n.parentElement?.closest("[data-campaign-copy]")) continue;
+    if (n.parentElement?.closest("[data-campaign-copy],[data-brand-name]"))
+      continue;
     if (["SCRIPT", "STYLE", "OPTION"].includes(n.parentElement?.tagName))
       continue;
     let record = records.get(n);
@@ -393,7 +398,15 @@ export function setLanguage(value) {
     localStorage.setItem("market-luck-language", value);
   } catch {}
   visit(document.body);
-  document.title = translate("Market Luck · 全球收盘实验室");
+  renderBrand(lang);
+  document.title =
+    brandName(lang) +
+    " · " +
+    {
+      "zh-CN": "规则先承诺，结果可复算",
+      en: "Committed rules. Reproducible results.",
+      ja: "ルールを先に固定、結果を再計算",
+    }[lang];
 }
 export function initLanguages() {
   const select = document.querySelector("#language");

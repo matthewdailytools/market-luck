@@ -187,7 +187,7 @@ export function renderGameRules(g, language = "zh-CN") {
         `、特別番号${min}–${min + g.bonus - 1}から1個`,
       ][l]
     : "";
-  add(texts[0][l], r.reference + " · Market Luck");
+  add(texts[0][l], r.reference + " · " + ["公开奖", "OpenDraw", "公開くじ"][l]);
   add(texts[1][l], main + extra);
   add(
     texts[2][l],

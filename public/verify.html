@@ -3,13 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Market Luck · 看懂本期开奖</title>
+    <title>公开奖 · 看懂本期开奖</title>
     <link rel="stylesheet" href="/verify.css" />
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="/"
-        >◈ MARKET LUCK<small data-t="brandSub">让过程看得懂</small></a
+        >◈ <span data-brand-name>公开奖</span
+        ><small data-t="brandSub">让过程看得懂</small></a
       >
       <nav>
         <select id="verifyLanguage" aria-label="Language">
@@ -180,8 +181,16 @@
               data-t="publishedManifest"
               hidden
               >查看售前固定提交 ↗</a
+            ><a
+              id="coreArchive"
+              class="secondary-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              hidden
+              >GitHub 核心档案 ↗</a
             >
           </div>
+          <p id="archiveNote" class="muted"></p>
           <details class="technical">
             <summary data-t="technical">展开技术细节与核验边界</summary>
             <dl id="technicalDetails"></dl>

@@ -14,6 +14,7 @@
     "test:share": "node tests/share-online.js",
     "test:security": "node tests/security-online.js",
     "test:browser:ci": "node tests/browser/ticket-visual-runner.mjs",
+    "archive:core": "node scripts/core-archive.js",
     "deploy": "wrangler deploy",
     "format": "prettier --write src public tests scripts *.json *.jsonc",
     "test:online": "node tests/online-checks.js",

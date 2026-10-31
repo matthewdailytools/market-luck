@@ -1,10 +1,23 @@
-# Market Luck
+# 公开奖 · OpenDraw
 
 [English](README.en.md) · [日本語](README.ja.md)
 
 [真实开奖站](https://luck.onlinefreetools.org) · [模拟演示站](https://luck-test.onlinefreetools.org) · [GitHub 开源仓库](https://github.com/matthewdailytools/market-luck) · [线上测试报告](线上测试报告.md)
 
 Cloudflare Workers + D1 + R2 的纯积分彩票实验，中英日响应式页面，16 国虚拟选号玩法，公开奖池与近期中奖流水。
+
+**规则先承诺，结果可复算。** 面向公众与第三方独立核验：公平机制、公开记录、结果可追溯。开奖算法不把投注内容作为生成号码的输入；运营与数据源的信任边界见 [SECURITY.md](SECURITY.md)。项目代码库保留 `market-luck` 标识和原承诺链接。
+
+[可读核验](https://luck.onlinefreetools.org/verify.html) · [GitHub 核心档案](history/README.md) · [GitHub 传播方案与首发草稿](GitHub传播方案.md)
+
+三分钟离线核验（受控行情、加速日历，真实外部签名；不是自然开奖）：
+
+```sh
+npm ci
+node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json
+```
+
+公开档案保留原规则字节、冻结记录、独立见证、最终证明和去除用户标识的奖池流水。归档脚本验证并追加，既有固定事实被替换或隐藏时拒绝覆盖。Worker 不持有 GitHub 写入令牌，详见 [GitHub 存储方案](GitHub核心档案存储方案.md)。
 
 新增 v3：售前随机确定隐藏股票顺序与 256 位随机数，公开 MD5 和 SHA-256 承诺；售前规则、首次行情冻结分别取得独立 Rekor 透明日志见证，再等待指定的未来 drand 信标，结算事务同时揭晓秘密。v1/v2 原规则保留，免费计划使用 SQLite Durable Object 验签。见[新方案](隐藏顺序承诺与独立见证改进方案.md)、[算法规范](ALGORITHM.md)及[此前 v2 验收](随机性与防作弊改进上线验收.md)。
 
@@ -57,6 +70,12 @@ npm run deploy
 ```
 
 不要直接把 DEMO_MODE=true 作为公网生产配置。独立 LIVE 的配置示例、迁移与发布步骤见[真实接入与验收](LIVE接入与线上验收.md)，已接入审核过的 2026 美股交易日历和固定 GitHub 提交中的事前承诺；未审核年份拒绝开期。数据授权、账号防滥用和安全审计仍需独立评估。没有真实 LIVE 期时生产页面保持等待开期，不自动生成模拟行情。
+
+## GitHub 核心数据历史
+
+在自己的 GitHub 仓库启用 Actions 后，手动运行 **Public core record archive** 验证首次归档，再按工作流的计划持续观察。默认写入 `history/live/`；可手动选择独立 DEMO。仓库写入使用单次任务的 `GITHUB_TOKEN`，Worker 无需也不接收该写入令牌。正常未变的轮询不产生提交，替换旧事实会报错。
+
+Fork 部署必须先将仓库变量 `ARCHIVE_LIVE_ORIGIN`、`ARCHIVE_DEMO_ORIGIN` 改为自己的 HTTPS 源站，并将 Worker `COMMITMENT_REPOSITORY` 设置为自己的仓库。公开镜像只保留规则、证据和去除用户标识的积分流水。新期异步归档可能延迟；原售前提交、Rekor 签名时间和镜像提交时间分别核对。详见 [存储方案](GitHub核心档案存储方案.md)和 [API](API.md#public-github-history)。
 
 ## 项目文档
 

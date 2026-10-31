@@ -8,7 +8,7 @@ const copy = {
   "zh-CN": {
     title: "随机性与行情冻结",
     legacy:
-      "本期为 v1，按原有双源行情算法执行。v2 未来信标不会追溯加入已售期次。",
+      "本期为 v1，按原有双源行情算法执行。v2/v3 新机制不会追溯加入已售期次。",
     v2: "v2 先冻结首次一致行情，再等待至少 120 秒后的固定 quicknet 轮次。服务器和浏览器分别验签；失败不换轮、不降级。",
     waiting: "尚未冻结行情。数据缺失或分歧时继续等待。",
     failed: "冻结快照暂时无法读取，请刷新重试。",
@@ -20,7 +20,7 @@ const copy = {
   en: {
     title: "Randomness and price freeze",
     legacy:
-      "This is a v1 round and keeps its original two-source algorithm. The v2 future beacon is never added to tickets already sold.",
+      "This is a v1 round and keeps its original two-source algorithm. New v2/v3 mechanisms are never added to tickets already sold.",
     v2: "v2 freezes the first consensus, then waits for its fixed quicknet round at least 120 seconds later. Server and browser verify signatures; failures never change rounds or downgrade.",
     waiting:
       "No frozen consensus yet. Missing or conflicting quotes mean waiting.",
@@ -38,7 +38,7 @@ const copy = {
   ja: {
     title: "乱数と相場の固定",
     legacy:
-      "この回は v1 の元の2情報源アルゴリズムを使用します。販売済みの回に v2 の将来ビーコンを追加しません。",
+      "この回は v1 の元の2情報源アルゴリズムを使用します。販売済みの回に v2/v3 の新方式を追加しません。",
     v2: "v2 は最初の一致相場を固定し、120秒以上先の指定 quicknet 回を待ちます。サーバーとブラウザで署名を検証し、失敗時も別の回や旧方式に切り替えません。",
     waiting: "一致相場は未固定です。欠損や不一致は待機します。",
     failed: "固定記録を取得できません。更新して再試行してください。",

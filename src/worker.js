@@ -21,6 +21,7 @@ import {
 } from "./witness-store.js";
 import { WITNESS_POLICY } from "./witness.js";
 import { WITNESS_VECTOR } from "./witness-vector.js";
+import { publicHistory, archiveInfo } from "./history.js";
 const json = (v, status = 200, headers = {}) =>
   new Response(JSON.stringify(v), {
     status,
@@ -437,6 +438,18 @@ export function createWorker(clock = Date.now) {
             }
           }
         }
+        if (
+          req.method === "GET" &&
+          ["/api/history/rounds", "/api/history/ledger"].includes(p)
+        ) {
+          try {
+            return json(await publicHistory(e, u, clock()));
+          } catch (error) {
+            if (error.message === "INVALID_HISTORY_CURSOR")
+              return json({ error: error.message }, 400);
+            throw error;
+          }
+        }
         const roundResource = p.match(
           /^\/api\/round\/([A-Za-z0-9-]{1,80})(\/manifest|\/entropy|\/witnesses)?$/,
         );
@@ -512,6 +525,7 @@ export function createWorker(clock = Date.now) {
             },
             anchor,
             attempts: attempts.results,
+            archive: archiveInfo(e, row),
           });
         }
         const me = await user(req, e, clock());

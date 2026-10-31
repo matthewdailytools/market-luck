@@ -10,6 +10,8 @@ Base URL: local `http://127.0.0.1:8787`, or your deployed HTTPS origin. Response
 | GET | `/api/round/{round}` | Public, no session needed | Exact public round, its anchor and latest 10 collection attempts; supports history outside the state list |
 | GET | `/api/round/{round}/manifest` | Public, no session needed | Original committed manifest JSON bytes as an attachment; SHA-256 equals the round commitment |
 | GET | `/api/round/{round}/witnesses` | Public, no session needed | v3 stage receipts and exact secret reveal after settlement; older versions return empty receipts and null reveal |
+| GET | `/api/history/rounds?after=0` | Public, integer sequence cursor | Up to 100 published round headers and `nextAfter`; excludes drafts and private fields |
+| GET | `/api/history/ledger?after=0&through=HEAD` | Public; omit through on first page | Up to 200 de-identified pool ledger records within a fixed head; no signup or owner rows |
 | POST | `/api/register` | `{name,password}` | Creates account, issues 1000 points once, sets session cookie |
 | POST | `/api/login` | `{name,password}` | Sets session cookie; no extra points |
 | POST | `/api/logout` | `{}` | Revokes session and clears cookie |
@@ -82,7 +84,17 @@ Errors return `{error:"message"}`. Typical statuses: 400 invalid input, duplicat
 
 State lists are bounded recent history, not a complete paginated export. A public archive/pagination endpoint has not yet been implemented. Authentication limits do not cover every API route or establish one person per account. Large-scale operation still needs settlement batch sizing and load review; integration testing covers 100 tickets per round. Do not describe this API as production-audited.
 
-## Private ticket history
+## Public GitHub history
+
+`GET /api/history/rounds` returns `{installation,serverTime,rounds,nextAfter}`. Headers contain `sequence,id,status,commitment,cutoff,ready,version`. Start with `after=0`, follow `nextAfter` until null, and restart a full scan on each archive run so a previously prepared draft that opens later is not missed. Sequence is a database row identifier, not an algorithm input or draw result.
+
+`GET /api/history/ledger` returns `{installation,serverTime,through,latestHead,pool,poolAtHead,records,nextAfter}`. The first page fixes the current public head. Pass that `through` on subsequent pages, even if new transactions arrive. Each row has only `id,roundId,kind,delta,poolDelta,created`. Types are seed, purchase and prize; signup and user IDs are excluded. `poolDelta=delta` for seed and `-delta` for purchases/prizes. The read batch captures the head, current pool and bounded records consistently; historical `poolAtHead` is the accumulated public pool delta through the selected head. Invalid/negative/unsafe cursors or a head beyond existing public history return 400.
+
+Public round details additionally include `archive:{repository,kind,url,asynchronous:true}`. This is a navigation reference, not proof that a mirror exists yet. The readable page explains asynchronous archiving and distinguishes original presale anchors from later observations.
+
+`npm run archive:core` verifies and writes `history/live/`. GitHub Actions uses its own repository-scoped token to commit public facts; no GitHub write token is configured in Workers. Set trusted repository variables `ARCHIVE_LIVE_ORIGIN` / `ARCHIVE_DEMO_ORIGIN` for a fork's deployment and use `COMMITMENT_REPOSITORY` for its manifest repository. Manual `include_demo=true` adds the separate DEMO archive. Fixed files cannot be overwritten; a prior ledger-prefix change, vanished round/snapshot/proof or invalid evidence fails the job. Existing valid witness receipts are retained when the log merely refreshes a checkpoint. See [storage plan](GitHub核心档案存储方案.md).
+
+## Private ticket browsing
 
 The homepage’s `#myTickets` uses the latest 100 owned tickets from `/api/state`; its totals describe that returned list, not lifetime history. When a ticket’s original round is outside the latest 20 state rounds, the client retrieves its public metadata using `GET /api/round/{round}`. Requests share a four-request concurrency cap, successful round metadata is reused, transient failures back off for 60 seconds, and manual refresh can retry failures. No ticket mutation or settlement endpoint is called by this feature.
 

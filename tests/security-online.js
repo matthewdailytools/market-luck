@@ -38,6 +38,7 @@ assert(
 if (!/^http:/.test(base)) assert(health.hiddenCommitmentsConfigured);
 for (const file of [
   "beacon-verifier.js",
+  "brand.js",
   "commitment-verifier.js",
   "entropy-view.js",
   "proof-verifier.js",
@@ -69,6 +70,16 @@ assert.equal(
   404,
 );
 const after = await (await get("/api/state")).json();
+for (const type of ["rounds", "ledger"]) {
+  const response = await get("/api/history/" + type);
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert(
+    !/"(?:user_id|password|request_key|token)"/.test(JSON.stringify(data)),
+  );
+  assert.equal(data.installation, before.demo ? "DEMO" : "LIVE");
+  assert.equal((await get("/api/history/" + type + "?after=-1")).status, 400);
+}
 const witnesses = await (
   await get("/api/round/" + round.id + "/witnesses")
 ).json();

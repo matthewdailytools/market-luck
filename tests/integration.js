@@ -141,7 +141,7 @@ const denied = await fetch(base + "/api/demo/create", {
 assert.equal(denied.status, 403);
 const html = await fetch(base);
 assert.equal(html.status, 200);
-assert((await html.text()).includes("MARKET LUCK"));
+assert((await html.text()).includes("公开奖"));
 await call("logout", {});
 s = await call("state");
 assert.equal(s.me, null);

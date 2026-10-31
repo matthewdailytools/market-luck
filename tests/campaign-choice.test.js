@@ -2,11 +2,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DEFAULT_CAMPAIGN, resolveCampaign } from "../public/campaigns.js";
 
-test("a fresh visitor or two invalid choices get the evaluated points default", () => {
-  assert.equal(DEFAULT_CAMPAIGN, "points");
-  assert.equal(resolveCampaign(), "points");
+test("a fresh visitor gets the public-verification default requested for the new brand", () => {
+  assert.equal(DEFAULT_CAMPAIGN, "verify");
+  assert.equal(resolveCampaign(), "verify");
   for (const value of [null, "", "unknown", "POINTS", {}, "__proto__"])
-    assert.equal(resolveCampaign(value, value), "points");
+    assert.equal(resolveCampaign(value, value), "verify");
 });
 
 test("an explicit valid theme wins over a previously saved preference", () => {
