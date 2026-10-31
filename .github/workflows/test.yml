@@ -28,3 +28,4 @@ jobs:
           npm run test:integration || { cat /tmp/market-luck.log; exit 1; }
           npx wrangler d1 execute DB --local --file tests/fixtures/audit-draft.sql
           TEST_DRAFT_ROUND=audit-draft-visibility-fixture npm run test:readable || { cat /tmp/market-luck.log; exit 1; }
+          TEST_BASE_URL=http://127.0.0.1:8787 npm run test:security || { cat /tmp/market-luck.log; exit 1; }
