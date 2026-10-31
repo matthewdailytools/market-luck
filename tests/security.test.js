@@ -544,3 +544,75 @@ test("HTTP preparation always pins v2, rejects downgrade and keeps draft entropy
   s.db.exec("DROP TRIGGER entropy_no_update");
   assert.equal((await call({})).status, 503);
 });
+test("new session digests cannot be used as cookies and are never returned to the client", async () => {
+  const s = setup(),
+    worker = createWorker(s.now),
+    env = { ...s.env, DEMO_MODE: "true" };
+  const response = await worker.fetch(
+    new Request("http://localhost/api/register", {
+      method: "POST",
+      headers: {
+        Origin: "http://localhost",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "session_user",
+        password: "local-test-password",
+      }),
+    }),
+    env,
+  );
+  assert.equal(response.status, 200);
+  const cookie = response.headers.get("set-cookie").split(";")[0],
+    raw = cookie.slice("session=".length),
+    stored = s.db.prepare("SELECT token FROM sessions").get().token;
+  assert(stored.startsWith("s2:"));
+  assert(!stored.includes(raw));
+  const state = await (
+    await worker.fetch(
+      new Request("http://localhost/api/state", {
+        headers: { Cookie: cookie },
+      }),
+      env,
+    )
+  ).json();
+  assert.equal(state.me.name, "session_user");
+  assert.deepEqual(Object.keys(state.me).sort(), ["balance", "id", "name"]);
+  const forged = await (
+    await worker.fetch(
+      new Request("http://localhost/api/state", {
+        headers: { Cookie: "session=" + stored.slice(3) },
+      }),
+      env,
+    )
+  ).json();
+  assert.equal(forged.me, null);
+  await worker.fetch(
+    new Request("http://localhost/api/logout", {
+      method: "POST",
+      headers: { Origin: "http://localhost", Cookie: cookie },
+    }),
+    env,
+  );
+  assert.equal(s.db.prepare("SELECT COUNT(*) AS n FROM sessions").get().n, 0);
+});
+test("an existing v1 session upgrades on use without changing cookie identity or expiry", async () => {
+  const s = setup(),
+    raw = "a".repeat(64),
+    expiry = s.now() + 604800000;
+  s.db
+    .prepare("INSERT INTO sessions(token,user_id,expires) VALUES(?,'owner',?)")
+    .run(raw, expiry);
+  const state = await (
+    await createWorker(s.now).fetch(
+      new Request("http://localhost/api/state", {
+        headers: { Cookie: "session=" + raw },
+      }),
+      { ...s.env, DEMO_MODE: "true" },
+    )
+  ).json();
+  assert.equal(state.me.id, "owner");
+  const row = s.db.prepare("SELECT * FROM sessions").get();
+  assert.equal(row.token, "s2:" + hash("market-luck/session/v2\n" + raw));
+  assert.equal(row.expires, expiry);
+});

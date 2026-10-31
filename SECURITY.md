@@ -26,4 +26,6 @@ Ticket terms, settlement authorizations, public round deletion, published proof 
 
 `ABUSE_IP_KEY` is required for public LIVE authentication. Generate a separate random server secret per installation, configure it with Wrangler secrets, and never commit it. Local DEMO tests may omit it; public installations must configure it and check `/api/randomness-health`. Rotation resets the effective rate-limit identity buckets without changing user balances or sessions.
 
+New sessions store only `s2:` plus a domain-separated SHA-256 token digest. Existing raw sessions are recognized and transparently converted on first legitimate use without changing their cookies or expiry. A stored digest cannot be used as a Cookie. Already stolen raw cookies still require revocation, and database write/deployment privileges remain trusted. This is not a full password, account-recovery or identity audit.
+
 Read the threat model in [随机性与防作弊改进方案.md](随机性与防作弊改进方案.md). No new independent timestamping service, per-person identity guarantee or professional penetration test is claimed.

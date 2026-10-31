@@ -18,6 +18,12 @@ const json = (v, status = 200, headers = {}) =>
     },
   });
 const stmt = (e, s, ...a) => e.DB.prepare(s).bind(...a);
+const sessionCookie = (req) =>
+  (req.headers.get("cookie") || "").match(
+    /(?:^|;\s*)session=([a-f0-9]{64})(?=;|$)/,
+  )?.[1];
+const storedSession = (token) =>
+  "s2:" + hash("market-luck/session/v2\n" + token);
 async function readJson(req) {
   const reader = req.body?.getReader();
   if (!reader) throw Error("INVALID_JSON");
@@ -69,17 +75,24 @@ async function password(p, s) {
     .join("");
 }
 async function user(req, e, now) {
-  const t = (req.headers.get("cookie") || "").match(
-    /(?:^|;\s*)session=([a-f0-9]+)/,
-  )?.[1];
-  return t
-    ? stmt(
-        e,
-        "SELECT u.id,u.name,u.balance FROM users u JOIN sessions s ON u.id=s.user_id WHERE s.token=? AND s.expires>?",
-        t,
-        now,
-      ).first()
-    : null;
+  const token = sessionCookie(req);
+  if (!token) return null;
+  const row = await stmt(
+    e,
+    "SELECT u.id,u.name,u.balance,s.token AS session_key FROM users u JOIN sessions s ON u.id=s.user_id WHERE (s.token=? OR s.token=?) AND s.expires>?",
+    storedSession(token),
+    token,
+    now,
+  ).first();
+  if (!row) return null;
+  if (row.session_key === token)
+    await stmt(
+      e,
+      "UPDATE sessions SET token=? WHERE token=?",
+      storedSession(token),
+      token,
+    ).run();
+  return { id: row.id, name: row.name, balance: row.balance };
 }
 async function createRound(e, clock = Date.now) {
   const now = clock(),
@@ -516,7 +529,7 @@ export function createWorker(clock = Date.now) {
           await stmt(
             e,
             "INSERT INTO sessions VALUES(?,?,?)",
-            token,
+            storedSession(token),
             id,
             clock() + 604800000,
           ).run();
@@ -525,11 +538,14 @@ export function createWorker(clock = Date.now) {
           });
         }
         if (p === "/api/logout" && req.method === "POST") {
-          const token = (req.headers.get("cookie") || "").match(
-            /session=([a-f0-9]+)/,
-          )?.[1];
+          const token = sessionCookie(req);
           if (token)
-            await stmt(e, "DELETE FROM sessions WHERE token=?", token).run();
+            await stmt(
+              e,
+              "DELETE FROM sessions WHERE token=? OR token=?",
+              storedSession(token),
+              token,
+            ).run();
           return json({ ok: true }, 200, {
             "set-cookie":
               "session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0",
