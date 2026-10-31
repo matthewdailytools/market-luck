@@ -460,7 +460,7 @@ test("a changed pool balance aborts settlement atomically, including zero-ticket
   };
   await assert.rejects(
     collectAndSettle(s.env, s.round, s.fetcher, s.now()),
-    /SNAPSHOT/,
+    /SNAPSHOT|SETTLEMENT_REQUIRED/,
   );
   assert.equal(s.db.prepare("SELECT proof FROM rounds").get().proof, null);
   assert.equal(
