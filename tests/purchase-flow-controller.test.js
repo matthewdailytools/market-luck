@@ -261,6 +261,7 @@ function harness(options = {}) {
   env.refresh = async () => {
     env.refreshCount++;
     await options.beforeRefresh?.(env);
+    if (options.refreshCommitted === false) return false;
     env.client = structuredClone(env.server);
     env.flow?.render();
   };
@@ -323,6 +324,31 @@ test("anonymous complete picks open authentication; register and login both pres
     assert.match(env.element("reviewNumbers").textContent, /010203040506/);
     assert.equal(env.element("password").value, "");
   }
+});
+
+test("sign-in from ticket history returns to the records without opening purchase review", async () => {
+  const env = harness({ anonymous: true });
+  env.flow.openAuth("login", null, "myTickets");
+  await env.authenticate("login");
+  assert.equal(env.element("myTickets").focused, true);
+  assert.equal(env.element("purchaseReview").open, false);
+  assert.equal(env.buyCalls().length, 0);
+});
+
+test("a discarded state refresh cannot authorize a purchase or claim completed sign-in", async () => {
+  const purchase = harness({ refreshCommitted: false });
+  await purchase.element("buy").click();
+  await purchase.element("confirmPurchase").click();
+  assert.equal(purchase.buyCalls().length, 0);
+  assert.equal(purchase.deductions, 0);
+  assert.equal(purchase.element("purchaseReceipt").hidden, true);
+  const login = harness({ anonymous: true, refreshCommitted: false });
+  login.flow.openAuth("login", null, "myTickets");
+  await login.authenticate("login");
+  assert.equal(login.element("auth").open, true);
+  assert.equal(login.element("myTickets").focused, undefined);
+  assert.equal(login.element("purchaseReview").open, false);
+  assert.equal(login.buyCalls().length, 0);
 });
 
 test("cancelling authentication or ticket review creates no ticket and spends no points", async () => {

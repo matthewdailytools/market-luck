@@ -1,6 +1,8 @@
 import { renderGameRules } from "./game-rules.js";
 import { initLanguages, translate } from "./i18n.js";
 import { createPurchaseFlow } from "./purchase-flow.js";
+import { createTicketHistory } from "./ticket-history.js";
+import { createStateRefresh } from "./state-refresh.js";
 import { describeHomeRound, selectDisplayRound } from "./round-summary.js";
 import {
   renderHomeHighlights,
@@ -21,6 +23,10 @@ let state,
   selectionContext = null;
 let serverOffset = 0;
 const serverNow = () => Date.now() + serverOffset;
+const stateReader = createStateRefresh({
+  load: () => api("state"),
+  apply: (snapshot) => applyState(snapshot),
+});
 const purchaseFlow = createPurchaseFlow({
   getState: () => state,
   getSelection: () => ({ gameId: gid, main: [...chosen], bonus: special }),
@@ -35,6 +41,14 @@ const purchaseFlow = createPurchaseFlow({
   },
   notify: (message) => toast(message),
 });
+const ticketHistory = createTicketHistory({
+  getState: () => state,
+  fetchRound: (id) => api("round/" + encodeURIComponent(id)),
+  refresh: () => refresh(),
+  onSignIn: () => purchaseFlow.openAuth("login", null, "myTickets"),
+  now: serverNow,
+});
+ticketHistory.render();
 updateHeroSummary();
 updateHomeHighlights();
 const toast = (s) => {
@@ -43,23 +57,33 @@ const toast = (s) => {
   setTimeout(() => ($("#toast").style.display = "none"), 4500);
 };
 async function api(path, body) {
-  const r = await fetch(
-    "/api/" + path,
-    body
-      ? {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      : {},
-  );
-  const data = await r.json();
-  if (!r.ok) {
-    const error = Error(data.error);
-    error.status = r.status;
-    throw error;
+  const identityChange = ["login", "register", "logout"].includes(path);
+  if (identityChange) {
+    stateReader.invalidate();
+    if (path === "logout" && state)
+      applyState({ ...state, me: null, tickets: [] });
   }
-  return data;
+  try {
+    const r = await fetch(
+      "/api/" + path,
+      body
+        ? {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(body),
+          }
+        : {},
+    );
+    const data = await r.json();
+    if (!r.ok) {
+      const error = Error(data.error);
+      error.status = r.status;
+      throw error;
+    }
+    return data;
+  } finally {
+    if (identityChange) stateReader.invalidate();
+  }
 }
 const current = () => state?.rounds.find((r) => r.status === "open");
 function make(tag, text, cls) {
@@ -187,7 +211,10 @@ function picker() {
   purchaseFlow.render();
 }
 async function refresh() {
-  state = await api("state");
+  await stateReader.refresh();
+}
+function applyState(snapshot) {
+  state = snapshot;
   serverOffset = (state.serverTime || Date.now()) - Date.now();
   $("#pool").textContent = state.pool.toLocaleString();
   $("#balance").textContent = state.me
@@ -237,20 +264,8 @@ async function refresh() {
     ),
   );
   renderGameCards();
-  rows("#tickets", state.tickets, (t) => {
-    const a = make("div", "", "row");
-    a.append(
-      make(
-        "div",
-        `${state.games.find((g) => g.id === t.game).name} · ${JSON.parse(t.numbers).join(" ")}${t.bonus !== null ? " + " + t.bonus : ""}`,
-      ),
-      make(
-        "small",
-        `票号 ${t.id.slice(0, 8)} · ${t.prize ? "中奖 +" + t.prize + " 分" : state.rounds.find((r) => r.id === t.round_id)?.status === "settled" ? "未中奖" : "等待开奖"}`,
-      ),
-    );
-    return a;
-  });
+  ticketHistory.render();
+  ticketHistory.loadOlderRounds().catch(() => {});
   rows("#winners", state.winners, (t) =>
     make(
       "div",
@@ -300,6 +315,7 @@ async function refresh() {
   picker();
   updateHomeHighlights();
   syncCampaigns(state);
+  ticketHistory.render();
   tickCountdown();
 }
 const fail = (e) => toast(e.message);
@@ -412,5 +428,6 @@ function tickCountdown() {
   if (!current() || now >= current().cutoff)
     document.querySelector("#buy").disabled = true;
   purchaseFlow.render();
+  ticketHistory.render();
 }
 setInterval(tickCountdown, 1000);

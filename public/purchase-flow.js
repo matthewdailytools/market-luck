@@ -326,6 +326,7 @@ export function createPurchaseFlow({
   let authMode = "register",
     authBusy = false,
     buying = false,
+    authReturnTo = "worldFormats",
     resumeDraft = null;
   let review = null,
     pending = null,
@@ -335,6 +336,9 @@ export function createPurchaseFlow({
     reviewIssue = null,
     previewKey = "";
   const storageKey = "market-luck-pending-ticket-v1:";
+  async function refreshAccount() {
+    if ((await refresh()) === false) throw Error(text(words.changed));
+  }
   let loadedOwner = null;
   function loadPending(owner) {
     pending = null;
@@ -638,11 +642,16 @@ export function createPurchaseFlow({
     renderAuth();
     renderReview();
   }
-  function openAuth(mode = "register", draft = null) {
+  function openAuth(
+    mode = "register",
+    draft = null,
+    returnTo = "worldFormats",
+  ) {
     if (authBusy) return;
     authMode = mode;
     authError = "";
     resumeDraft = draft;
+    authReturnTo = returnTo;
     renderAuth();
     if (!$("auth").open) $("auth").showModal();
     $("name").focus();
@@ -700,7 +709,7 @@ export function createPurchaseFlow({
     reviewIssue = null;
     render();
     try {
-      await refresh();
+      await refreshAccount();
       // Refresh may recover this ticket or load a different account's request.
       if (!stillCurrent()) return;
       const state = getState(),
@@ -763,7 +772,7 @@ export function createPurchaseFlow({
       }
       intent.id = accepted.id;
       savePending(intent);
-      await refresh();
+      await refreshAccount();
       if (!stillCurrent()) return;
       reviewIssue = "syncing";
     } catch (error) {
@@ -794,7 +803,7 @@ export function createPurchaseFlow({
         if (rejected) clearPending(intent);
       }
       try {
-        await refresh();
+        await refreshAccount();
         if (!stillCurrent()) return;
       } catch {}
     } finally {
@@ -886,7 +895,7 @@ export function createPurchaseFlow({
     renderAuth();
     try {
       await api(mode, { name, password });
-      await refresh();
+      await refreshAccount();
       authBusy = false;
       $("auth").close();
       $("password").value = "";
@@ -896,7 +905,7 @@ export function createPurchaseFlow({
       else if (resume) {
         notify(text(words.changed));
         focus("pickerHelp");
-      } else focus("worldFormats");
+      } else focus(authReturnTo);
     } catch (error) {
       authError = error.message;
     } finally {

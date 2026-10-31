@@ -1,0 +1,116 @@
+{
+  "startedAt": "2026-10-31T10:09:25.039Z",
+  "status": "passed",
+  "domainRecordsReadOnly": true,
+  "mutations": [
+    "existing test-account login",
+    "test session logout"
+  ],
+  "registrations": 0,
+  "purchases": 0,
+  "administrativeCalls": 0,
+  "checks": [
+    "Existing account has an origin-only URL",
+    "Only the isolated DEMO or loopback is allowed",
+    "Expected successful /api/state",
+    "Installation is explicitly DEMO before any session request",
+    "Anonymous API response has no private tickets",
+    "Anonymous ticket view offers sign-in",
+    "Expected successful /api/login",
+    "Existing test account signs in without registration",
+    "Test session cookie was issued",
+    "Expected successful /api/state",
+    "Signed-in snapshot is a DEMO owner",
+    "Existing test account has a bounded purchased ticket list",
+    "All private tickets belong to the authenticated owner",
+    "A ticket round ID is safe for an exact lookup",
+    "Expected successful /api/round/ca9fdd0c-60bd-4cd6-bfba-f5c06dee9e0d",
+    "Exact round lookup retains the ticket's own period",
+    "Public round lookup does not expose private account data",
+    "zh-CN: every owned ticket has a card model",
+    "zh-CN: original numbers and round verification links remain valid",
+    "zh-CN: committed ticket cost is shown",
+    "zh-CN: demonstration identity stays explicit",
+    "zh-CN: actual records have sufficient consistent round evidence",
+    "zh-CN: old-round lookups resolve all missing metadata",
+    "en: every owned ticket has a card model",
+    "en: original numbers and round verification links remain valid",
+    "en: committed ticket cost is shown",
+    "en: demonstration identity stays explicit",
+    "en: actual records have sufficient consistent round evidence",
+    "en: old-round lookups resolve all missing metadata",
+    "ja: every owned ticket has a card model",
+    "ja: original numbers and round verification links remain valid",
+    "ja: committed ticket cost is shown",
+    "ja: demonstration identity stays explicit",
+    "ja: actual records have sufficient consistent round evidence",
+    "ja: old-round lookups resolve all missing metadata",
+    "Expected successful /api/state",
+    "Record lookup does not change the account balance",
+    "Record lookup does not create, modify or remove a ticket",
+    "Expected successful /api/logout",
+    "Expected successful /api/state",
+    "Logout removes private API tickets",
+    "Retained stale tickets cannot reappear in an anonymous view"
+  ],
+  "url": "https://luck-test.onlinefreetools.org",
+  "ticketCount": 1,
+  "roundsLookedUp": 1,
+  "initialMissingRoundCount": 0,
+  "languages": {
+    "zh-CN": {
+      "counts": {
+        "shown": 1,
+        "pending": 0,
+        "lost": 1,
+        "paid": 0,
+        "paused": 0,
+        "unverified": 0,
+        "invalid": 0
+      },
+      "statuses": [
+        "lost"
+      ],
+      "costs": [
+        10
+      ]
+    },
+    "en": {
+      "counts": {
+        "shown": 1,
+        "pending": 0,
+        "lost": 1,
+        "paid": 0,
+        "paused": 0,
+        "unverified": 0,
+        "invalid": 0
+      },
+      "statuses": [
+        "lost"
+      ],
+      "costs": [
+        10
+      ]
+    },
+    "ja": {
+      "counts": {
+        "shown": 1,
+        "pending": 0,
+        "lost": 1,
+        "paid": 0,
+        "paused": 0,
+        "unverified": 0,
+        "invalid": 0
+      },
+      "statuses": [
+        "lost"
+      ],
+      "costs": [
+        10
+      ]
+    }
+  },
+  "balanceUnchanged": true,
+  "finishedAt": "2026-10-31T10:09:29.667Z",
+  "checkCount": 42
+}

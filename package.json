@@ -10,6 +10,7 @@
     "test:integration": "node tests/integration.js",
     "test:readable": "node tests/readable-audit-online.js",
     "test:onboarding": "node tests/onboarding-online.js",
+    "test:tickets": "node tests/ticket-history-online.js",
     "deploy": "wrangler deploy",
     "format": "prettier --write src public tests scripts *.json *.jsonc",
     "test:online": "node tests/online-checks.js",

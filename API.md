@@ -52,6 +52,14 @@ Errors return `{error:"message"}`. Typical statuses: 400 invalid input, duplicat
 
 State lists are bounded recent history, not a complete paginated export. A public archive/pagination endpoint has not yet been implemented. Large-scale operation also needs explicit request/registration rate limits and settlement batch sizing; current local testing covers 100 tickets per round. Do not describe this API as production-audited.
 
+## Private ticket history
+
+The homepage’s `#myTickets` uses the latest 100 owned tickets from `/api/state`; its totals describe that returned list, not lifetime history. When a ticket’s original round is outside the latest 20 state rounds, the client retrieves its public metadata using `GET /api/round/{round}`. Requests share a four-request concurrency cap, successful round metadata is reused, transient failures back off for 60 seconds, and manual refresh can retry failures. No ticket mutation or settlement endpoint is called by this feature.
+
+Ticket numbers, cost and prize status use the original committed catalog. Missing or inconsistent rounds/proofs stay unconfirmed; zero-point allocations to a winning tier are not labelled losing tickets. Status and payout text present account records with consistency checks; independent hash and draw reproduction remains on the verification page. Authentication boundaries invalidate older state requests, sign-out clears private cards immediately, and only the current owner’s tickets are rendered.
+
+`npm run test:tickets` checks an existing disposable DEMO account using a gitignored credentials file (`TEST_ACCOUNT_FILE`, default `test-output/onboarding-browser-account.json`). Obtain that file with `npm run test:onboarding` on the isolated demo first. The ticket-history check sends only public/private GET requests and test-session login/logout; it never registers, buys, advances clocks or settles. Credentials must not be committed. See [acceptance details](票据记录与开奖状态优化验收.md).
+
 ## Readable verification page
 
 `/verify.html?round=ROUND_ID` explains a selected public round in Chinese, English or Japanese. Without an ID it selects a current public round from `/api/state`. Rules, source requirements and times come from that round's manifest, not a separate marketing configuration. The page downloads settled evidence from `/api/proof/{round}` and independently recalculates the hashes and all game numbers in the browser.

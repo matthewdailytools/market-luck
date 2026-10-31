@@ -15,6 +15,8 @@
           <option value="en">English</option>
           <option value="ja">日本語</option></select
         ><a href="#play">选号大厅</a><a href="/verify.html">开奖核验</a
+        ><a id="ticketHistoryNav" href="#myTickets" data-campaign-copy
+          >我的彩票</a
         ><a href="#audit">透明账本</a><button id="account">登录 / 注册</button
         ><button id="logout" hidden>退出</button>
       </nav>
@@ -153,6 +155,7 @@
           <div class="first-run-budget">
             <span id="onboardingBalance">我的积分：尚未登录</span>
             <span id="onboardingCost">每注 10 积分</span>
+            <a id="onboardingTicketsLink" href="#myTickets">我的彩票 →</a>
           </div>
         </div>
         <ol class="first-run-steps">
@@ -351,6 +354,7 @@
             <p id="receiptTicket"></p>
             <p id="receiptBalance"></p>
             <div class="receipt-actions">
+              <a id="receiptTicketsLink" href="#myTickets">查看我的彩票 →</a>
               <a id="receiptAuditLink" href="/verify.html"
                 >查看本期核验依据 →</a
               >
@@ -358,6 +362,45 @@
             </div>
           </section>
         </div>
+      </section>
+      <section
+        id="myTickets"
+        class="ticket-history"
+        data-campaign-copy
+        aria-labelledby="ticketHistoryTitle"
+      >
+        <div class="ticket-history-heading">
+          <div>
+            <p class="eyebrow" id="ticketHistoryEyebrow">
+              YOUR PICKS, ON RECORD
+            </p>
+            <h2 id="ticketHistoryTitle">我的彩票</h2>
+            <p id="ticketHistoryNote">
+              显示最近 100 张彩票，包含期次、号码与积分记录。
+            </p>
+          </div>
+          <button id="ticketHistoryRefresh" type="button">刷新彩票 ↻</button>
+        </div>
+        <p
+          id="ticketHistorySummary"
+          class="ticket-history-summary"
+          role="status"
+          aria-live="polite"
+        >
+          登录后查看你的购票记录。
+        </p>
+        <div class="ticket-history-empty">
+          <p id="ticketHistoryEmpty">
+            每一注的号码与期次，购票后都能在这里找到。
+          </p>
+          <div id="ticketHistoryActions" class="ticket-history-actions">
+            <button id="ticketHistoryLogin" type="button">登录查看彩票</button>
+            <a id="ticketHistoryChoose" href="#worldFormats"
+              >先挑选一个玩法 →</a
+            >
+          </div>
+        </div>
+        <div id="tickets" class="ticket-history-list"></div>
       </section>
       <section id="audit">
         <div class="sectionhead">
@@ -397,11 +440,7 @@
             分档均分，向下取整，其余滚存。每注只计最高档。各国玩法是选号结构模拟，不是官方彩票。集中托管、数据源和管理员仍是信任边界，需外部承诺与审计进一步约束。
           </p>
         </details>
-        <div class="lists">
-          <article>
-            <h3>我的彩票</h3>
-            <div id="tickets"></div>
-          </article>
+        <div class="lists winner-list">
           <article>
             <h3>公开中奖清单</h3>
             <div id="winners"></div>
