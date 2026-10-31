@@ -1,0 +1,93 @@
+name: Ticket browser and mobile acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/**"
+      - "tests/browser/**"
+      - "package*.json"
+      - ".github/workflows/ticket-visual.yml"
+  pull_request:
+    paths:
+      - "public/**"
+      - "tests/browser/**"
+      - "package*.json"
+      - ".github/workflows/ticket-visual.yml"
+  workflow_dispatch:
+    inputs:
+      online:
+        description: "Also test public LIVE read-only and one disposable DEMO account"
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run db:migrate
+      - name: Prepare local D1 and R2 and run real browser checks
+        shell: bash
+        run: |
+          npm run dev > /tmp/market-luck-browser.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" || true' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8787/api/state > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:integration
+          curl -fsS -X POST -H 'Origin: http://127.0.0.1:8787' -H 'Content-Type: application/json' -d '{}' http://127.0.0.1:8787/api/demo/create > /dev/null
+          TEST_BASE_URL=http://127.0.0.1:8787 npm run test:onboarding > /tmp/local-onboarding-report.json
+          BROWSER_TEST_BASE=http://127.0.0.1:8787 node tests/browser/ticket-visual-runner.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ticket-browser-local-${{ github.run_id }}
+          path: test-output/ticket-browser/
+          retention-days: 14
+  online:
+    if: github.event_name == 'workflow_dispatch' && inputs.online && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Prepare one disposable DEMO ticket without changing clocks
+        shell: bash
+        run: |
+          mkdir -p test-output
+          for i in $(seq 1 7); do
+            set +e
+            npm run test:onboarding > test-output/online-onboarding-console.json
+            RESULT=$?
+            set -e
+            if [ "$RESULT" -eq 0 ]; then exit 0; fi
+            if [ "$RESULT" -ne 75 ]; then exit "$RESULT"; fi
+            sleep 60
+          done
+          exit 75
+      - name: Run online browser checks
+        env:
+          BROWSER_TEST_BASE: https://luck-test.onlinefreetools.org
+          BROWSER_TEST_ONLINE: "true"
+        run: node tests/browser/ticket-visual-runner.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ticket-browser-online-${{ github.run_id }}
+          path: test-output/ticket-browser/
+          retention-days: 14

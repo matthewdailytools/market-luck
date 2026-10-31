@@ -11,6 +11,7 @@
     "test:readable": "node tests/readable-audit-online.js",
     "test:onboarding": "node tests/onboarding-online.js",
     "test:tickets": "node tests/ticket-history-online.js",
+    "test:browser:ci": "node tests/browser/ticket-visual-runner.mjs",
     "deploy": "wrangler deploy",
     "format": "prettier --write src public tests scripts *.json *.jsonc",
     "test:online": "node tests/online-checks.js",
@@ -21,6 +22,7 @@
     "@noble/hashes": "^2.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "prettier": "^3.9.10",
     "wrangler": "^4.0.0"
   }
