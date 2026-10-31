@@ -388,3 +388,18 @@ test("an earlier account's refresh rejection and finally cannot overwrite the ne
   assert.equal(env.element("ticketHistoryLoadStatus").hidden, true);
   assert.equal(env.cards()[0].dataset.ticketId, "owner-b-ticket-1");
 });
+
+test("a discarded snapshot refresh keeps existing cards and asks the user to retry without loading history", async () => {
+  const env = harness({ refresh: async () => false });
+  const original = env.cards()[0].dataset.ticketId;
+  await env.element("ticketHistoryRefresh").click();
+  assert.equal(env.refreshes, 1);
+  assert.equal(env.cards()[0].dataset.ticketId, original);
+  assert.equal(env.element("ticketHistoryRefresh").disabled, false);
+  assert.equal(env.element("ticketHistoryLoadStatus").hidden, false);
+  assert.match(
+    env.element("ticketHistoryLoadStatus").textContent,
+    /保留上次记录.*重试/,
+  );
+  assert.deepEqual(env.requests, []);
+});

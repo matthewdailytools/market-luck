@@ -3641,7 +3641,7 @@ body[data-campaign="points"] .hero-secondary:hover {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 14px;
-  margin-top: 12px;
+  margin: 12px 0 16px;
 }
 .ticket-history-actions a,
 .ticket-history-actions button {

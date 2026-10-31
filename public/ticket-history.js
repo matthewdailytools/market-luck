@@ -329,7 +329,7 @@ export function createTicketHistory({
     refreshFailed = false;
     render();
     try {
-      await refresh();
+      if ((await refresh()) === false) throw Error("Snapshot superseded");
       syncOwner();
       if (expected === generation) await loadOlderRounds(true);
     } catch {

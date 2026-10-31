@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-31T10:39:29.463Z",
+  "readOnly": true,
+  "round": "1c6cb4c0-f039-4f23-a290-c303d509562a",
+  "pool": 101000,
+  "unchanged": [
+    "manifest",
+    "commitment",
+    "cutoff",
+    "ready",
+    "status",
+    "proof"
+  ]
+}
