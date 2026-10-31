@@ -11,8 +11,9 @@ const copy = {
       UNKNOWN: "模式待确认",
     },
     pool: "共享积分池",
-    currentPool: "当前共享奖池",
-    poolNote: "全部玩法共用；虚拟积分，无现金价值。",
+    currentPool: "当前共享积分池",
+    unit: "积分",
+    poolNote: "全部玩法共用，奖额按档结算；无现金价值。",
     unavailablePool: "奖池数据暂不可用；虚拟积分，无现金价值。",
     active: {
       open: "当前期",
@@ -45,7 +46,8 @@ const copy = {
     },
     pool: "Shared points pool",
     currentPool: "Current shared points pool",
-    poolNote: "Shared by all formats; virtual points with no cash value.",
+    unit: "points",
+    poolNote: "Shared balance, paid by prize tier. No cash value.",
     unavailablePool:
       "Pool data is unavailable; virtual points have no cash value.",
     active: {
@@ -81,7 +83,8 @@ const copy = {
     },
     pool: "共有ポイントプール",
     currentPool: "現在の共有ポイントプール",
-    poolNote: "全形式で共有する仮想ポイント。現金価値はありません。",
+    unit: "ポイント",
+    poolNote: "全形式で共有し等級別に配分。現金価値なし。",
     unavailablePool:
       "プールデータを取得できません。仮想ポイントに現金価値はありません。",
     active: {
@@ -304,6 +307,7 @@ export function describeHomeHighlights(state, language = "zh-CN") {
       hasValue: value !== null,
       formatted:
         value === null ? "—" : new Intl.NumberFormat(lang).format(value),
+      unit: words.unit,
       label: displayed?.status === "open" ? words.currentPool : words.pool,
       note: value === null ? words.unavailablePool : words.poolNote,
       mode,

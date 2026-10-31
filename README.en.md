@@ -91,7 +91,7 @@ No API keys are needed for historical diagnostics: `node scripts/check-public-so
 
 [Theme design evaluation](主题设计评估.md): the selected bright global-play direction is an expert design judgment, not a measured A/B conversion result.
 
-The default for new visitors remains **Try with points** after the [updated review including the readable verification page](三主题复评-可读核验页版.md). Mobile now puts the points grant, ticket cost, sales cutoff, earliest verification time and verification link before the smaller decorative balls. Verify the draw and Explore formats remain selectable in all three languages. See the [homepage references and mobile acceptance report](移动端首页优化与官网参考.md). These are design judgments, not measured conversion results.
+The default for new visitors remains **Try with points** after the [review of appeal, anticipation and trust](三主题复评-奖池与开奖结果版.md). Explicit theme links and saved visitor choices take priority. Points units, complete desktop timing, a waiting-stage timeline and a clearer mobile starting path address the review findings. Verify the draw and Explore formats remain selectable in all three languages. These are AI design judgments, not measured conversion results.
 
 The homepage now highlights the current shared points pool, published results and 16 national format shortcuts. Past results use their own committed rules; the live site waits when no real result exists, and demo results are labelled. Country shortcuts open rules and number selection without buying a ticket. See the [homepage pool and results acceptance report](首页奖池与开奖结果优化验收.md).
 

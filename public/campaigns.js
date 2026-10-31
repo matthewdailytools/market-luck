@@ -3,7 +3,14 @@
 import { selectDisplayRound } from "./round-summary.js";
 const allowed = new Set(["verify", "points", "world"]);
 const storageKey = "market-luck-campaign";
-const DEFAULT_CAMPAIGN = "points";
+export const DEFAULT_CAMPAIGN = "points";
+export function resolveCampaign(requested, saved) {
+  return allowed.has(requested)
+    ? requested
+    : allowed.has(saved)
+      ? saved
+      : DEFAULT_CAMPAIGN;
+}
 let selected = DEFAULT_CAMPAIGN;
 let latestState;
 let initialized = false;
@@ -31,11 +38,11 @@ const copy = {
       title: ["好运值得期待，", "结果自己核对。"],
       intro: "先看清开奖，再试试手气。",
       description:
-        "本期规则售票前锁定，指定收盘行情核验后生成号码。输入与结果，可在开奖后自行复算。",
-      primary: "看懂本期开奖依据 ↗",
+        "规则售票前锁定；真实期按固定美股收盘行情生成号码。开奖后可复算公开输入与号码；原始行情及全账本仍需另行核验。",
+      primary: "查看本期规则与核验 ↗",
       fallback: "先看核验流程 ↗",
-      secondary: "用积分试试手气 →",
-      secondaryHref: "#play",
+      secondary: "每注10分，去选号 →",
+      secondaryHref: "#worldFormats",
       eyebrow: "FROM QUESTIONS TO CHECKS",
       evidenceTitle: "把疑问，变成可以核对的事。",
       cards: [
@@ -64,9 +71,9 @@ const copy = {
       title: ["花一点积分，", "留一份期待。"],
       intro: "免费试试手气，开奖依据自己看。",
       description:
-        "纯虚拟积分，无现金价值。注册一次性领取1,000积分，每注10分。无充值、无提现；先看规则与概率，再挑选你的号码。",
-      primary: "免费体验积分玩法 ↗",
-      memberPrimary: "用积分体验玩法 ↗",
+        "注册一次赠1,000积分，每注10分，无充值提现。真实期使用固定美股篮子，公开输入与号码可复算。积分无现金价值。",
+      primary: "选玩法，开始选号 ↗",
+      memberPrimary: "选玩法，用积分选号 ↗",
       secondary: "查看本期规则与时间 →",
       secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
@@ -97,7 +104,7 @@ const copy = {
       title: ["从熟悉的一注，", "逛到世界的玩法。"],
       intro: "不必一次学会，先从你喜欢的规则开始。",
       description:
-        "探索16国代表性选号结构，比较号码范围、中奖条件和概率。每一种规则，都有清楚的说明。",
+        "16国指选号结构，真实期使用固定美股篮子。先选一个熟悉玩法，再看号码范围、中奖条件与概率。",
       primary: "探索16国玩法 ↗",
       secondary: "从玩法规则开始 →",
       secondaryHref: "#gameRules",
@@ -157,11 +164,11 @@ const copy = {
       title: ["Anticipate your luck.", "Verify the outcome."],
       intro: "Understand the draw before making your picks.",
       description:
-        "Rules are committed before ticket sales. Specified closing prices are checked before numbers are generated. Reproduce the input and result after the draw.",
-      primary: "Understand this round’s draw ↗",
+        "Rules are fixed before sales. Live rounds use a fixed US-stock basket. Reproduce published inputs and numbers after the draw; raw prices and the full ledger need separate checks.",
+      primary: "See this round’s rules and checks ↗",
       fallback: "Inspect the process ↗",
-      secondary: "Try your luck with points →",
-      secondaryHref: "#play",
+      secondary: "Pick numbers · 10 points a ticket →",
+      secondaryHref: "#worldFormats",
       eyebrow: "FROM QUESTIONS TO CHECKS",
       evidenceTitle: "Turn questions into checks.",
       cards: [
@@ -190,9 +197,9 @@ const copy = {
       title: ["A few points.", "A little anticipation."],
       intro: "Try with free points. See the basis for each draw.",
       description:
-        "Virtual points only, with no cash value. Registration grants 1,000 points once. Each ticket costs 10 points. No deposits or withdrawals: read the rules and odds before choosing your numbers.",
-      primary: "Try points games for free ↗",
-      memberPrimary: "Explore with your points ↗",
+        "Get 1,000 points once at sign-up; each ticket costs 10. No top-ups or withdrawals. Live rounds use a fixed US-stock basket. Reproduce published inputs and numbers. Points have no cash value.",
+      primary: "Choose a game and pick numbers ↗",
+      memberPrimary: "Choose a game · Pick with points ↗",
       secondary: "See this round’s rules and timing →",
       secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
@@ -223,7 +230,7 @@ const copy = {
       title: ["Start with a familiar pick.", "Explore a world of formats."],
       intro: "No need to learn everything at once.",
       description:
-        "Explore number formats inspired by 16 countries. Compare number ranges, winning conditions and odds, with clear rules for each one.",
+        "16 countries inspire the number formats; live rounds use a fixed US-stock basket. Start with a familiar format, then read its ranges, winning conditions and odds.",
       primary: "Explore 16 national formats ↗",
       secondary: "Start with the rules →",
       secondaryHref: "#gameRules",
@@ -278,11 +285,11 @@ const copy = {
       title: ["幸運を楽しみに、", "結果は自分で確認。"],
       intro: "仕組みを知ってから、運を試す。",
       description:
-        "販売前にルールを固定し、指定された終値を照合してから番号を生成します。抽選後は入力と結果をご自身で再計算できます。",
-      primary: "今回の抽選の仕組みを見る ↗",
+        "販売前にルールを固定。実抽選には固定した米国株の終値を使います。公開入力と番号は再計算でき、元の相場応答や全台帳は別途確認が必要です。",
+      primary: "今回のルールと検証を見る ↗",
       fallback: "検証の流れを見る ↗",
-      secondary: "ポイントで運を試す →",
-      secondaryHref: "#play",
+      secondary: "1口10ポイントで番号を選ぶ →",
+      secondaryHref: "#worldFormats",
       eyebrow: "FROM QUESTIONS TO CHECKS",
       evidenceTitle: "疑問を、確認できる項目へ。",
       cards: [
@@ -311,9 +318,9 @@ const copy = {
       title: ["少しのポイントで、", "次の楽しみを。"],
       intro: "無料ポイントで運試し。抽選の根拠も自分で確認。",
       description:
-        "仮想ポイントのみで、金銭的価値はありません。登録時に1,000ポイントを1回付与。1口10ポイントで、入金・出金はありません。ルールと確率を見てから番号を選べます。",
-      primary: "ポイントゲームを無料体験 ↗",
-      memberPrimary: "ポイントで体験する ↗",
+        "登録時に1,000ポイントを1回付与、1口10ポイント。入出金はありません。実抽選は固定した米国株を使い、公開入力と番号を再計算できます。ポイントに金銭的価値はありません。",
+      primary: "形式を選んで番号を選ぶ ↗",
+      memberPrimary: "形式を選びポイントで番号選択 ↗",
       secondary: "今回のルールと時刻を見る →",
       secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
@@ -344,7 +351,7 @@ const copy = {
       title: ["慣れた番号選びから、", "世界の形式へ。"],
       intro: "すべてを一度に覚える必要はありません。",
       description:
-        "16か国を参考にした番号形式を探索。番号範囲・当選条件・確率を比べ、それぞれのルールを確認できます。",
+        "16か国は番号形式の着想で、実抽選は固定した米国株を使います。慣れた形式を選び、番号範囲・条件・確率を確認できます。",
       primary: "16か国の形式を探索 ↗",
       secondary: "ルールから始める →",
       secondaryHref: "#gameRules",
@@ -477,7 +484,7 @@ function render() {
   document.querySelector(".hero-intro").textContent = campaign.intro;
   document.querySelector(".hero-description").textContent =
     campaign.description;
-  const primaryHref = selected === "verify" ? guideHref : "#play";
+  const primaryHref = selected === "verify" ? guideHref : "#worldFormats";
   const primaryText =
     selected === "points" && latestState?.me
       ? campaign.memberPrimary
@@ -519,7 +526,9 @@ function render() {
           ? guideHref + "#sources"
           : href === "#proofs"
             ? guideHref + "#results"
-            : href,
+            : href === "#play"
+              ? "#worldFormats"
+              : href,
     );
     article.append(link);
     cards.append(article);
@@ -535,7 +544,7 @@ function render() {
 export function initCampaigns() {
   if (initialized || !document.querySelector("#campaignTitle")) return;
   initialized = true;
-  selected = requestedSelection() || storedSelection() || DEFAULT_CAMPAIGN;
+  selected = resolveCampaign(requestedSelection(), storedSelection());
   for (const button of document.querySelectorAll("[data-campaign-choice]")) {
     button.addEventListener("click", () => {
       const value = button.dataset.campaignChoice;
@@ -553,7 +562,7 @@ export function initCampaigns() {
     });
   }
   window.addEventListener("popstate", () => {
-    selected = requestedSelection() || storedSelection() || DEFAULT_CAMPAIGN;
+    selected = resolveCampaign(requestedSelection(), storedSelection());
     render();
   });
   render();

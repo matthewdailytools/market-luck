@@ -1,8 +1,16 @@
 import { describeHomeHighlights } from "./home-highlights-model.js";
+import { describeHomeRound } from "./round-summary.js";
 
 const copy = {
   "zh-CN": {
     recentTitle: "最近开奖结果",
+    progressTitle: "本期进度 · 等待揭晓",
+    progressNote: "按已公布规则等待，固定来源一致后才公布结果。",
+    currentPhase: "当前进度",
+    checkingProgress: "公布记录待核对",
+    progressSteps: ["选号", "停售", "行情核验", "公布"],
+    demoSteps: ["选号", "停售", "模拟核验", "模拟公布"],
+    checkScope: "复算覆盖公开输入与号码；原始响应及全账本需另行核验。",
     recentNote: "本站已公布号码 · 历史结果与当前奖池分开记录",
     formatsTitle: "一池期待，16国玩法",
     formatsNote: "同一共享积分奖池 · 各国选号结构模拟 · 先看规则再选号",
@@ -22,6 +30,15 @@ const copy = {
   },
   en: {
     recentTitle: "Latest draw results",
+    progressTitle: "This round · Awaiting results",
+    progressNote:
+      "Following the published rules. Results require agreement from the fixed sources.",
+    currentPhase: "Current stage",
+    checkingProgress: "Published record needs checking",
+    progressSteps: ["Pick", "Sales close", "Price checks", "Publish"],
+    demoSteps: ["Pick", "Sales close", "Demo checks", "Demo result"],
+    checkScope:
+      "Reproduce published inputs and numbers here. Raw responses and the full ledger require separate checks.",
     recentNote:
       "Published here · Past results and the current pool are separate",
     formatsTitle: "One pool. 16 national formats.",
@@ -43,6 +60,15 @@ const copy = {
   },
   ja: {
     recentTitle: "直近の抽選結果",
+    progressTitle: "今回の進捗 · 発表待ち",
+    progressNote:
+      "公開ルールに従って待機し、指定情報源の一致後に結果を公表します。",
+    currentPhase: "現在の段階",
+    checkingProgress: "公表記録の確認が必要",
+    progressSteps: ["番号選択", "販売終了", "終値確認", "公表"],
+    demoSteps: ["番号選択", "販売終了", "模擬確認", "模擬公表"],
+    checkScope:
+      "公開入力と番号を再計算できます。元の応答や全台帳は別途確認が必要です。",
     recentNote: "本サイトの公開番号 · 過去の結果と現在のプールは別の記録です",
     formatsTitle: "ひとつのプール、16か国の形式",
     formatsNote:
@@ -79,10 +105,18 @@ function link(text, href, className) {
   el.href = href;
   return el;
 }
-function renderRecent(recent, words) {
+function renderRecent(recent, words, summary) {
   const panel = document.getElementById("recentDrawPanel");
   if (!panel) return;
-  const key = JSON.stringify([recent, words.recentTitle]);
+  const key = JSON.stringify([
+    recent,
+    words.recentTitle,
+    summary.round?.id,
+    summary.round?.status,
+    summary.cutoff,
+    summary.ready,
+    summary.timeZone,
+  ]);
   if (key === recentKey) return;
   recentKey = key;
   panel.dataset.status = recent.status;
@@ -111,8 +145,40 @@ function renderRecent(recent, words) {
       ),
       node("p", recent.message),
     );
+    if (recent.status === "waiting" && summary.round) {
+      const phase = node("p", undefined, "recent-meta");
+      phase.id = "recentDrawPhase";
+      const progress = node("ol", undefined, "round-progress");
+      progress.id = "recentDrawProgress";
+      const steps =
+        summary.mode === "DEMO" || summary.mode === "REPLAY"
+          ? words.demoSteps
+          : words.progressSteps;
+      steps.forEach((label) => progress.append(node("li", label)));
+      const timing = node("p", undefined, "recent-timing");
+      timing.append(
+        node("span", `${summary.cutoffLabel} ${summary.cutoffText}`),
+        node(
+          "span",
+          `${summary.readyLabel} ${summary.readyText} (${summary.timeZone})`,
+        ),
+      );
+      empty.append(
+        phase,
+        progress,
+        timing,
+        node(
+          "p",
+          summary.phase === "settled"
+            ? `${summary.timeZone} · ${words.checkingProgress}`
+            : summary.timingNote,
+          "recent-meta",
+        ),
+      );
+    }
     panel.append(empty);
     panel.append(link(words.waitingLink, recent.href, "recent-proof-link"));
+    panel.append(node("p", words.checkScope, "recent-meta"));
     return;
   }
   const meta = node("p", undefined, "recent-meta");
@@ -165,6 +231,31 @@ function renderRecent(recent, words) {
   drawBalls();
   panel.append(field, balls, node("p", recent.message, "recent-meta"));
   panel.append(link(words.proof, recent.href, "recent-proof-link"));
+  panel.append(node("p", words.checkScope, "recent-meta"));
+}
+
+// Uses the same tested clock phases as the hero; it never predicts a result.
+export function syncHomeHighlightProgress(summary, language = "zh-CN") {
+  const words = copy[language] || copy.en;
+  // A rejected published proof must not make the waiting card claim success.
+  const label =
+    summary.phase === "settled" ? words.checkingProgress : summary.statusLabel;
+  setText("recentDrawPhase", `${words.currentPhase}：${label}`);
+  const current = {
+    sales: 0,
+    awaitingClose: 1,
+    confirming: 2,
+    waiting: 2,
+  }[summary.phase];
+  document.querySelectorAll("#recentDrawProgress li").forEach((item, index) => {
+    item.classList.toggle("is-current", index === current);
+    item.classList.toggle(
+      "is-complete",
+      current !== undefined && index < current,
+    );
+    if (index === current) item.setAttribute("aria-current", "step");
+    else item.removeAttribute("aria-current");
+  });
 }
 function renderFormats(formats, words, selectedGame) {
   const box = document.getElementById("worldFormats");
@@ -202,11 +293,22 @@ function renderFormats(formats, words, selectedGame) {
 // Presentation only: this module never purchases a ticket or changes a round.
 export function renderHomeHighlights(
   state,
-  { language = "zh-CN", selectedGame = "cn", onSelectGame } = {},
+  {
+    language = "zh-CN",
+    selectedGame = "cn",
+    onSelectGame,
+    now = Date.now(),
+  } = {},
 ) {
   onGamePick = onSelectGame;
   const words = copy[language] || copy.en;
   const view = describeHomeHighlights(state, language);
+  const summary = describeHomeRound(
+    state,
+    now,
+    language,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+  );
   const formatsTitle = view.formats.length
     ? words.formatsTitle.replace("16", String(view.formats.length))
     : words.formatsTitle;
@@ -218,6 +320,7 @@ export function renderHomeHighlights(
         : ""),
   );
   setText("heroPoolAmount", view.pool.formatted);
+  setText("heroPoolUnit", view.pool.unit);
   setText("heroPoolNote", view.pool.note);
   setText("heroPoolLink", words.poolLink);
   const amount = document.getElementById("heroPoolAmount");
@@ -225,14 +328,24 @@ export function renderHomeHighlights(
     amount.dataset.value = view.pool.hasValue ? String(view.pool.value) : "";
   const poolLink = document.getElementById("heroPoolLink");
   if (poolLink) poolLink.href = "#ledger";
-  setText("recentDrawTitle", words.recentTitle);
-  setText("recentDrawNote", words.recentNote);
+  const recentTitle =
+    view.recent.status === "waiting" && summary.round
+      ? words.progressTitle
+      : words.recentTitle;
+  setText("recentDrawTitle", recentTitle);
+  setText(
+    "recentDrawNote",
+    view.recent.status === "waiting" && summary.round
+      ? words.progressNote
+      : words.recentNote,
+  );
   setText("worldFormatsTitle", formatsTitle);
   setText("worldFormatsEyebrow", `${view.formats.length || 16} WAYS TO PICK`);
   setText("worldFormatsNote", words.formatsNote);
   document
     .querySelector(".lottery-highlights")
-    ?.setAttribute("aria-label", `${words.recentTitle} · ${formatsTitle}`);
-  renderRecent(view.recent, words);
+    ?.setAttribute("aria-label", `${recentTitle} · ${formatsTitle}`);
+  renderRecent(view.recent, words, summary);
+  syncHomeHighlightProgress(summary, language);
   renderFormats(view.formats, words, selectedGame);
 }

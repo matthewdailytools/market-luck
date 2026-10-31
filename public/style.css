@@ -2111,12 +2111,28 @@ body[data-campaign="points"] .hero-secondary:hover {
   flex-direction: column;
   min-width: 0;
 }
+.hero-pool-number {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 5px;
+  min-width: 0;
+  max-width: 100%;
+}
+#heroPoolUnit {
+  color: var(--campaign-ink, #27366e);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.4;
+}
 #heroPoolLabel {
   color: #625975;
   font-size: 11px;
   line-height: 1.4;
 }
 #heroPoolAmount {
+  min-width: 0;
+  max-width: 100%;
   color: var(--campaign-ink, #27366e);
   font-size: clamp(29px, 3vw, 38px);
   font-weight: 750;
@@ -2516,5 +2532,387 @@ body[data-campaign="points"] .hero-secondary:hover {
   }
   .hero-perks {
     display: none;
+  }
+}
+
+/* Keep the pool's unit close, and show the same timing facts on every screen. */
+.campaign-switcher {
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.campaign-switcher button {
+  min-height: 44px;
+  padding: 8px 12px;
+  line-height: 1.25;
+}
+.hero-copy,
+.hero-actions,
+.hero-pool-overview > *,
+.draw-glass {
+  min-width: 0;
+}
+.hero-kicker,
+.hero-intro,
+.hero-description,
+.hero-actions > a,
+#heroPoolLabel,
+#heroPoolNote {
+  overflow-wrap: anywhere;
+}
+@media (min-width: 721px) {
+  .hero {
+    align-items: start;
+    padding-top: 29px;
+    padding-bottom: 29px;
+  }
+  .luck-stage {
+    display: grid;
+    grid-template-rows: 166px auto;
+    align-content: start;
+    gap: 10px;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+  }
+  .sphere-scene {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 166px;
+  }
+  .sphere-scene .sphere-main {
+    width: 150px;
+    height: 150px;
+    top: 6px;
+    font-size: 86px;
+    box-shadow:
+      inset -9px -12px 18px #34207b38,
+      inset 5px 6px 11px #e5dbff66,
+      8px 10px 24px #6c58a933;
+  }
+  .sphere-scene .sphere-small {
+    width: 52px;
+    height: 52px;
+    top: 45px;
+    left: 10%;
+    font-size: 21px;
+  }
+  .sphere-scene .sphere-coral {
+    width: 62px;
+    height: 62px;
+    top: 84px;
+    right: 8%;
+    font-size: 39px;
+  }
+  .sphere-scene .stage-grid {
+    width: 175px;
+    height: 175px;
+    top: -5px;
+  }
+  .sphere-scene .stage-orbit {
+    width: 240px;
+    height: 100px;
+    top: 50%;
+  }
+  .sphere-scene .orbit-two {
+    width: 270px;
+    height: 120px;
+  }
+  .sphere-scene .signal-label {
+    top: 0;
+    left: 0;
+    gap: 8px;
+    font-size: 7px;
+    letter-spacing: 1.4px;
+  }
+  .hero > .luck-stage > .draw-glass {
+    position: static;
+    width: 100%;
+    padding: 14px 16px;
+    background: #ffffffd9;
+    backdrop-filter: none;
+  }
+  .draw-glass-label {
+    line-height: 1.4;
+    letter-spacing: 1px;
+  }
+  .draw-glass strong {
+    margin: 4px 0;
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+  .draw-glass > span {
+    color: #655d77;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .hero-schedule {
+    display: grid;
+    gap: 6px;
+    margin-top: 9px;
+    padding-top: 9px;
+    border-top: 1px solid #e9e5ee;
+  }
+  .hero-schedule > div {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .hero-schedule > div > span {
+    color: #716782;
+    overflow-wrap: anywhere;
+  }
+  .hero-schedule time {
+    color: #353d59;
+    font-weight: 650;
+    text-align: right;
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero .hero-timing-note {
+    display: block;
+    margin-top: 7px;
+    color: #696177;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .hero-audit-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    max-width: 100%;
+    margin-top: 8px;
+    padding: 9px 13px;
+    border: 1px solid #526eb5;
+    border-radius: 7px;
+    color: #2c4e96;
+    background: #f4f6ff;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.5;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  .stage-caption {
+    display: none;
+  }
+  #heroPoolUnit {
+    color: #755015;
+  }
+}
+@media (min-width: 721px) and (max-width: 1050px) {
+  .hero {
+    padding: 24px;
+  }
+  .hero h1 {
+    margin-top: 13px;
+    margin-bottom: 13px;
+  }
+  html[lang="en"] .hero h1 {
+    font-size: clamp(30px, 3.4vw, 35px);
+    letter-spacing: -1.1px;
+  }
+  .luck-stage {
+    grid-template-rows: 154px auto;
+    gap: 8px;
+  }
+  .sphere-scene {
+    height: 154px;
+  }
+  .sphere-scene .sphere-main {
+    width: 140px;
+    height: 140px;
+    font-size: 80px;
+  }
+  .sphere-scene .sphere-small {
+    left: 3%;
+  }
+  .sphere-scene .sphere-coral {
+    right: 1%;
+  }
+  .hero > .luck-stage > .draw-glass {
+    padding: 12px;
+  }
+  .hero-schedule > div {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 7px;
+    font-size: 11px;
+  }
+  .hero .hero-actions {
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .hero-actions > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    max-width: 100%;
+    padding: 10px 12px;
+    text-align: center;
+  }
+}
+@media (max-width: 720px) {
+  .hero {
+    gap: 6px;
+    padding-top: 16px;
+  }
+  .campaign-switcher {
+    gap: 4px;
+    margin-bottom: 9px;
+    font-size: 10px;
+    line-height: 1.3;
+  }
+  .campaign-switcher > div {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .campaign-switcher button {
+    min-width: 0;
+    padding: 6px 4px;
+    font-size: 10.5px;
+    overflow-wrap: anywhere;
+  }
+  .hero-actions,
+  body[data-campaign="points"] .hero-actions,
+  html[lang="en"] .hero-actions {
+    display: contents;
+  }
+  .hero-actions .primary {
+    order: 4;
+    width: 100%;
+  }
+  .hero-actions .hero-secondary {
+    order: 6;
+  }
+  .hero > .luck-stage > .draw-glass {
+    order: 5;
+    padding: 10px 12px;
+  }
+  .hero .hero-intro {
+    order: 7;
+  }
+  .hero .hero-description {
+    order: 8;
+  }
+  .sphere-scene {
+    order: 9;
+  }
+  .hero .hero-points-note {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .hero .hero-pool {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .hero-schedule {
+    gap: 5px;
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+  .hero .hero-timing-note {
+    margin-top: 5px;
+  }
+  .hero-audit-link {
+    margin-top: 6px;
+  }
+  body[data-campaign="points"] .hero-actions .hero-secondary {
+    display: none;
+  }
+  #heroPoolUnit {
+    font-size: 12px;
+  }
+}
+
+/* Waiting for a real result has visible stages, without pretend number balls. */
+.round-progress,
+.round-progress ol {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  list-style: none;
+  margin: 17px 0 12px;
+  padding: 0;
+  counter-reset: draw-phase;
+}
+.round-progress:has(> ol) {
+  display: block;
+}
+.round-progress ol {
+  margin: 0;
+}
+.round-progress li {
+  position: relative;
+  min-width: 0;
+  padding: 8px 0 0;
+  border-top: 3px solid #e5e0ec;
+  color: #8b8198;
+  font-size: 10px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  counter-increment: draw-phase;
+}
+.round-progress li::before {
+  content: "0" counter(draw-phase);
+  display: block;
+  margin-bottom: 3px;
+  color: #b2a7bf;
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+}
+.round-progress li.is-complete {
+  border-color: #88afa1;
+  color: #59756c;
+}
+.round-progress li.is-current {
+  border-color: var(--campaign-accent, #354fc5);
+  color: var(--campaign-ink, #182b6a);
+  font-weight: 650;
+}
+.round-progress li.is-current::before {
+  color: var(--campaign-accent, #354fc5);
+}
+.recent-draw-panel #recentDrawPhase {
+  margin: 9px 0;
+  color: #64576f;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.recent-timing {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 11px 0;
+  padding: 11px 12px;
+  border: 1px solid #e7e2ef;
+  border-radius: 8px;
+  background: #faf8fd;
+  color: #776782;
+  font-size: 11px;
+  line-height: 1.65;
+  font-variant-numeric: tabular-nums;
+}
+.recent-timing > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 360px) {
+  .round-progress,
+  .round-progress ol {
+    gap: 5px;
+  }
+  .round-progress li {
+    font-size: 9px;
+  }
+  .recent-timing {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
   }
 }

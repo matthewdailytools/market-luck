@@ -1,7 +1,10 @@
 import { renderGameRules } from "./game-rules.js";
 import { initLanguages, translate } from "./i18n.js";
 import { describeHomeRound, selectDisplayRound } from "./round-summary.js";
-import { renderHomeHighlights } from "./home-highlights.js";
+import {
+  renderHomeHighlights,
+  syncHomeHighlightProgress,
+} from "./home-highlights.js";
 import {
   initCampaigns,
   syncCampaigns,
@@ -56,6 +59,7 @@ function updateHomeHighlights() {
   renderHomeHighlights(state, {
     language: document.documentElement.lang,
     selectedGame: gid,
+    now: serverNow(),
     onSelectGame: (id) => selectGame(id, true),
   });
 }
@@ -69,10 +73,12 @@ function selectGame(id, scroll = false) {
   picker();
   updateHomeHighlights();
   if (scroll) {
-    const title = document.querySelector("#gameName");
+    const rules = document.querySelector(".game-rules");
+    rules.open = true;
+    const title = document.querySelector("#gameRules");
     title.setAttribute("tabindex", "-1");
     title.focus({ preventScroll: true });
-    document.querySelector("#play").scrollIntoView({
+    rules.scrollIntoView({
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
         ? "auto"
         : "smooth",
@@ -412,6 +418,7 @@ function tickCountdown() {
     source = document.querySelector("#sourceStatus");
   if (!el) return;
   const summary = updateHeroSummary();
+  syncHomeHighlightProgress(summary, document.documentElement.lang);
   const now = serverNow();
   syncCampaignClock(now);
   const target = summary.target;

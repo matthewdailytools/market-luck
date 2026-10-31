@@ -60,7 +60,8 @@ test("a first live round waits without manufacturing balls from winners or DEMO 
   assert.equal(model.formats.length, 16);
   assert.equal(model.pool.value, 100000);
   assert.match(model.pool.note, /全部玩法共用.*无现金价值/);
-  assert.equal(model.pool.label, "当前共享奖池");
+  assert.equal(model.pool.label, "当前共享积分池");
+  assert.equal(model.pool.unit, "积分");
 });
 
 test("current open round and latest published result keep separate IDs and links", () => {
