@@ -17,7 +17,10 @@ const markets = ["AAPL", "MSFT"].map((s) => ({
   exchange: "NASDAQ",
 }));
 test("live manifest pins free source quorum, cutoff and confirmation window", () => {
-  const m = liveManifest({ markets, cutoff: now + 7200000 }, now);
+  const m = liveManifest(
+    { markets, cutoff: now + 7200000, sourceProfile: "KEYED-v1" },
+    now,
+  );
   assert.equal(m.ready, closeUTC + 86400000);
   assert.equal(m.quorum, 2);
   assert.deepEqual(m.sources, ["EODHD", "AlphaVantage", "TwelveData"]);

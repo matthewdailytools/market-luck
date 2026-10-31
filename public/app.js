@@ -6,6 +6,8 @@ let state,
   gid = "cn",
   chosen = [],
   special = null;
+let serverOffset = 0;
+const serverNow = () => Date.now() + serverOffset;
 const toast = (s) => {
   $("#toast").textContent = s;
   $("#toast").style.display = "block";
@@ -85,10 +87,11 @@ function picker() {
     chosen.length !== g.count ||
     (g.bonus && special === null) ||
     !current() ||
-    Date.now() >= current().cutoff;
+    serverNow() >= current().cutoff;
 }
 async function refresh() {
   state = await api("state");
+  serverOffset = (state.serverTime || Date.now()) - Date.now();
   $("#pool").textContent = state.pool.toLocaleString();
   $("#balance").textContent = state.me
     ? state.me.balance.toLocaleString()
@@ -98,10 +101,10 @@ async function refresh() {
   document.querySelector(".demo").hidden = !state.demo || state.autoDraw;
   document.querySelector(".notice").textContent = state.demo
     ? "实验环境 / 模拟行情与模拟时钟，不代表真实股市开奖。公开复算让信任边界可见。"
-    : "真实行情模式 / 固定免费源交叉核验，至少两源一致且无有效分歧。无共识则等待，不承诺绝对不可操控。";
+    : "真实开奖 / Yahoo Finance + Nasdaq 双源一致后开奖。停售、闭市与24小时确认窗口提前锁定；缺失或分歧就等待。积分无现金价值。";
   const r = current();
   $("#status").textContent = r
-    ? Date.now() < r.cutoff
+    ? serverNow() < r.cutoff
       ? "正在售票"
       : "等待开奖"
     : "等待开期";
@@ -110,6 +113,43 @@ async function refresh() {
     : "创建新期开始体验";
   $("#commitment").textContent =
     r?.commitment || state.rounds[0]?.commitment || "尚未开期";
+  const publication = state.anchors?.find(
+    (a) => a.round_id === (r || state.rounds[0])?.id,
+  );
+  let anchorLink = document.querySelector("#anchorLink");
+  if (!anchorLink) {
+    anchorLink = make("a", "");
+    anchorLink.id = "anchorLink";
+    anchorLink.target = "_blank";
+    anchorLink.rel = "noopener noreferrer";
+    document.querySelector("#commitment").after(anchorLink);
+  }
+  anchorLink.hidden = !publication;
+  if (publication) {
+    anchorLink.href = publication.url;
+    anchorLink.textContent = translate("查看事前承诺 ↗");
+  }
+  if (r?.manifest.mode === "LIVE")
+    $("#deadline").textContent =
+      ["停售", "Sales close", "販売終了"][
+        document.documentElement.lang === "en"
+          ? 1
+          : document.documentElement.lang === "ja"
+            ? 2
+            : 0
+      ] +
+      " " +
+      new Date(r.cutoff).toLocaleString(document.documentElement.lang) +
+      " · " +
+      ["最早开奖", "Earliest draw", "抽選開始"][
+        document.documentElement.lang === "en"
+          ? 1
+          : document.documentElement.lang === "ja"
+            ? 2
+            : 0
+      ] +
+      " " +
+      new Date(r.ready).toLocaleString(document.documentElement.lang);
   rows("#markets", r?.manifest.markets || [], (x) =>
     make(
       "div",
@@ -130,6 +170,8 @@ async function refresh() {
       gid = g.id;
       chosen = [];
       special = null;
+      let serverOffset = 0;
+      const serverNow = () => Date.now() + serverOffset;
       refresh().catch(fail);
     };
     return b;
@@ -187,6 +229,7 @@ async function refresh() {
     },
   );
   picker();
+  tickCountdown();
 }
 const fail = (e) => toast(e.message);
 $("#account").onclick = () => {
@@ -273,3 +316,54 @@ setInterval(() => refresh().catch(() => {}), 30000);
 document.querySelector("#language").addEventListener("change", () => {
   if (state) picker();
 });
+
+function tickCountdown() {
+  const el = document.querySelector("#drawCountdown"),
+    source = document.querySelector("#sourceStatus");
+  if (!el || !state) return;
+  const r = current();
+  const language = document.documentElement.lang;
+  const i = language === "en" ? 1 : language === "ja" ? 2 : 0;
+  if (!r) {
+    el.textContent = [
+      "等待下一期开售",
+      "Next round coming soon",
+      "次回の販売を準備中",
+    ][i];
+    return;
+  }
+  const now = serverNow(),
+    close = Math.max(...r.manifest.markets.map((m) => m.closeUTC));
+  let label, target;
+  if (now < r.cutoff) {
+    label = ["停售倒计时", "Ticket sales close in", "販売終了まで"][i];
+    target = r.cutoff;
+  } else if (now < close) {
+    label = [
+      "已停售 · 等待收盘",
+      "Sales closed · awaiting market close",
+      "販売終了 · 取引終了待ち",
+    ][i];
+  } else if (now < r.ready) {
+    label = ["收盘确认倒计时", "Close confirmation in", "終値確認まで"][i];
+    target = r.ready;
+  } else
+    label = ["等待双源一致", "Awaiting source consensus", "2社の一致を確認中"][
+      i
+    ];
+  const delta = target ? Math.max(0, Math.ceil((target - now) / 1000)) : 0;
+  const duration = target
+    ? `${Math.floor(delta / 86400)}d ${String(Math.floor(delta / 3600) % 24).padStart(2, "0")}:${String(Math.floor(delta / 60) % 60).padStart(2, "0")}:${String(delta % 60).padStart(2, "0")}`
+    : "";
+  el.textContent = label + (target ? " " + duration : "");
+  source.textContent =
+    r.manifest.mode === "LIVE"
+      ? `${r.manifest.sources.join(" + ")} · ${r.manifest.markets.map((m) => m.symbol.split(":")[1]).join(" / ")}`
+      : [
+          "模拟行情 · 纯积分体验",
+          "Simulated market · virtual points",
+          "模擬相場 · 仮想ポイント",
+        ][i];
+  if (now >= r.cutoff) document.querySelector("#buy").disabled = true;
+}
+setInterval(tickCountdown, 1000);

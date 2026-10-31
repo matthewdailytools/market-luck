@@ -1,13 +1,22 @@
 import { evidence, tier, hash } from "./engine.js";
-export async function settle(env, round, prices, metadata = {}) {
+import { assertLockedRound } from "./calendar.js";
+export async function settle(
+  env,
+  round,
+  prices,
+  metadata = {},
+  now = Date.now(),
+) {
   const q = (s, ...a) => env.DB.prepare(s).bind(...a);
   const existing = await q(
     "SELECT proof FROM rounds WHERE id=?",
     round.id,
   ).first();
   if (existing?.proof) return JSON.parse(existing.proof);
-  if (Date.now() < round.cutoff || Date.now() < round.ready)
-    throw Error("MARKETS_NOT_FINAL");
+  assertLockedRound(round, now, {
+    forCollection: JSON.parse(round.manifest).mode === "LIVE",
+  });
+  if (now < round.cutoff || now < round.ready) throw Error("MARKETS_NOT_FINAL");
   const proof = {
     ...evidence(round, prices),
     ...metadata,

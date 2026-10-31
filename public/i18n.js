@@ -1,5 +1,50 @@
 export const languages = ["zh-CN", "en", "ja"];
 export const dictionary = {
+  "行情落定，好运待启": [
+    "THE CLOSE IS IN. YOUR CHANCE IS NEXT.",
+    "終値が決まる。次は、あなたの番。",
+  ],
+  "世界收盘了。": ["The markets close.", "市場が取引を終える。"],
+  "你的好运，": ["Your next lucky", "あなたの幸運は、"],
+  "才开场。": ["moment begins.", "ここから始まる。"],
+  "把市场的最后一刻，变成你的下一次期待。": [
+    "Turn the market’s closing moment into your next possibility.",
+    "市場の最後の瞬間を、あなたの次の楽しみに。",
+  ],
+  "收盘行情生成幸运号码，算法提前公开。你负责选好号码，剩下的，一起见证。": [
+    "Closing prices become lucky numbers through a published algorithm. Make your picks. We’ll witness the rest together.",
+    "終値から、事前公開のアルゴリズムで当選番号へ。番号を選んだら、その瞬間を一緒に見届けよう。",
+  ],
+  "挑选我的幸运号码 ↗": ["Pick my lucky numbers ↗", "ラッキーナンバーを選ぶ ↗"],
+  "看看如何公开验证 →": ["See how to verify →", "公開検証の仕組みを見る →"],
+  国经典玩法: ["national formats", "か国の形式"],
+  注册即领积分: ["welcome points", "登録でもらえるポイント"],
+  积分开启一注期待: ["points for one possibility", "ポイントで1口の楽しみ"],
+  "下一次幸运，等待揭晓": [
+    "YOUR NEXT POSSIBILITY IS ON ITS WAY",
+    "次の幸運は、発表待ち",
+  ],
+  等待下一期开售: ["Waiting for the next round", "次の回の販売を準備中"],
+  "公开行情 · 公开算法 · 公开结果": [
+    "Public prices · Open algorithm · Open results",
+    "公開相場 · 公開手順 · 公開結果",
+  ],
+  "好运值得期待，过程经得起查看。": [
+    "Anticipate the outcome. Inspect the process.",
+    "結果を楽しみに。過程を確かに。",
+  ],
+  提前锁定规则: ["Rules locked in advance", "ルールを事前に固定"],
+  闭市后核验行情: ["Verify after markets close", "取引終了後に相場を確認"],
+  任何人都能复算: ["Anyone can reproduce", "誰でも再計算できる"],
+  "今天，想从哪个国家开始好运？": [
+    "Where will your luck begin today?",
+    "今日は、どの国から幸運を始める？",
+  ],
+  "期待可以感性，开奖必须透明。": [
+    "Feel the anticipation. Verify the draw.",
+    "期待は自由に。抽選は透明に。",
+  ],
+
   "16 国经典选号结构": ["16 national number formats", "16か国の番号形式"],
   "每注 10 积分 / 16 国经典选号结构": [
     "10 points per ticket / 16 national formats",
@@ -211,6 +256,16 @@ dictionary[
 ] = [
   "Winning conditions are defined in each game’s rules panel above. The shared pool allocates 50% / 30% / 20% to tiers 1/2/3, split equally and rounded down; unused points roll over. Each ticket receives its highest tier only. These formats are simulations, not official lotteries. Hosting, data providers and administrators remain trust boundaries; external commitments and independent audits are still needed.",
   "当選条件は上記の各ゲームのルール欄に従います。共有プールの50% / 30% / 20%を1～3等に均等配分し、端数と未配分分を繰り越します。1口につき最高等級のみ適用します。各国の形式を参考にした仮想ゲームで、公式宝くじではありません。運営・情報源・管理者への信頼は残り、外部コミットメントと独立監査が必要です。",
+];
+dictionary[
+  "真实开奖 / Yahoo Finance + Nasdaq 双源一致后开奖。停售、闭市与24小时确认窗口提前锁定；缺失或分歧就等待。积分无现金价值。"
+] = [
+  "LIVE / Yahoo Finance + Nasdaq must agree. Sales cutoff, market close and a 24-hour confirmation window are committed in advance. Missing or conflicting data means waiting. Points have no cash value.",
+  "実抽選 / Yahoo FinanceとNasdaqの一致が条件。販売終了・取引終了・24時間の確認期間を事前に固定。欠損・不一致は待機。ポイントに金銭的価値はありません。",
+];
+dictionary["查看事前承诺 ↗"] = [
+  "View pre-sale commitment ↗",
+  "事前コミットメント ↗",
 ];
 let lang;
 if (typeof document !== "undefined") {

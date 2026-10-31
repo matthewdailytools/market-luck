@@ -7,3 +7,6 @@ test-output/
 wrangler.test.jsonc
 *.log
 cookies.txt
+
+wrangler.live.jsonc
+wrangler.replay.jsonc

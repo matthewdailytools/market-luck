@@ -20,24 +20,54 @@
       </nav>
     </header>
     <main>
-      <div class="eyebrow">THE MARKET CLOSES. YOUR LUCK OPENS.</div>
-      <section class="hero">
-        <div>
-          <h1>让世界收盘，<br />让好运<span>开场。</span></h1>
-          <p>
-            把公开行情变成可复算的幸运号码。<br />规则提前锁定，每一注、每一分，都有迹可循。
+      <section class="hero" aria-label="Market Luck">
+        <div class="hero-copy">
+          <div class="hero-kicker">
+            <span class="signal-dot"></span><span>行情落定，好运待启</span>
+          </div>
+          <h1>
+            世界收盘了。<br /><span>你的好运，</span
+            ><br class="desktop-break" />才开场。
+          </h1>
+          <p class="hero-intro">把市场的最后一刻，变成你的下一次期待。</p>
+          <p class="hero-description">
+            收盘行情生成幸运号码，算法提前公开。你负责选好号码，剩下的，一起见证。
           </p>
-          <a class="primary" href="#play">试试我的运气 ↗</a>
-          <div class="tags">
-            纯积分娱乐 <b>·</b> 无充值提现 <b>·</b> 开源算法
+          <div class="hero-actions">
+            <a class="primary" href="#play">挑选我的幸运号码 ↗</a
+            ><a class="hero-secondary" href="#audit">看看如何公开验证 →</a>
+          </div>
+          <div class="hero-perks">
+            <span><b>16</b><small>国经典玩法</small></span
+            ><span><b>1,000</b><small>注册即领积分</small></span
+            ><span><b>10</b><small>积分开启一注期待</small></span>
           </div>
         </div>
-        <aside class="orb">
-          <div class="orbit">GLOBAL CLOSING SIGNAL</div>
-          <div class="bigball">?</div>
-          <div class="orbit">公开输入 → 哈希 → 幸运号码</div>
+        <aside class="luck-stage">
+          <div class="stage-grid" aria-hidden="true"></div>
+          <div class="stage-orbit orbit-one" aria-hidden="true"></div>
+          <div class="stage-orbit orbit-two" aria-hidden="true"></div>
+          <div class="signal-label">
+            <span class="signal-dot"></span>THE NEXT POSSIBILITY
+          </div>
+          <div class="lucky-sphere sphere-small" aria-hidden="true">16</div>
+          <div class="lucky-sphere sphere-main" aria-hidden="true">?</div>
+          <div class="lucky-sphere sphere-coral" aria-hidden="true">✦</div>
+          <div class="draw-glass">
+            <div class="draw-glass-label">下一次幸运，等待揭晓</div>
+            <strong id="drawCountdown">等待下一期开售</strong
+            ><span id="sourceStatus">公开行情 · 公开算法 · 公开结果</span>
+          </div>
+          <div class="stage-caption">PUBLIC INPUT. SHARED EXCITEMENT.</div>
         </aside>
       </section>
+      <div class="proof-ribbon">
+        <span class="ribbon-title">好运值得期待，过程经得起查看。</span>
+        <div>
+          <span>提前锁定规则</span><b>→</b><span>闭市后核验行情</span><b>→</b
+          ><span>任何人都能复算</span>
+        </div>
+      </div>
       <div class="notice">
         实验环境 /
         模拟行情与模拟时钟，不代表真实股市开奖。“绝对不能操控”无法保证，公开复算让信任边界可见。
@@ -59,8 +89,8 @@
       <section id="play">
         <div class="sectionhead">
           <div>
-            <div class="eyebrow">PICK YOUR POSSIBILITY</div>
-            <h2>一张票，另一种可能。</h2>
+            <div class="eyebrow">16 COUNTRIES. ONE WORLD OF POSSIBILITIES.</div>
+            <h2>今天，想从哪个国家开始好运？</h2>
           </div>
           <span>每注 10 积分 / 16 国经典选号结构</span>
         </div>
@@ -87,8 +117,10 @@
       <section id="audit">
         <div class="sectionhead">
           <div>
-            <div class="eyebrow">DON'T TRUST. VERIFY.</div>
-            <h2>好运公开，过程也公开。</h2>
+            <div class="eyebrow">
+              THE EXCITEMENT IS REAL. THE PROCESS IS OPEN.
+            </div>
+            <h2>期待可以感性，开奖必须透明。</h2>
           </div>
           <button id="refresh">刷新账本 ↻</button>
         </div>
