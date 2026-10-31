@@ -6,7 +6,7 @@
     <title>Market Luck · 全球收盘实验室</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
-  <body data-campaign="verify">
+  <body data-campaign="points">
     <header>
       <a class="brand" href="/">◈ MARKET LUCK <small>全球收盘实验室</small></a>
       <nav>
@@ -30,14 +30,14 @@
           <button
             type="button"
             data-campaign-choice="verify"
-            aria-pressed="true"
+            aria-pressed="false"
           >
             公开核验
           </button>
           <button
             type="button"
             data-campaign-choice="points"
-            aria-pressed="false"
+            aria-pressed="true"
           >
             积分体验
           </button>
@@ -53,19 +53,20 @@
       <section class="hero" aria-label="Market Luck">
         <div class="hero-copy">
           <div class="hero-kicker" data-campaign-copy>
-            <span class="signal-dot"></span
-            ><span>看得见的规则，算得出的结果</span>
+            <span class="signal-dot"></span><span>给期待一个轻松的开始</span>
           </div>
           <h1 id="campaignTitle" data-campaign-copy>
-            好运值得期待，<br /><span>结果自己核对。</span>
+            花一点积分，<br /><span>留一份期待。</span>
           </h1>
-          <p class="hero-intro" data-campaign-copy>先看清开奖，再试试手气。</p>
+          <p class="hero-intro" data-campaign-copy>
+            把花费规则看清楚，再开始体验。
+          </p>
           <p class="hero-description" data-campaign-copy>
-            本期规则售票前锁定，指定收盘行情核验后生成号码。输入与结果，可在开奖后自行复算。
+            纯虚拟积分，无现金价值。注册一次性领取1,000积分，每注10分。无充值、无提现；先看规则与概率，再挑选你的号码。
           </p>
           <div class="hero-actions" data-campaign-copy>
-            <a class="primary" href="#audit">先看核验流程 ↗</a
-            ><a class="hero-secondary" href="#play">用积分试试手气 →</a>
+            <a class="primary" href="#play">免费体验积分玩法 ↗</a
+            ><a class="hero-secondary" href="#audit">了解如何公开核验 →</a>
           </div>
           <div class="hero-perks">
             <span><b>16</b><small>国经典玩法</small></span
@@ -81,7 +82,7 @@
             <span class="signal-dot"></span>THE NEXT POSSIBILITY
           </div>
           <div class="lucky-sphere sphere-small" aria-hidden="true">16</div>
-          <div class="lucky-sphere sphere-main" aria-hidden="true">?</div>
+          <div class="lucky-sphere sphere-main" aria-hidden="true">10</div>
           <div class="lucky-sphere sphere-coral" aria-hidden="true">✦</div>
           <div class="draw-glass">
             <div class="draw-glass-label">下一次幸运，等待揭晓</div>
@@ -99,9 +100,9 @@
         <div class="campaign-evidence-heading">
           <div>
             <p id="campaignEvidenceEyebrow" class="eyebrow">
-              FROM QUESTIONS TO CHECKS
+              POINTS FOR EXPERIENCE
             </p>
-            <h2 id="campaignEvidenceTitle">把疑问，变成可以核对的事。</h2>
+            <h2 id="campaignEvidenceTitle">体验预算，明明白白。</h2>
           </div>
           <p id="campaignStatus" class="campaign-status" role="status">
             本期状态载入后显示；事前承诺不等于结果已核验。
@@ -110,21 +111,23 @@
         <div id="campaignEvidenceCards" class="campaign-evidence-grid">
           <article>
             <span class="campaign-card-number">01</span>
-            <h3>规则先锁定</h3>
-            <p>查看固定提交中的本期标的、时间和算法承诺。</p>
-            <a href="#audit">查看核验流程 ↗</a>
+            <h3>1,000分起步</h3>
+            <p>注册成功时一次性赠分，登录不重复领取。不设现金充值。</p>
+            <a href="#play">了解积分体验 ↗</a>
           </article>
           <article>
             <span class="campaign-card-number">02</span>
-            <h3>行情按规则核验</h3>
-            <p>固定来源逐只核验；缺失或分歧就等待，不临时换日。</p>
-            <a href="#audit">查看来源与时间 ↗</a>
+            <h3>10分一注</h3>
+            <p>先看号码范围、中奖条件和概率；每张票只计最高档。</p>
+            <a href="#gameRules">查看玩法规则 ↗</a>
           </article>
           <article>
             <span class="campaign-card-number">03</span>
-            <h3>结果可以自己算</h3>
-            <p>开奖后下载输入与证明，重新计算号码并核对记录。</p>
-            <a href="#proofs">查看证明与记录 ↗</a>
+            <h3>收支有记录</h3>
+            <p>
+              查询余额、中奖及奖池记录。命中奖档不等于回本，奖金额可能低于票价。
+            </p>
+            <a href="#ledger">查看积分与奖池 ↗</a>
           </article>
         </div>
         <p id="campaignBoundary" class="campaign-boundary">

@@ -90,3 +90,5 @@ No API keys are needed for historical diagnostics: `node scripts/check-public-so
 `node tests/live-online.js` exercises live publication and sales using real clocks and requires `LIVE_ADMIN_TOKEN`; it cannot force an early draw. `node scripts/run-live-replay.js` is only for a separately installed replay environment and requires `REPLAY_ADMIN_TOKEN`. These tests create test accounts and tickets; read the acceptance report before running them against an installation.
 
 [Theme design evaluation](主题设计评估.md): the selected bright global-play direction is an expert design judgment, not a measured A/B conversion result.
+
+The default for new visitors is now **Try with points**, with a visible link to draw verification. Users can still select Verify the draw or Explore formats. See the [three-theme evaluation](三主题吸引力与信任感评估.md) for the independent AI reviews, scores and limits; this is not a measured conversion result.

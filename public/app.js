@@ -323,6 +323,7 @@ setInterval(() => refresh().catch(() => {}), 30000);
 document.querySelector("#language").addEventListener("change", () => {
   if (state) picker();
   syncCampaigns(state);
+  tickCountdown();
 });
 
 function tickCountdown() {

@@ -2,7 +2,8 @@
 // remain controlled by app.js and the server's committed round manifest.
 const allowed = new Set(["verify", "points", "world"]);
 const storageKey = "market-luck-campaign";
-let selected = "verify";
+const DEFAULT_CAMPAIGN = "points";
+let selected = DEFAULT_CAMPAIGN;
 let latestState;
 let initialized = false;
 let serverOffset = 0;
@@ -62,11 +63,11 @@ const copy = {
       title: ["花一点积分，", "留一份期待。"],
       intro: "把花费规则看清楚，再开始体验。",
       description:
-        "注册一次性领取1,000积分，每注10分。无充值、无提现；先看规则与概率，再挑选你的号码。",
+        "纯虚拟积分，无现金价值。注册一次性领取1,000积分，每注10分。无充值、无提现；先看规则与概率，再挑选你的号码。",
       primary: "免费体验积分玩法 ↗",
       memberPrimary: "用积分体验玩法 ↗",
-      secondary: "先看中奖规则 →",
-      secondaryHref: "#gameRules",
+      secondary: "了解如何公开核验 →",
+      secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
       evidenceTitle: "体验预算，明明白白。",
       cards: [
@@ -188,11 +189,11 @@ const copy = {
       title: ["A few points.", "A little anticipation."],
       intro: "Know the cost before you join in.",
       description:
-        "Registration grants 1,000 points once. Each ticket costs 10 points. No deposits or withdrawals: read the rules and odds before choosing your numbers.",
+        "Virtual points only, with no cash value. Registration grants 1,000 points once. Each ticket costs 10 points. No deposits or withdrawals: read the rules and odds before choosing your numbers.",
       primary: "Try points games for free ↗",
       memberPrimary: "Explore with your points ↗",
-      secondary: "Read the winning rules first →",
-      secondaryHref: "#gameRules",
+      secondary: "Learn how public verification works →",
+      secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
       evidenceTitle: "An experience budget you can understand.",
       cards: [
@@ -309,11 +310,11 @@ const copy = {
       title: ["少しのポイントで、", "次の楽しみを。"],
       intro: "使うポイントを理解してから体験。",
       description:
-        "登録時に1,000ポイントを1回付与。1口10ポイントで、入金・出金はありません。ルールと確率を見てから番号を選べます。",
+        "仮想ポイントのみで、金銭的価値はありません。登録時に1,000ポイントを1回付与。1口10ポイントで、入金・出金はありません。ルールと確率を見てから番号を選べます。",
       primary: "ポイントゲームを無料体験 ↗",
       memberPrimary: "ポイントで体験する ↗",
-      secondary: "先に当選条件を見る →",
-      secondaryHref: "#gameRules",
+      secondary: "公開検証の仕組みを知る →",
+      secondaryHref: "#audit",
       eyebrow: "POINTS FOR EXPERIENCE",
       evidenceTitle: "体験の予算を、わかりやすく。",
       cards: [
@@ -532,7 +533,7 @@ function render() {
 export function initCampaigns() {
   if (initialized || !document.querySelector("#campaignTitle")) return;
   initialized = true;
-  selected = requestedSelection() || storedSelection() || "verify";
+  selected = requestedSelection() || storedSelection() || DEFAULT_CAMPAIGN;
   for (const button of document.querySelectorAll("[data-campaign-choice]")) {
     button.addEventListener("click", () => {
       const value = button.dataset.campaignChoice;
@@ -550,7 +551,7 @@ export function initCampaigns() {
     });
   }
   window.addEventListener("popstate", () => {
-    selected = requestedSelection() || storedSelection() || "verify";
+    selected = requestedSelection() || storedSelection() || DEFAULT_CAMPAIGN;
     render();
   });
   render();
