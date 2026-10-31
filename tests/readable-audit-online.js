@@ -149,10 +149,22 @@ equal(
 const pageText = await page.text();
 ok(pageText.includes("verify.js"), "Readable page script is not loaded");
 ok(pageText.includes("verify.css"), "Readable page styles are not loaded");
+const homeResponse = await get("/");
+const home = await homeResponse.text();
+for (const id of [
+  "heroPoolAmount",
+  "heroPointsNote",
+  "heroAuditLink",
+  "recentDrawPanel",
+  "worldFormats",
+])
+  ok(home.includes(`id="${id}"`), "Homepage is missing " + id);
 for (const asset of [
   "app.js",
   "campaigns.js",
   "round-summary.js",
+  "home-highlights.js",
+  "home-highlights-model.js",
   "style.css",
   "verify.js",
   "verify.css",

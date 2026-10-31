@@ -1,6 +1,7 @@
 import { renderGameRules } from "./game-rules.js";
 import { initLanguages, translate } from "./i18n.js";
 import { describeHomeRound, selectDisplayRound } from "./round-summary.js";
+import { renderHomeHighlights } from "./home-highlights.js";
 import {
   initCampaigns,
   syncCampaigns,
@@ -12,10 +13,12 @@ const $ = (s) => document.querySelector(s);
 let state,
   gid = "cn",
   chosen = [],
-  special = null;
+  special = null,
+  selectionContext = null;
 let serverOffset = 0;
 const serverNow = () => Date.now() + serverOffset;
 updateHeroSummary();
+updateHomeHighlights();
 const toast = (s) => {
   $("#toast").textContent = s;
   $("#toast").style.display = "block";
@@ -49,10 +52,73 @@ function rows(selector, items, render) {
   if (!items.length) box.append(make("p", "暂无记录"));
   items.forEach((i) => box.append(render(i)));
 }
-function picker() {
+function updateHomeHighlights() {
+  renderHomeHighlights(state, {
+    language: document.documentElement.lang,
+    selectedGame: gid,
+    onSelectGame: (id) => selectGame(id, true),
+  });
+}
+function selectGame(id, scroll = false) {
+  const catalog = current()?.manifest.games || state?.games || [];
+  if (!catalog.some((game) => game.id === id)) return;
+  gid = id;
+  chosen = [];
+  special = null;
+  renderGameCards();
+  picker();
+  updateHomeHighlights();
+  if (scroll) {
+    const title = document.querySelector("#gameName");
+    title.setAttribute("tabindex", "-1");
+    title.focus({ preventScroll: true });
+    document.querySelector("#play").scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "start",
+    });
+  }
+}
+function renderGameCards() {
+  normalizeSelection();
+  rows("#games", current()?.manifest.games || state.games, (g) => {
+    const b = make("button", "", `game${g.id === gid ? " active" : ""}`);
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(g.id === gid));
+    b.append(
+      make("span", g.flag),
+      make("b", g.name),
+      make(
+        "small",
+        `${g.count} / ${g.max}${g.bonus ? " + 1 / " + g.bonus : ""}`,
+      ),
+    );
+    b.onclick = () => selectGame(g.id);
+    return b;
+  });
+}
+function normalizeSelection() {
   const catalog = current()?.manifest.games || state.games;
-  const g = catalog.find((x) => x.id === gid) || catalog[0];
-  gid = g.id;
+  const game = catalog.find((item) => item.id === gid) || catalog[0];
+  const context = JSON.stringify([
+    current()?.id || null,
+    game.id,
+    game.count,
+    game.max,
+    game.bonus,
+    game.bonusMin ?? 1,
+  ]);
+  if (selectionContext !== context) {
+    chosen = [];
+    special = null;
+    selectionContext = context;
+  }
+  gid = game.id;
+  return game;
+}
+function picker() {
+  const g = normalizeSelection();
   renderGameRules(g, document.documentElement.lang);
   $("#gameName").textContent = g.name;
   $("#rule").textContent =
@@ -147,26 +213,7 @@ async function refresh() {
       `${x.symbol} · ${x.currency} · ${r.manifest.mode === "DEMO" ? "模拟收盘" : new Date(x.closeUTC).toLocaleString(document.documentElement.lang)}`,
     ),
   );
-  rows("#games", r?.manifest.games || state.games, (g) => {
-    const b = make("button", "", `game${g.id === gid ? " active" : ""}`);
-    b.append(
-      make("span", g.flag),
-      make("b", g.name),
-      make(
-        "small",
-        `${g.count} / ${g.max}${g.bonus ? " + 1 / " + g.bonus : ""}`,
-      ),
-    );
-    b.onclick = () => {
-      gid = g.id;
-      chosen = [];
-      special = null;
-      let serverOffset = 0;
-      const serverNow = () => Date.now() + serverOffset;
-      refresh().catch(fail);
-    };
-    return b;
-  });
+  renderGameCards();
   rows("#tickets", state.tickets, (t) => {
     const a = make("div", "", "row");
     a.append(
@@ -228,6 +275,7 @@ async function refresh() {
     },
   );
   picker();
+  updateHomeHighlights();
   syncCampaigns(state);
   tickCountdown();
 }
@@ -315,6 +363,7 @@ setInterval(() => refresh().catch(() => {}), 30000);
 
 document.querySelector("#language").addEventListener("change", () => {
   if (state) picker();
+  updateHomeHighlights();
   syncCampaigns(state);
   tickCountdown();
 });

@@ -61,6 +61,21 @@
           <p id="heroPointsNote" class="hero-points-note" data-campaign-copy>
             纯积分 · 注册一次赠1,000分 · 每注10分 · 无现金价值
           </p>
+          <div
+            class="hero-pool"
+            role="group"
+            aria-labelledby="heroPoolLabel"
+            data-campaign-copy
+          >
+            <div class="hero-pool-overview">
+              <div class="hero-pool-value">
+                <span id="heroPoolLabel">当前共享奖池 · 积分</span>
+                <strong id="heroPoolAmount">—</strong>
+              </div>
+              <a id="heroPoolLink" href="#ledger">奖池流水 →</a>
+            </div>
+            <p id="heroPoolNote">共享积分余额，无现金价值。</p>
+          </div>
           <p class="hero-intro" data-campaign-copy>
             免费试试手气，开奖依据自己看。
           </p>
@@ -118,6 +133,38 @@
           </div>
           <div class="stage-caption">PUBLIC INPUT. SHARED EXCITEMENT.</div>
         </aside>
+      </section>
+      <section
+        class="lottery-highlights"
+        data-campaign-copy
+        aria-labelledby="recentDrawTitle worldFormatsTitle"
+      >
+        <article class="highlight-card recent-draw-card">
+          <div class="highlight-heading">
+            <p class="eyebrow" id="recentDrawEyebrow">
+              THE LATEST PUBLISHED ROUND
+            </p>
+            <h2 id="recentDrawTitle">最近公布结果</h2>
+          </div>
+          <p id="recentDrawNote" class="highlight-note">
+            这里显示最近已公布期次，与上方当前共享奖池分别展示。
+          </p>
+          <div id="recentDrawPanel" class="recent-draw-panel">
+            <p class="highlight-placeholder">正在读取已公布期次…</p>
+          </div>
+        </article>
+        <article class="highlight-card world-formats-card">
+          <div class="highlight-heading">
+            <p class="eyebrow" id="worldFormatsEyebrow">16 WAYS TO PICK</p>
+            <h2 id="worldFormatsTitle">16国玩法，一眼挑选</h2>
+          </div>
+          <p id="worldFormatsNote" class="highlight-note">
+            各国选号结构模拟，共用一个积分奖池。点击查看规则与选号。
+          </p>
+          <div id="worldFormats" class="world-formats">
+            <p class="highlight-placeholder">正在载入玩法…</p>
+          </div>
+        </article>
       </section>
       <section
         class="campaign-evidence"

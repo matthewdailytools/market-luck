@@ -2088,3 +2088,433 @@ body[data-campaign="points"] .hero-secondary:hover {
     text-align: center;
   }
 }
+
+/* The shared points balance and published results are separate, readable facts. */
+.hero .hero-pool {
+  width: 100%;
+  max-width: 420px;
+  margin: 13px 0 15px;
+  padding: 11px 15px 10px;
+  border: 1px solid #ffffffc9;
+  border-radius: 12px;
+  background: #ffffff8f;
+  box-shadow: 0 5px 17px #40396a07;
+}
+.hero-pool-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+.hero-pool-value {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+#heroPoolLabel {
+  color: #625975;
+  font-size: 11px;
+  line-height: 1.4;
+}
+#heroPoolAmount {
+  color: var(--campaign-ink, #27366e);
+  font-size: clamp(29px, 3vw, 38px);
+  font-weight: 750;
+  line-height: 1.18;
+  letter-spacing: -0.9px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+#heroPoolLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 7px 8px;
+  border: 1px solid #c9c6d9;
+  border-radius: 7px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--campaign-accent, #354fc5);
+  text-align: center;
+}
+.hero #heroPoolNote {
+  margin-top: 4px;
+  color: #72677e;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.lottery-highlights {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.13fr);
+  align-items: start;
+  gap: 20px;
+  margin-top: 27px;
+}
+.highlight-card {
+  min-width: 0;
+  padding: 25px;
+  border: 1px solid #e1dfed;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 6px 20px #46405b04;
+}
+.highlight-heading .eyebrow {
+  margin: 0 0 9px;
+  font-size: 9px;
+  line-height: 1.6;
+  color: var(--campaign-accent, #354fc5);
+}
+.highlight-heading h2 {
+  margin: 0;
+  color: #33304f;
+  font-size: 24px;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  text-wrap: balance;
+}
+.highlight-card .highlight-note {
+  margin: 9px 0 17px;
+  color: #736b82;
+  font-size: 11px;
+  line-height: 1.65;
+}
+.highlight-card .highlight-placeholder {
+  grid-column: 1 / -1;
+  padding: 18px;
+  border: 1px dashed #d9d6e5;
+  border-radius: 9px;
+  color: #81778c;
+  background: #faf9fc;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.recent-draw-panel {
+  min-width: 0;
+}
+.highlight-mode {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 5px 9px;
+  border: 1px solid #d8dfdb;
+  border-radius: 999px;
+  background: #f0f6f2;
+  color: #376e58;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.highlight-mode.is-demo,
+.highlight-mode.is-replay {
+  border-color: #e9d7ab;
+  background: #fff7e5;
+  color: #8b692a;
+}
+.highlight-card .recent-meta {
+  margin: 11px 0;
+  color: #746b82;
+  font-size: 11px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.recent-game-selector {
+  display: grid;
+  gap: 7px;
+  margin: 15px 0;
+  color: #61576f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+#recentGameSelect {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  min-height: 44px;
+  padding: 9px 11px;
+  border: 1px solid #d9d4e4;
+  border-radius: 8px;
+  background: #fff;
+  color: #3f3555;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.recent-balls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 17px 0 18px;
+}
+.recent-ball {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #dcd6f1;
+  border-radius: 50%;
+  background: #efebfa;
+  color: #54418d;
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.recent-ball.bonus {
+  border-color: #f0c65a;
+  background: #ffdc7a;
+  color: #855717;
+}
+.recent-proof-link,
+.recent-draw-empty a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #bfc6dc;
+  border-radius: 7px;
+  background: #f6f7fd;
+  color: #425da3;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+.recent-draw-empty {
+  padding: 18px;
+  border: 1px dashed #d8d9e5;
+  border-radius: 10px;
+  background: #f9f9fd;
+}
+.recent-draw-empty strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #4a4462;
+  font-size: 17px;
+  line-height: 1.45;
+}
+.highlight-card .recent-draw-empty p {
+  margin: 0 0 10px;
+  color: #7b7288;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.world-formats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.world-format {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 83px;
+  padding: 9px 6px;
+  border: 1px solid #e0dce9;
+  border-radius: 9px;
+  background: #fcfbfe;
+  color: #4c415f;
+  text-align: center;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.world-format:hover {
+  border-color: #b6a5dd;
+  background: #f4f0fc;
+}
+.world-format[aria-pressed="true"] {
+  border-color: var(--campaign-accent, #354fc5);
+  background: var(--campaign-soft, #edf0ff);
+}
+.format-flag {
+  font-size: 20px;
+  line-height: 1.15;
+}
+.format-name {
+  max-width: 100%;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.format-rule {
+  max-width: 100%;
+  color: #8a7c98;
+  font-size: 9px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1050px) {
+  .lottery-highlights {
+    gap: 15px;
+  }
+  .highlight-card {
+    padding: 20px;
+  }
+  .world-formats {
+    gap: 6px;
+  }
+}
+@media (max-width: 720px) {
+  .hero .hero-pool {
+    order: 2;
+    max-width: none;
+    margin: 0;
+    padding: 7px 9px;
+    border-radius: 9px;
+  }
+  .hero-pool-overview {
+    gap: 8px;
+  }
+  .hero-pool-value {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 8px;
+  }
+  #heroPoolLabel {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  #heroPoolAmount {
+    font-size: 27px;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
+  }
+  #heroPoolLink {
+    min-height: 44px;
+    padding: 7px;
+    font-size: 10px;
+  }
+  .hero #heroPoolNote {
+    margin-top: 2px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .lottery-highlights {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .highlight-card {
+    padding: 17px 14px;
+    border-radius: 12px;
+  }
+  .highlight-heading .eyebrow {
+    margin-bottom: 5px;
+    font-size: 8px;
+  }
+  .highlight-heading h2 {
+    font-size: 21px;
+  }
+  .highlight-card .highlight-note {
+    margin: 7px 0 13px;
+    font-size: 11px;
+  }
+  .recent-game-selector {
+    margin: 12px 0;
+  }
+  .recent-balls {
+    gap: 6px;
+    margin: 14px 0;
+  }
+  .recent-ball {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+  .recent-draw-empty {
+    padding: 15px;
+  }
+  .recent-draw-empty strong {
+    font-size: 16px;
+  }
+  .world-formats {
+    gap: 6px;
+  }
+  .world-format {
+    min-height: 78px;
+    padding: 8px 5px;
+  }
+  .format-flag {
+    font-size: 18px;
+  }
+  .format-name {
+    font-size: 10px;
+  }
+  .format-rule {
+    font-size: 8px;
+  }
+}
+@media (max-width: 430px) {
+  html[lang="en"] .world-formats,
+  html[lang="ja"] .world-formats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 360px) {
+  .recent-balls {
+    gap: 5px;
+  }
+  .recent-ball {
+    flex-basis: 30px;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  #heroPoolAmount {
+    font-size: 25px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-format {
+    transition: none;
+  }
+}
+
+/* Desktop gives the highlights a place in the opening viewport as well. */
+@media (min-width: 721px) {
+  .hero {
+    min-height: 560px;
+    padding-top: 35px;
+    padding-bottom: 33px;
+  }
+  .hero h1 {
+    margin-top: 17px;
+    margin-bottom: 15px;
+  }
+  html[lang="en"] .hero h1 {
+    font-size: clamp(35px, 3.5vw, 48px);
+    line-height: 1.14;
+    letter-spacing: -1.6px;
+  }
+  .hero .hero-pool {
+    margin-top: 8px;
+    margin-bottom: 10px;
+    padding: 10px 14px 8px;
+    border-color: #e2c36e;
+    background: linear-gradient(110deg, #fff7dbe6, #ffffffa6);
+    box-shadow: 0 4px 16px #bb8c250a;
+  }
+  #heroPoolLabel {
+    color: #76613a;
+  }
+  #heroPoolAmount {
+    color: #755015;
+    font-size: 44px;
+    line-height: 1.08;
+    letter-spacing: -1.2px;
+  }
+  .hero .hero-actions {
+    margin-top: 20px;
+  }
+  .hero-perks {
+    display: none;
+  }
+}
