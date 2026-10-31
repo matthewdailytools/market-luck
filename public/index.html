@@ -138,6 +138,50 @@
         </aside>
       </section>
       <section
+        id="firstRun"
+        class="first-run"
+        data-campaign-copy
+        aria-labelledby="firstRunTitle"
+      >
+        <div class="first-run-heading">
+          <div>
+            <p class="eyebrow" id="firstRunEyebrow">
+              YOUR FIRST PICK, STEP BY STEP
+            </p>
+            <h2 id="firstRunTitle">从注册积分，到你的第一注。</h2>
+          </div>
+          <div class="first-run-budget">
+            <span id="onboardingBalance">我的积分：尚未登录</span>
+            <span id="onboardingCost">每注 10 积分</span>
+          </div>
+        </div>
+        <ol class="first-run-steps">
+          <li data-onboarding-step="register" class="is-current">
+            <span class="onboarding-step-number" aria-hidden="true">01</span>
+            <strong id="onboardingRegisterTitle">注册领 1,000 分</strong>
+            <button id="startRegistration" type="button">领取注册积分</button>
+          </li>
+          <li data-onboarding-step="country">
+            <span class="onboarding-step-number" aria-hidden="true">02</span>
+            <strong id="onboardingCountryTitle">选一个国家玩法</strong>
+            <a id="onboardingChoose" href="#worldFormats">选择国家</a>
+          </li>
+          <li data-onboarding-step="numbers">
+            <span class="onboarding-step-number" aria-hidden="true">03</span>
+            <strong id="onboardingNumbersTitle">试试随机选号</strong>
+            <button id="onboardingRandom" type="button">生成一组号码</button>
+          </li>
+          <li data-onboarding-step="review">
+            <span class="onboarding-step-number" aria-hidden="true">04</span>
+            <strong id="onboardingReviewTitle">核对后再确认</strong>
+            <a id="onboardingReview" href="#play">核对号码与积分</a>
+          </li>
+        </ol>
+        <p id="onboardingStatus" role="status" aria-live="polite">
+          注册积分只领取一次。随机选号不购票，核对后才会扣除积分。
+        </p>
+      </section>
+      <section
         class="lottery-highlights"
         data-campaign-copy
         aria-labelledby="recentDrawTitle worldFormatsTitle"
@@ -250,18 +294,69 @@
           <div id="gameRules"></div>
         </details>
         <div class="picker">
-          <div>
+          <div class="picker-heading">
             <h3 id="gameName">选号</h3>
             <p id="rule"></p>
           </div>
-          <button id="random">↻ 随机选号</button>
+          <dl class="picker-budget" data-campaign-copy>
+            <div>
+              <dt id="purchaseCostLabel">本注成本</dt>
+              <dd id="purchaseCost">10 积分</dd>
+            </div>
+            <div>
+              <dt id="purchaseBalanceLabel">当前余额</dt>
+              <dd id="purchaseBalance">尚未登录</dd>
+            </div>
+            <div>
+              <dt id="purchaseAfterLabel">购票后余额</dt>
+              <dd id="purchaseAfter">—</dd>
+            </div>
+          </dl>
+          <div class="picked-preview-block" data-campaign-copy>
+            <strong id="pickedPreviewLabel">这组号码，先看一眼</strong>
+            <div id="pickedPreview" class="picked-preview" aria-live="polite">
+              选中的号码会显示在这里。
+            </div>
+            <p id="pickerHelp">
+              随机选号只生成号码。进入核对页后，确认才会扣分。
+            </p>
+          </div>
+          <button id="random" type="button">↻ 随机选号</button>
           <div id="numbers" class="numbers"></div>
           <p id="bonusLabel"></p>
           <div id="bonus" class="numbers"></div>
           <footer>
             <span id="selection">请选择号码</span
-            ><button class="primary" id="buy">确认购票 · 10 分</button>
+            ><button class="primary" id="buy" type="button" data-campaign-copy>
+              核对号码与积分
+            </button>
           </footer>
+          <a
+            id="pickerAuditLink"
+            class="picker-audit-link"
+            href="/verify.html"
+            data-campaign-copy
+          >
+            先看本期规则、时间与核验依据 →
+          </a>
+          <section
+            id="purchaseReceipt"
+            class="purchase-receipt"
+            data-campaign-copy
+            aria-labelledby="receiptSummary"
+            hidden
+          >
+            <h4 id="receiptSummary">购票已记录。</h4>
+            <div id="receiptNumbers" class="picked-preview"></div>
+            <p id="receiptTicket"></p>
+            <p id="receiptBalance"></p>
+            <div class="receipt-actions">
+              <a id="receiptAuditLink" href="/verify.html"
+                >查看本期核验依据 →</a
+              >
+              <button id="pickAgain" type="button">再选一注</button>
+            </div>
+          </section>
         </div>
       </section>
       <section id="audit">
@@ -345,31 +440,150 @@
       >
     </footer>
     <div id="toast" role="status"></div>
-    <dialog id="auth">
+    <dialog
+      id="auth"
+      class="flow-dialog"
+      data-campaign-copy
+      aria-labelledby="authTitle"
+      aria-describedby="authHint"
+    >
       <form id="authForm">
-        <button type="button" id="closeAuth" class="close">×</button>
-        <div class="eyebrow">WELCOME TO MARKET LUCK</div>
-        <h2>从 1,000 分开始。</h2>
-        <label
-          >用户名<input
-            id="name"
-            autocomplete="username"
-            required
-            minlength="3"
-            maxlength="24" /></label
-        ><label
-          >密码<input
-            id="password"
-            type="password"
-            autocomplete="current-password"
-            required
-            minlength="8"
-            maxlength="128" /></label
-        ><button class="primary" name="action" value="register">
-          注册并领取积分</button
-        ><button name="action" value="login">已有账号，登录</button>
-        <p>仅虚拟积分，无现金价值。</p>
+        <button
+          type="button"
+          id="closeAuth"
+          class="close"
+          aria-label="关闭账户窗口"
+        >
+          ×
+        </button>
+        <div class="dialog-heading">
+          <div class="eyebrow" id="authEyebrow">WELCOME TO MARKET LUCK</div>
+          <h2 id="authTitle">从 1,000 分开始。</h2>
+        </div>
+        <p id="authHint">
+          注册一次赠 1,000 积分；登录不重复赠分。积分无现金价值。
+        </p>
+        <div class="auth-tabs" role="tablist" aria-label="账户操作">
+          <button
+            id="authRegisterTab"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="authFields"
+          >
+            注册领积分
+          </button>
+          <button
+            id="authLoginTab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="authFields"
+          >
+            已有账号登录
+          </button>
+        </div>
+        <div id="authFields" role="tabpanel" aria-labelledby="authRegisterTab">
+          <label for="name">
+            <span id="authNameLabel">用户名</span>
+            <input
+              id="name"
+              name="name"
+              autocomplete="username"
+              autocapitalize="none"
+              spellcheck="false"
+              aria-describedby="authNameHint"
+              required
+              minlength="3"
+              maxlength="48"
+            />
+            <small id="authNameHint"
+              >3–24 个字，可使用字母、数字、下划线或连字符。</small
+            >
+          </label>
+          <label for="password">
+            <span id="authPasswordLabel">密码</span>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              aria-describedby="authPasswordHint"
+              required
+              minlength="8"
+              maxlength="128"
+            />
+            <small id="authPasswordHint">8–128 个字符。请使用独立密码。</small>
+          </label>
+        </div>
+        <p id="authError" class="flow-error" role="alert" hidden></p>
+        <p
+          id="authStatus"
+          class="flow-status"
+          role="status"
+          aria-live="polite"
+        ></p>
+        <button
+          class="primary"
+          id="authSubmit"
+          name="action"
+          value="register"
+          type="submit"
+        >
+          注册并领取积分
+        </button>
       </form>
+    </dialog>
+    <dialog
+      id="purchaseReview"
+      class="flow-dialog purchase-review"
+      data-campaign-copy
+      aria-labelledby="reviewTitle"
+      aria-describedby="reviewSummary"
+    >
+      <div class="review-content">
+        <button
+          id="closeReview"
+          class="close"
+          type="button"
+          aria-label="关闭购票核对窗口"
+        >
+          ×
+        </button>
+        <div class="dialog-heading">
+          <p class="eyebrow" id="reviewEyebrow">CHECK BEFORE YOU CONFIRM</p>
+          <h2 id="reviewTitle">核对这一注。</h2>
+        </div>
+        <p id="reviewSummary">确认玩法、号码与积分后再购票。</p>
+        <div id="reviewNumbers" class="picked-preview"></div>
+        <dl class="review-budget">
+          <div>
+            <dt id="reviewCostLabel">本注成本</dt>
+            <dd id="reviewCost">—</dd>
+          </div>
+          <div>
+            <dt id="reviewBalanceLabel">当前余额</dt>
+            <dd id="reviewBalance">—</dd>
+          </div>
+          <div>
+            <dt id="reviewAfterLabel">确认后余额</dt>
+            <dd id="reviewAfter">—</dd>
+          </div>
+        </dl>
+        <p id="reviewTiming" class="review-timing">
+          本期时间与售票状态载入后显示。
+        </p>
+        <a id="reviewAuditLink" class="picker-audit-link" href="/verify.html"
+          >查看本期规则与核验依据 →</a
+        >
+        <p id="reviewError" class="flow-error" role="alert" hidden></p>
+        <div class="review-actions">
+          <button id="cancelPurchase" type="button">返回修改</button>
+          <button id="confirmPurchase" class="primary" type="button">
+            确认购票 · 10 积分
+          </button>
+        </div>
+      </div>
     </dialog>
     <script type="module" src="/app.js"></script>
   </body>

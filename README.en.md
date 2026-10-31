@@ -95,4 +95,6 @@ The default for new visitors remains **Try with points** after the [review of ap
 
 The homepage now highlights the current shared points pool, published results and 16 national format shortcuts. Past results use their own committed rules; the live site waits when no real result exists, and demo results are labelled. Country shortcuts open rules and number selection without buying a ticket. See the [homepage pool and results acceptance report](首页奖池与开奖结果优化验收.md).
 
+The first-ticket guide connects the one-time 1,000-point registration grant, country selection, quick pick and explicit confirmation. Both the picker and review show the 10-point cost, current/projected balances and round verification link. Signing in preserves valid picks without purchasing. Interrupted requests retain their original idempotency key; success requires a matching private ticket. See the [first-ticket flow and acceptance report](首次体验与购票流程上线验收.md).
+
 The [readable verification page](https://luck.onlinefreetools.org/verify.html) explains each round's rules, sources and timeline, then reproduces published results locally in the browser. Original manifest and proof JSON downloads remain available. Pending, simulated and replay results are clearly distinguished; local consistency checks do not authenticate private source responses or audit all payouts.

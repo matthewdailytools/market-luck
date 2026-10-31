@@ -1,5 +1,6 @@
 import { renderGameRules } from "./game-rules.js";
 import { initLanguages, translate } from "./i18n.js";
+import { createPurchaseFlow } from "./purchase-flow.js";
 import { describeHomeRound, selectDisplayRound } from "./round-summary.js";
 import {
   renderHomeHighlights,
@@ -20,6 +21,20 @@ let state,
   selectionContext = null;
 let serverOffset = 0;
 const serverNow = () => Date.now() + serverOffset;
+const purchaseFlow = createPurchaseFlow({
+  getState: () => state,
+  getSelection: () => ({ gameId: gid, main: [...chosen], bonus: special }),
+  refresh: () => refresh(),
+  api: (...args) => api(...args),
+  now: serverNow,
+  onRandom: () => randomPick(),
+  onPickAgain: () => {
+    chosen = [];
+    special = null;
+    picker();
+  },
+  notify: (message) => toast(message),
+});
 updateHeroSummary();
 updateHomeHighlights();
 const toast = (s) => {
@@ -39,7 +54,11 @@ async function api(path, body) {
       : {},
   );
   const data = await r.json();
-  if (!r.ok) throw Error(data.error);
+  if (!r.ok) {
+    const error = Error(data.error);
+    error.status = r.status;
+    throw error;
+  }
   return data;
 }
 const current = () => state?.rounds.find((r) => r.status === "open");
@@ -66,6 +85,7 @@ function updateHomeHighlights() {
 function selectGame(id, scroll = false) {
   const catalog = current()?.manifest.games || state?.games || [];
   if (!catalog.some((game) => game.id === id)) return;
+  purchaseFlow.selectionChanged();
   gid = id;
   chosen = [];
   special = null;
@@ -152,6 +172,7 @@ function picker() {
         String(isBonus ? special === n : chosen.includes(n)),
       );
       b.onclick = () => {
+        purchaseFlow.selectionChanged();
         if (isBonus) special = n;
         else if (chosen.includes(n)) chosen = chosen.filter((x) => x !== n);
         else if (chosen.length < g.count) chosen.push(n);
@@ -163,11 +184,7 @@ function picker() {
   $("#bonusLabel").textContent = g.bonus ? "特别球" : "";
   $("#selection").textContent =
     `已选 ${chosen.length}/${g.count}${g.bonus ? ` · 特别球 ${special ?? "未选"}` : ""}`;
-  $("#buy").disabled =
-    chosen.length !== g.count ||
-    (g.bonus && special === null) ||
-    !current() ||
-    serverNow() >= current().cutoff;
+  purchaseFlow.render();
 }
 async function refresh() {
   state = await api("state");
@@ -286,24 +303,6 @@ async function refresh() {
   tickCountdown();
 }
 const fail = (e) => toast(e.message);
-$("#account").onclick = () => {
-  if (!state.me) $("#auth").showModal();
-};
-$("#closeAuth").onclick = () => $("#auth").close();
-$("#authForm").onsubmit = async (e) => {
-  e.preventDefault();
-  try {
-    await api(e.submitter.value, {
-      name: $("#name").value,
-      password: $("#password").value,
-    });
-    $("#auth").close();
-    await refresh();
-    toast("欢迎来到 Market Luck");
-  } catch (e) {
-    fail(e);
-  }
-};
 $("#logout").onclick = async () => {
   await api("logout", {});
   refresh().catch(fail);
@@ -316,7 +315,9 @@ function randomInt(max) {
   } while (b[0] >= limit);
   return b[0] % max;
 }
-$("#random").onclick = () => {
+function randomPick() {
+  if (!state?.games?.length) return;
+  purchaseFlow.selectionChanged();
   const g = (current()?.manifest.games || state.games).find(
       (x) => x.id === gid,
     ),
@@ -325,28 +326,8 @@ $("#random").onclick = () => {
   chosen = [...s].sort((a, b) => a - b);
   special = g.bonus ? randomInt(g.bonus) + (g.bonusMin ?? 1) : null;
   picker();
-};
-$("#buy").onclick = async () => {
-  if (!state.me) {
-    $("#auth").showModal();
-    return;
-  }
-  $("#buy").disabled = true;
-  try {
-    await api("buy", {
-      game: gid,
-      main: chosen,
-      bonus: special,
-      round: current().id,
-      key: crypto.randomUUID(),
-    });
-    await refresh();
-    toast("购票成功，祝你好运！");
-  } catch (e) {
-    fail(e);
-    picker();
-  }
-};
+}
+$("#random").onclick = randomPick;
 for (const action of ["create", "advance", "draw"])
   $("#" + action).onclick = async () => {
     try {
@@ -430,5 +411,6 @@ function tickCountdown() {
   if (source) source.textContent = summary.sourceText;
   if (!current() || now >= current().cutoff)
     document.querySelector("#buy").disabled = true;
+  purchaseFlow.render();
 }
 setInterval(tickCountdown, 1000);

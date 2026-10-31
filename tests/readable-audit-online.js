@@ -157,6 +157,9 @@ for (const id of [
   "heroAuditLink",
   "recentDrawPanel",
   "worldFormats",
+  "firstRun",
+  "purchaseReview",
+  "pickerAuditLink",
 ])
   ok(home.includes(`id="${id}"`), "Homepage is missing " + id);
 for (const asset of [
@@ -165,6 +168,8 @@ for (const asset of [
   "round-summary.js",
   "home-highlights.js",
   "home-highlights-model.js",
+  "purchase-flow.js",
+  "purchase-flow-model.js",
   "style.css",
   "verify.js",
   "verify.css",

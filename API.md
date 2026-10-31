@@ -17,7 +17,9 @@ Base URL: local `http://127.0.0.1:8787`, or your deployed HTTPS origin. Response
 
 Names contain 3–24 Unicode letters/numbers, `_` or `-`. Passwords contain 8–128 characters. `main` must contain the game's required number of unique integers; `bonus` is `null` when absent. Germany accepts `0–9`, not `1–10`. Game IDs are `cn,us,uk,jp,fr,de,it,es,ca,au,nz,kr,sg,br,za,ph`. The exact round's `manifest.games` controls eligibility; new games cannot be purchased in an older committed round.
 
-`key` is an 8–80 character alphanumeric/hyphen idempotency key, unique per account. Retry with the same body/key to avoid duplicate spending. A reused key returns the original ticket rather than changing its numbers. Concurrent identical first requests may return a duplicate-request error; query state before retrying with a different key.
+`key` is an 8–80 character alphanumeric/hyphen idempotency key, unique per account. Retry with the same body/key to avoid duplicate spending. A reused key returns the original ticket rather than changing its numbers. Concurrent identical first requests may return a duplicate-request error; query the private tickets in `/api/state`, then recover or retry the original body/key until its outcome is known. Do not generate a different key while the original request may have succeeded.
+
+The homepage keeps registration/sign-in separate from explicit ticket confirmation. It shows the committed 10-point cost, current balance and projected balance, refreshes the account and round before submission, and only displays a confirmed receipt after matching the returned ID to a private ticket's owner, round, game and numbers. An unanswered request is stored per account in browser session storage with its original key, without passwords or session cookies. If its period has ended, replaying that original request can still recover an existing ticket; a terminal closed-period rejection releases an unprocessed request. See [first-ticket flow and acceptance](首次体验与购票流程上线验收.md).
 
 Example (session cookie obtained using register/login and a cookie jar):
 
