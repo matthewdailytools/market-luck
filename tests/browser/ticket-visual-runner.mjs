@@ -23,6 +23,9 @@ const report = {
   status: "running",
   startedAt: new Date().toISOString(),
   execution: "GitHub-hosted Linux; isolated headless Chromium and WebKit",
+  commit: process.env.GITHUB_SHA,
+  runId: process.env.GITHUB_RUN_ID,
+  browserVersions: {},
   online,
   base,
   layout: [],
@@ -153,6 +156,10 @@ async function measure(page) {
       ".ticket-status",
       ".ticket-ball",
       ".ticket-ball.bonus",
+      "#ticketHistoryRefresh:not(:disabled)",
+      "#ticketHistoryLogin:not([hidden])",
+      "#ticketHistoryChoose",
+      ".ticket-card-actions a",
     ];
     const contrasts = contrastSelectors.flatMap((selector) =>
       [...section.querySelectorAll(selector)]
@@ -160,7 +167,7 @@ async function measure(page) {
         .slice(0, 3)
         .map((el) => ({
           selector,
-          ratio: +contrast(el).toFixed(2),
+          ratio: contrast(el),
           color: getComputedStyle(el).color,
           background: getComputedStyle(el).backgroundColor,
           font: getComputedStyle(el).fontSize,
@@ -175,6 +182,23 @@ async function measure(page) {
       language: document.documentElement.lang,
       theme: document.body.dataset.campaign,
       pageOverflow: document.documentElement.scrollWidth > innerWidth + 1,
+      documentWidth: document.documentElement.scrollWidth,
+      overflowingElements:
+        document.documentElement.scrollWidth > innerWidth + 1
+          ? [...document.querySelectorAll("body *")]
+              .filter(visible)
+              .filter((el) => {
+                const r = el.getBoundingClientRect();
+                return r.right > innerWidth + 1 || r.left < -1;
+              })
+              .slice(0, 20)
+              .map((el) => ({
+                tag: el.tagName,
+                id: el.id,
+                className: String(el.className).slice(0, 100),
+                ...bounds(el),
+              }))
+          : [],
       section: bounds(section),
       cards: [...section.querySelectorAll(".ticket-card")]
         .map(bounds)
@@ -226,7 +250,12 @@ async function matrix(
         );
         await page.locator("#myTickets").scrollIntoViewIfNeeded();
         const m = { engine, source, variant, ...(await measure(page)) };
+        m.requestedViewport = { width, height };
         m.problems = validateLayout(m);
+        if (m.width !== width || m.height !== height)
+          m.problems.push(
+            "rendered viewport differs from requested dimensions",
+          );
         report.layout.push(m);
         if (m.problems.length)
           report.failures.push({
@@ -324,6 +353,9 @@ async function fixtures(browser, engine) {
       });
       if (kind === "pending") {
         await expect(page.locator(".ticket-ball.bonus")).toHaveText("00");
+        await expect(
+          page.locator(".ticket-card-meta > div:last-child dd"),
+        ).toHaveText("未精算");
         await page.locator("#ticketHistoryRefresh").focus();
         const focus = await page
           .locator("#ticketHistoryRefresh")
@@ -584,6 +616,7 @@ for (const [engine, type] of [
   let browser;
   try {
     browser = await type.launch({ headless: true });
+    report.browserVersions[engine] = browser.version();
     if (!online) await fixtures(browser, engine);
     await actualFlow(browser, engine, true);
     if (engine === "chromium") await actualFlow(browser, engine, false);

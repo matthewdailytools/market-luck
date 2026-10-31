@@ -14,6 +14,7 @@ const copy = {
     created: "购票时间",
     cost: "本注成本",
     prize: "派奖记录",
+    awaitingPayout: "尚未结算",
     main: "主球",
     bonus: "特别球",
     audit: "查看这期规则、结果与复算 →",
@@ -39,6 +40,7 @@ const copy = {
     created: "Purchased",
     cost: "Ticket cost",
     prize: "Payout record",
+    awaitingPayout: "Not settled",
     main: "Main ball",
     bonus: "Special ball",
     audit: "This round’s rules, results and reproduction →",
@@ -65,6 +67,7 @@ const copy = {
     created: "購入日時",
     cost: "消費ポイント",
     prize: "配分の記録",
+    awaitingPayout: "未精算",
     main: "主番号",
     bonus: "特別番号",
     audit: "この回のルール・結果・再計算を見る →",
@@ -165,7 +168,12 @@ export function createTicketHistory({
       [w.round, item.roundId || "—"],
       [w.created, item.createdText],
       [w.cost, item.costText],
-      [w.prize, item.prizeText],
+      [
+        w.prize,
+        ["pending", "paused"].includes(item.status)
+          ? w.awaitingPayout
+          : item.prizeText,
+      ],
     ]) {
       const pair = node("div");
       pair.append(node("dt", title), node("dd", value));

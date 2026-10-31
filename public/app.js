@@ -221,6 +221,7 @@ function applyState(snapshot) {
     ? state.me.balance.toLocaleString()
     : "未登录";
   $("#account").textContent = state.me ? state.me.name : "登录 / 注册";
+  $("#account").title = state.me?.name || "";
   $("#logout").hidden = !state.me;
   document.querySelector(".demo").hidden = !state.demo || state.autoDraw;
   document.querySelector(".notice").textContent = state.demo

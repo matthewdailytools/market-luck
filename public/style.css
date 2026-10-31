@@ -3588,8 +3588,8 @@ body[data-campaign="points"] .hero-secondary:hover {
 }
 #ticketHistoryNote {
   margin: 7px 0 0;
-  color: #8a7a96;
-  font-size: 11px;
+  color: #675276;
+  font-size: 12px;
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
@@ -3631,7 +3631,7 @@ body[data-campaign="points"] .hero-secondary:hover {
 }
 #ticketHistoryEmpty {
   margin: 0;
-  color: #8c789b;
+  color: #675276;
   font-size: 12px;
   line-height: 1.7;
   overflow-wrap: anywhere;
@@ -3723,8 +3723,8 @@ body[data-campaign="points"] .hero-secondary:hover {
   border: 1px solid #e2dbe9;
   border-radius: 5px;
   background: #f7f4fa;
-  color: #8e7b9c;
-  font-size: 10px;
+  color: #665176;
+  font-size: 11px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -3732,19 +3732,19 @@ body[data-campaign="points"] .hero-secondary:hover {
 .ticket-status.is-pending {
   border-color: #ead7a9;
   background: #fff8e8;
-  color: #997834;
+  color: #765515;
 }
 .ticket-status.is-won {
   border-color: #b8d8c7;
   background: #f0fbf4;
-  color: #468062;
+  color: #2f6749;
 }
 .ticket-status.is-paused,
 .ticket-status.is-demo,
 .ticket-status.is-replay {
   border-color: #e4c9bb;
   background: #fcf4ee;
-  color: #9e785c;
+  color: #7b5136;
 }
 .ticket-card-numbers {
   display: flex;
@@ -3759,7 +3759,7 @@ body[data-campaign="points"] .hero-secondary:hover {
 .ticket-history-load-status {
   margin: 8px 0;
   color: #7f658f;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.8;
   overflow-wrap: anywhere;
 }
@@ -3792,20 +3792,26 @@ body[data-campaign="points"] .hero-secondary:hover {
 .ticket-ball.bonus {
   border-color: #e9c472;
   background: #fff1cd;
-  color: #987126;
+  color: #795316;
 }
 .ticket-card-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 12px;
   min-width: 0;
   margin: 0;
   color: #9c87a9;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.7;
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
 .ticket-card-meta > div {
   min-width: 0;
-  margin: 6px 0;
+  margin: 0;
+}
+.ticket-card-meta > div:nth-child(-n + 3) {
+  grid-column: 1 / -1;
 }
 .ticket-card-meta p {
   margin: 5px 0;
@@ -3814,13 +3820,21 @@ body[data-campaign="points"] .hero-secondary:hover {
   line-height: inherit;
 }
 .ticket-card-meta dt {
-  color: #a18bae;
+  color: #715b82;
 }
 .ticket-card-meta dd {
   min-width: 0;
   margin: 2px 0 0;
-  color: #7f658f;
+  color: #654b76;
   overflow-wrap: anywhere;
+}
+.ticket-card-meta > div:nth-last-child(2) dd {
+  font-weight: 700;
+}
+.ticket-card[data-ticket-status="paid"] .ticket-card-meta > div:last-child dd {
+  color: #2f6749;
+  font-size: 16px;
+  font-weight: 700;
 }
 .ticket-card-meta code,
 .ticket-card .ticket-id {
@@ -3887,6 +3901,12 @@ body[data-campaign="points"] .hero-secondary:hover {
   }
 }
 @media (max-width: 720px) {
+  header nav #account {
+    max-width: clamp(80px, 24vw, 128px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .ticket-history {
     margin-top: 25px;
     padding: 18px 14px;
