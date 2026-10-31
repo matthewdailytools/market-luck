@@ -1,6 +1,12 @@
 import { renderGameRules } from "./game-rules.js";
 import { initLanguages, translate } from "./i18n.js";
+import {
+  initCampaigns,
+  syncCampaigns,
+  syncCampaignClock,
+} from "./campaigns.js";
 initLanguages();
+initCampaigns();
 const $ = (s) => document.querySelector(s);
 let state,
   gid = "cn",
@@ -230,6 +236,7 @@ async function refresh() {
   );
   picker();
   tickCountdown();
+  syncCampaigns(state);
 }
 const fail = (e) => toast(e.message);
 $("#account").onclick = () => {
@@ -315,6 +322,7 @@ setInterval(() => refresh().catch(() => {}), 30000);
 
 document.querySelector("#language").addEventListener("change", () => {
   if (state) picker();
+  syncCampaigns(state);
 });
 
 function tickCountdown() {
@@ -334,6 +342,7 @@ function tickCountdown() {
   }
   const now = serverNow(),
     close = Math.max(...r.manifest.markets.map((m) => m.closeUTC));
+  syncCampaignClock(now);
   let label, target;
   if (now < r.cutoff) {
     label = ["停售倒计时", "Ticket sales close in", "販売終了まで"][i];

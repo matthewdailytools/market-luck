@@ -1591,3 +1591,197 @@ code {
 form p {
   color: #83718f;
 }
+
+/* Pain-point campaign layer: changes presentation, never draw or purchase state. */
+body[data-campaign="verify"] {
+  --campaign-accent: #354fc5;
+  --campaign-ink: #182b6a;
+  --campaign-soft: #e5edff;
+  --campaign-glow: #d4deff;
+  --campaign-sphere: #3c59cc;
+}
+body[data-campaign="points"] {
+  --campaign-accent: #087775;
+  --campaign-ink: #174742;
+  --campaign-soft: #e5f4e9;
+  --campaign-glow: #d1ebdc;
+  --campaign-sphere: #18867f;
+}
+body[data-campaign="world"] {
+  --campaign-accent: #6841c6;
+  --campaign-ink: #3e236c;
+  --campaign-soft: #eee5ff;
+  --campaign-glow: #e0d0ff;
+  --campaign-sphere: #7449cf;
+}
+.campaign-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 4px 18px;
+  color: #615f78;
+  font-size: 12px;
+}
+.campaign-switcher > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.campaign-switcher button {
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: #fff;
+  color: #53506b;
+  border-color: #e0deea;
+  font-size: 12px;
+}
+.campaign-switcher button[aria-pressed="true"] {
+  color: #fff;
+  border-color: var(--campaign-accent, #354fc5);
+  background: var(--campaign-accent, #354fc5);
+}
+body[data-campaign] .hero {
+  background: linear-gradient(
+    115deg,
+    #f0f2ff,
+    var(--campaign-soft) 60%,
+    var(--campaign-glow)
+  );
+}
+body[data-campaign] .hero h1 span {
+  color: var(--campaign-accent);
+}
+body[data-campaign] .hero h1 {
+  color: var(--campaign-ink);
+}
+body[data-campaign] .sphere-main {
+  background: radial-gradient(
+    circle at 32% 24%,
+    #cbcaff 0,
+    var(--campaign-sphere) 58%,
+    var(--campaign-ink) 100%
+  );
+}
+body[data-campaign] .hero-actions .primary {
+  color: #3d2b0b;
+  background: #ffca48;
+  border-color: #ffca48;
+}
+body[data-campaign] .hero-actions .primary:hover {
+  background: #ffd76e;
+}
+.campaign-evidence {
+  margin: 27px 0 10px;
+}
+.campaign-evidence-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 4px 17px;
+}
+.campaign-evidence-heading h2 {
+  font-size: 24px;
+  line-height: 1.4;
+  margin: 7px 0 0;
+  letter-spacing: -0.5px;
+}
+.campaign-evidence-heading .eyebrow {
+  margin: 0;
+  color: var(--campaign-accent, #354fc5);
+}
+.campaign-status {
+  max-width: 350px;
+  margin: 0 0 3px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #69647d;
+}
+.campaign-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+.campaign-evidence-grid article {
+  position: relative;
+  padding: 23px;
+  border-color: #e1e3ee;
+  border-top: 3px solid var(--campaign-accent, #354fc5);
+  background: #fff;
+}
+.campaign-card-number {
+  color: var(--campaign-accent, #354fc5);
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+.campaign-evidence-grid h3 {
+  color: var(--campaign-ink, #182b6a);
+  margin: 12px 0 9px;
+  line-height: 1.5;
+}
+.campaign-evidence-grid p {
+  color: #6d687d;
+  line-height: 1.85;
+  font-size: 12px;
+  margin: 0 0 14px;
+}
+.campaign-evidence-grid a {
+  color: var(--campaign-accent, #354fc5);
+  font-size: 11px;
+  line-height: 1.7;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.campaign-boundary {
+  color: #797286;
+  line-height: 1.8;
+  font-size: 11px;
+  margin: 14px 4px 0;
+}
+@media (max-width: 720px) {
+  .campaign-switcher {
+    margin: 0 3px 15px;
+    gap: 9px;
+    font-size: 11px;
+  }
+  .campaign-switcher > div {
+    width: 100%;
+    gap: 6px;
+  }
+  .campaign-switcher button {
+    padding: 9px 12px;
+    font-size: 11px;
+  }
+  .campaign-evidence-heading {
+    display: block;
+    margin: 0 3px 15px;
+  }
+  .campaign-evidence-heading h2 {
+    font-size: 21px;
+  }
+  .campaign-status {
+    max-width: none;
+    margin-top: 10px;
+  }
+  .campaign-evidence-grid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
+  .campaign-evidence-grid article {
+    padding: 18px 20px;
+  }
+  .campaign-evidence-grid h3 {
+    margin-top: 8px;
+    font-size: 15px;
+  }
+  .campaign-evidence-grid p {
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+  .campaign-boundary {
+    font-size: 10px;
+  }
+}

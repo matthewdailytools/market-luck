@@ -1,11 +1,10 @@
-<!-- Current LIVE rollout: see LIVE接入与线上验收.md; earlier demo notes below remain for local setup. -->
 # Market Luck
 
 [English](README.en.md) · [日本語](README.ja.md)
 
 [真实开奖站](https://luck.onlinefreetools.org) · [模拟演示站](https://luck-test.onlinefreetools.org) · [GitHub 开源仓库](https://github.com/matthewdailytools/market-luck) · [线上测试报告](线上测试报告.md)
 
-Cloudflare Workers + D1 + R2 的纯积分彩票实验，中文响应式页面，16 国虚拟选号玩法，公开奖池与中奖流水。
+Cloudflare Workers + D1 + R2 的纯积分彩票实验，中英日响应式页面，16 国虚拟选号玩法，公开奖池与近期中奖流水。
 
 ## 本地运行
 
@@ -31,7 +30,7 @@ npm run test:integration
 
 ## 真实行情
 
-见《行情数据源接入.md》。三个免费层来源固定为 EODHD / Alpha Vantage / Twelve Data，至少两源一致，任一有效分歧即冻结。需自行注册免费 key，免费层不代表公开再分发许可。当前没有实际账号，不宣称完成在线行情联调。
+当前真实期使用 Yahoo Finance + Nasdaq 免 Key 的 `PUBLIC-NOKEY-v1`，必须两源逐只价格一致，缺失或分歧就等待。详情见[真实接入与验收](LIVE接入与线上验收.md)和[免 Key 实测](免Key行情源实测.md)。另保留 EODHD / Alpha Vantage / Twelve Data 的 Key 适配及[逐步申请说明](免费行情API申请与配置-逐步操作.md)，没有实际 Key 的接口不宣称已完成线上联调。免费可访问不等于获得公开再分发许可。
 
 ## Cloudflare 部署准备
 
@@ -42,10 +41,12 @@ npx wrangler d1 migrations apply DB --remote
 npm run deploy
 ```
 
-不要直接把 DEMO_MODE=true 作为公网生产配置。尚需生产交易日历、外部承诺发布时间戳、账号防滥用、数据授权与安全审计。没有真实 LIVE 期时生产页面将保持等待开期，不自动生成模拟行情。
+不要直接把 DEMO_MODE=true 作为公网生产配置。独立 LIVE 的配置示例、迁移与发布步骤见[真实接入与验收](LIVE接入与线上验收.md)，已接入审核过的 2026 美股交易日历和固定 GitHub 提交中的事前承诺；未审核年份拒绝开期。数据授权、账号防滥用和安全审计仍需独立评估。没有真实 LIVE 期时生产页面保持等待开期，不自动生成模拟行情。
 
 ## 项目文档
 
+- [用户痛点研究与三个宣传主题](彩票用户痛点与主题策略.md)
+- [宣传主题上线验收](宣传主题上线验收.md)
 - [16 国玩法说明](各国玩法说明.md)
 - [注册赠分测算与发行机制](注册赠分测算.md)
 - [开奖算法规范](ALGORITHM.md)
@@ -57,10 +58,12 @@ npm run deploy
 
 ## Anonymous market-source diagnostics
 
-No API keys are needed to test Yahoo Finance + Nasdaq historical closes: `node scripts/check-public-sources.js 2026-10-29 AAPL`. This is historical diagnostics, not an active LIVE draw profile. See [免 Key 实测](免Key行情源实测.md) and [API Key 逐步申请](免费行情API申请与配置-逐步操作.md). The owner-specific test deployment config is gitignored; copy `wrangler.test.example.jsonc` to `wrangler.test.jsonc` and use your own IDs/domain when creating your own test site.
+No API keys are needed to test Yahoo Finance + Nasdaq historical closes: `node scripts/check-public-sources.js 2026-10-29 AAPL`. This command is historical diagnostics; live rounds separately pin `PUBLIC-NOKEY-v1` and future market sessions. See [免 Key 实测](免Key行情源实测.md) and [API Key 逐步申请](免费行情API申请与配置-逐步操作.md). The owner-specific test deployment config is gitignored; copy `wrangler.test.example.jsonc` to `wrangler.test.jsonc` and use your own IDs/domain when creating your own test site.
 
 ## LIVE / 真实开奖更新
 
 [真实开奖站](https://luck.onlinefreetools.org) · [LIVE接入与线上验收](LIVE接入与线上验收.md) · [主题设计评估](主题设计评估.md)
 
 Yahoo Finance + Nasdaq 免Key的 PUBLIC-NOKEY-v1 已接入真实期次；2/2价格一致，03:30纽约时间前停售，闭市后24小时才可开奖。生产LIVE与模拟站、线上历史回放安装分离。当前期最早自然开奖为北京时间2026-11-04 05:00。已完成上线售票与提前开奖拒绝，完整派奖闭环在明确标记的隔离回放中验证。详见上面的最新报告；旧文档中尚未启用LIVE的描述是上次交付记录。
+
+首页提供“公开核验”（默认）、“积分体验”“全球玩法”三种主题，支持中文、English、日本語。可用 `?theme=verify`、`?theme=points`、`?theme=world` 分享各主题。设计依据与验证边界见[彩票用户痛点与主题策略](彩票用户痛点与主题策略.md)，上线检查见[宣传主题验收](宣传主题上线验收.md)；当前没有真实用户 A/B 转化结论。

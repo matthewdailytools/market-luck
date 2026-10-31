@@ -346,6 +346,8 @@ function visit(root) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let n;
   while ((n = walker.nextNode())) {
+    // Campaigns render their own complete copy in the selected language.
+    if (n.parentElement?.closest("[data-campaign-copy]")) continue;
     if (["SCRIPT", "STYLE", "OPTION"].includes(n.parentElement?.tagName))
       continue;
     let record = records.get(n);

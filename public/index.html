@@ -6,7 +6,7 @@
     <title>Market Luck · 全球收盘实验室</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
-  <body>
+  <body data-campaign="verify">
     <header>
       <a class="brand" href="/">◈ MARKET LUCK <small>全球收盘实验室</small></a>
       <nav>
@@ -20,22 +20,52 @@
       </nav>
     </header>
     <main>
+      <section
+        class="campaign-switcher"
+        data-campaign-copy
+        aria-label="选择首页主题"
+      >
+        <span id="campaignSwitchLabel">你想先了解什么？</span>
+        <div role="group" aria-labelledby="campaignSwitchLabel">
+          <button
+            type="button"
+            data-campaign-choice="verify"
+            aria-pressed="true"
+          >
+            公开核验
+          </button>
+          <button
+            type="button"
+            data-campaign-choice="points"
+            aria-pressed="false"
+          >
+            积分体验
+          </button>
+          <button
+            type="button"
+            data-campaign-choice="world"
+            aria-pressed="false"
+          >
+            全球玩法
+          </button>
+        </div>
+      </section>
       <section class="hero" aria-label="Market Luck">
         <div class="hero-copy">
-          <div class="hero-kicker">
-            <span class="signal-dot"></span><span>行情落定，好运待启</span>
+          <div class="hero-kicker" data-campaign-copy>
+            <span class="signal-dot"></span
+            ><span>看得见的规则，算得出的结果</span>
           </div>
-          <h1>
-            世界收盘后，<br /><span>你的好运，</span
-            ><br class="desktop-break" />才开场。
+          <h1 id="campaignTitle" data-campaign-copy>
+            好运值得期待，<br /><span>结果自己核对。</span>
           </h1>
-          <p class="hero-intro">把市场的最后一刻，变成你的下一次期待。</p>
-          <p class="hero-description">
-            收盘行情生成幸运号码，算法提前公开。你负责选好号码，剩下的，一起见证。
+          <p class="hero-intro" data-campaign-copy>先看清开奖，再试试手气。</p>
+          <p class="hero-description" data-campaign-copy>
+            本期规则售票前锁定，指定收盘行情核验后生成号码。输入与结果，可在开奖后自行复算。
           </p>
-          <div class="hero-actions">
-            <a class="primary" href="#play">挑选我的幸运号码 ↗</a
-            ><a class="hero-secondary" href="#audit">看看如何公开验证 →</a>
+          <div class="hero-actions" data-campaign-copy>
+            <a class="primary" href="#audit">先看核验流程 ↗</a
+            ><a class="hero-secondary" href="#play">用积分试试手气 →</a>
           </div>
           <div class="hero-perks">
             <span><b>16</b><small>国经典玩法</small></span
@@ -60,6 +90,46 @@
           </div>
           <div class="stage-caption">PUBLIC INPUT. SHARED EXCITEMENT.</div>
         </aside>
+      </section>
+      <section
+        class="campaign-evidence"
+        data-campaign-copy
+        aria-labelledby="campaignEvidenceTitle"
+      >
+        <div class="campaign-evidence-heading">
+          <div>
+            <p id="campaignEvidenceEyebrow" class="eyebrow">
+              FROM QUESTIONS TO CHECKS
+            </p>
+            <h2 id="campaignEvidenceTitle">把疑问，变成可以核对的事。</h2>
+          </div>
+          <p id="campaignStatus" class="campaign-status" role="status">
+            本期状态载入后显示；事前承诺不等于结果已核验。
+          </p>
+        </div>
+        <div id="campaignEvidenceCards" class="campaign-evidence-grid">
+          <article>
+            <span class="campaign-card-number">01</span>
+            <h3>规则先锁定</h3>
+            <p>查看固定提交中的本期标的、时间和算法承诺。</p>
+            <a href="#audit">查看核验流程 ↗</a>
+          </article>
+          <article>
+            <span class="campaign-card-number">02</span>
+            <h3>行情按规则核验</h3>
+            <p>固定来源逐只核验；缺失或分歧就等待，不临时换日。</p>
+            <a href="#audit">查看来源与时间 ↗</a>
+          </article>
+          <article>
+            <span class="campaign-card-number">03</span>
+            <h3>结果可以自己算</h3>
+            <p>开奖后下载输入与证明，重新计算号码并核对记录。</p>
+            <a href="#proofs">查看证明与记录 ↗</a>
+          </article>
+        </div>
+        <p id="campaignBoundary" class="campaign-boundary">
+          纯虚拟积分，无现金价值。各国玩法为结构模拟；公开页面仅展示最近记录，并非全部原始响应。数据源、托管和管理员仍是信任边界。
+        </p>
       </section>
       <div class="proof-ribbon">
         <span class="ribbon-title">好运值得期待，过程经得起查看。</span>
