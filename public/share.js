@@ -84,6 +84,7 @@ function render() {
   $("sharePhase").dataset.phase = model.phase;
   text("shareMessage", model.message);
   $("shareSimulation").hidden = model.mode === "LIVE";
+  $("shareAdvanced").hidden = !model.advancedSimulation;
   text("shareCutoff", model.cutoff);
   text("shareReady", model.ready);
   text("shareSources", model.sources || words().unavailable);
@@ -303,6 +304,8 @@ $("saveShare").onclick = async () => {
       "700",
     );
     y += 12;
+    if (snapshot.advancedSimulation)
+      lines(labels.advancedSimulation, 24, "#735018");
     lines(`${labels.cutoff}: ${snapshot.cutoff}`, 27);
     lines(`${labels.ready}: ${snapshot.ready}`, 27);
     lines(labels.zone, 23);

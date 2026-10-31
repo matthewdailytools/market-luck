@@ -39,6 +39,8 @@ export const shareCopy = {
     failed:
       "证明尚未通过全部检查，暂不展示号码或生成分享图片。请刷新重试，或打开核验页查看详情。",
     simulation: "模拟行情或模拟时钟，仅用于体验，不代表真实行情自然开奖。",
+    advancedSimulation:
+      "模拟时钟已推进；下方为模拟运行时刻，原定时间见本期规则。",
     money: "纯虚拟积分 · 无充值提现 · 无现金价值或实物奖品",
     scope:
       "复算验证公开记录的一致性；行情来源真实性、独立时间与完整账本仍需另行核验。",
@@ -103,6 +105,8 @@ export const shareCopy = {
       "The proof has not passed every check. Numbers and image export are withheld. Retry or open the verification page for details.",
     simulation:
       "Simulated data or clock, for demonstration only. Not a natural market-data draw.",
+    advancedSimulation:
+      "The demo clock was advanced. Times below are simulated running times; original times remain in the round rules.",
     money:
       "Virtual points only · No deposits or withdrawals · No cash value or physical prizes",
     scope:
@@ -171,6 +175,8 @@ export const shareCopy = {
       "すべての検証に合格していないため、番号と画像出力を表示しません。再試行するか検証ページを確認してください。",
     simulation:
       "模擬相場または模擬時計による体験です。実相場の自然な抽選ではありません。",
+    advancedSimulation:
+      "模擬時計は早送りされています。以下は模擬実行時刻です。当初の時刻は今回のルールで確認できます。",
     money: "仮想ポイントのみ · 入出金なし · 金銭的価値・実物賞品なし",
     scope:
       "再計算は公開記録の整合性を確認します。情報源の真正性、独立時刻、全台帳は別途検証が必要です。",

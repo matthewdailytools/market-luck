@@ -77,7 +77,7 @@ test("pending, paused and source-waiting rounds never reveal numbers or infer a 
     "paused",
   );
 });
-test("round/format mismatches and mutated stored timing never silently substitute another result", () => {
+test("round/format mismatches and mutated LIVE timing never silently substitute another result", () => {
   for (const mutate of [
     (d) => (d.round.manifest.id = "wrong"),
     (d) => (d.round.status = "draft"),
@@ -85,7 +85,7 @@ test("round/format mismatches and mutated stored timing never silently substitut
     (d) => d.round.ready++,
     (d) => (d.round.id = "../secret"),
   ]) {
-    const data = shareFixture("pending");
+    const data = shareFixture("live");
     mutate(data);
     assert.equal(
       describeRoundShare(data, "cn", "zh-CN", data.serverTime),
@@ -97,6 +97,26 @@ test("round/format mismatches and mutated stored timing never silently substitut
     describeRoundShare(data, "unknown", "zh-CN", data.serverTime),
     null,
   );
+});
+
+test("a locally advanced DEMO clock stays simulated, preserves committed times and can reproduce its original proof", async () => {
+  const { data, verification } = await model("passed");
+  const original = structuredClone(data.round.manifest);
+  data.round.cutoff -= 1000;
+  data.round.ready -= 1000;
+  for (const language of ["zh-CN", "en", "ja"]) {
+    const view = describeRoundShare(
+      data,
+      "de",
+      language,
+      data.serverTime,
+      verification,
+    );
+    assert.equal(view.mode, "DEMO");
+    assert.equal(view.advancedSimulation, true);
+    assert.equal(view.phase, "passed");
+  }
+  assert.deepEqual(data.round.manifest, original);
 });
 test("all language links are bound to public round and format, and never serialize private data", async () => {
   for (const language of ["zh-CN", "en", "ja"]) {

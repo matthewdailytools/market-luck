@@ -666,6 +666,7 @@ console.log(
     layoutCases: report.layout.length,
     flows: report.flows.length,
     failures: report.failures.length,
+    failureDetails: report.failures,
     runtimeErrors: report.runtimeErrors.length,
     screenshots: report.screenshots.length,
   }),

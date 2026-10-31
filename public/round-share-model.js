@@ -35,8 +35,9 @@ export function describeRoundShare(
     !Number.isSafeInteger(round.ready) ||
     round.cutoff <= 0 ||
     round.cutoff >= round.ready ||
-    round.manifest.cutoff !== round.cutoff ||
-    round.manifest.ready !== round.ready
+    (round.manifest.mode === "LIVE" &&
+      (round.manifest.cutoff !== round.cutoff ||
+        round.manifest.ready !== round.ready))
   )
     return null;
   const state = {
@@ -71,6 +72,10 @@ export function describeRoundShare(
     language: lang,
     mode,
     modeLabel: words.mode[mode],
+    advancedSimulation:
+      round.manifest.mode === "DEMO" &&
+      (round.manifest.cutoff !== round.cutoff ||
+        round.manifest.ready !== round.ready),
     game,
     options,
     phase,
