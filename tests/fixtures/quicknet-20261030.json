@@ -1,0 +1,10 @@
+{
+  "provenance": "Official historical beacon; synthetic prices in tests are not market evidence",
+  "url": "https://api.drand.sh/52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971/public/33529052",
+  "sealedAt": 1793390400000,
+  "beacon": {
+    "round": 33529052,
+    "randomness": "aad47a3984495c894cbc95b1099cb4f829379b6c32544d7bf48a01345d1b7ee9",
+    "signature": "a26aaedeeef11844af8700cfcf6e78d2ed8427d1db4f775a9d0554196fea593fac44161eacec297ee45848b975b37f59"
+  }
+}

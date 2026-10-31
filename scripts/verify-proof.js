@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { verifyProof } from "../public/proof-verifier.js";
 const proof = JSON.parse(await readFile(process.argv[2], "utf8"));
 const digest = (algorithm, s) =>
   createHash(algorithm).update(s, "utf8").digest("hex");
@@ -12,7 +13,7 @@ const parsed = JSON.parse(proof.input);
 assert.equal(parsed.round, proof.manifest.id);
 assert.equal(parsed.commitment, proof.commitment);
 const canonical = JSON.stringify({
-  version: 1,
+  version: proof.manifest.version,
   round: parsed.round,
   commitment: parsed.commitment,
   prices: [...parsed.prices]
@@ -24,10 +25,37 @@ const canonical = JSON.stringify({
       scale: p.scale,
       close: p.close,
     })),
+  ...(proof.version === 2
+    ? {
+        snapshot: {
+          digest: proof.snapshot?.digest,
+          sealedAt: proof.snapshot?.sealedAt,
+          beaconRound: proof.snapshot?.beaconRound,
+        },
+        beacon: parsed.beacon,
+      }
+    : {}),
 });
 assert.equal(canonical, proof.input);
 assert.equal(digest("md5", canonical), proof.md5);
-assert.equal(digest("sha256", canonical), proof.seed);
+assert(
+  [1, 2].includes(proof.version) && proof.version === proof.manifest.version,
+);
+assert.equal(
+  digest(
+    "sha256",
+    proof.version === 2 ? "market-luck/draw/v2\n" + canonical : canonical,
+  ),
+  proof.seed,
+);
+if (proof.version === 2) {
+  const verified = await verifyProof(proof, {
+    roundId: proof.manifest.id,
+    manifest: proof.manifest,
+    commitment: proof.commitment,
+  });
+  assert(verified.ok, verified.errors.join(","));
+}
 for (const g of proof.manifest.games) {
   let words = [],
     counter = 0;

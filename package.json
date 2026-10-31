@@ -17,13 +17,16 @@
     "format": "prettier --write src public tests scripts *.json *.jsonc",
     "test:online": "node tests/online-checks.js",
     "check:sources": "node scripts/check-market-sources.js",
-    "check:public-sources": "node scripts/check-public-sources.js"
+    "check:public-sources": "node scripts/check-public-sources.js",
+    "build:crypto": "esbuild src/beacon.js --bundle --format=esm --target=es2022 --minify --legal-comments=inline --outfile=public/beacon-verifier.js"
   },
   "dependencies": {
+    "@noble/curves": "2.4.0",
     "@noble/hashes": "^2.0.1"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",
+    "esbuild": "0.28.2",
     "prettier": "^3.9.10",
     "wrangler": "^4.0.0"
   }

@@ -1,4 +1,5 @@
 import { verifyProof } from "./proof-verifier.js";
+import { renderEntropy } from "./entropy-view.js";
 
 const $ = (selector) => document.querySelector(selector);
 const locales = ["zh-CN", "en", "ja"];
@@ -426,6 +427,22 @@ const words = {
   allocation: ["共享奖池分配", "Shared-pool allocation", "共有プール配分"],
 };
 const checks = {
+  snapshot: [
+    ["首次行情快照", "First price snapshot", "最初の相場固定"],
+    [
+      "核对冻结摘要、来源、价格和固定选轮公式；不认证平台时间。",
+      "Checks the snapshot digest, sources, prices and fixed round selection; does not authenticate platform time.",
+      "固定記録のハッシュ・情報源・価格・選輪式を確認し、プラットフォーム時刻は認証しません。",
+    ],
+  ],
+  beacon: [
+    ["未来信标签名", "Future beacon signature", "将来ビーコンの署名"],
+    [
+      "用钉死的 quicknet 公钥验证指定轮次 BLS 签名与随机值。",
+      "Verifies the specified BLS signature and randomness with the pinned quicknet key.",
+      "指定 quicknet 公開鍵で対象回のBLS署名と乱数を検証します。",
+    ],
+  ],
   manifest: [
     ["固定规则摘要", "Committed rules", "固定ルール"],
     [
@@ -1015,6 +1032,7 @@ function renderDownloads() {
   );
 }
 function renderData() {
+  void renderEntropy(data, language);
   if (!data) return;
   const r = data.round,
     m = r.manifest,

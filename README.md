@@ -6,12 +6,15 @@
 
 Cloudflare Workers + D1 + R2 的纯积分彩票实验，中英日响应式页面，16 国虚拟选号玩法，公开奖池与近期中奖流水。
 
+新增 v2：首次双源行情冻结后，等待指定的未来 drand quicknet 轮次并验证 BLS 签名。免费计划使用 SQLite Durable Object 隔离验签计算；原有 D1/R2 保留。已售 v1 期不追加信标、不改变输入或派奖。见[改进方案](随机性与防作弊改进方案.md)。
+
 ## 本地运行
 
-需要 Node.js 22+。
+需要 Node.js 22.13+（建议使用 22 的最新版本或更新的受支持版本）。
 
 ```powershell
 npm install
+npm run build:crypto
 npm run db:migrate
 npm run dev
 ```
@@ -33,6 +36,17 @@ npm run test:integration
 当前真实期使用 Yahoo Finance + Nasdaq 免 Key 的 `PUBLIC-NOKEY-v1`，必须两源逐只价格一致，缺失或分歧就等待。详情见[真实接入与验收](LIVE接入与线上验收.md)和[免 Key 实测](免Key行情源实测.md)。另保留 EODHD / Alpha Vantage / Twelve Data 的 Key 适配及[逐步申请说明](免费行情API申请与配置-逐步操作.md)，没有实际 Key 的接口不宣称已完成线上联调。免费可访问不等于获得公开再分发许可。
 
 ## Cloudflare 部署准备
+
+当前版本还需要配置 `BEACON_VERIFIER` SQLite Durable Object（示例配置已包含绑定与 class migration），并为每个公网安装设置独立的 `ABUSE_IP_KEY`。这是本地生成的服务器 HMAC 密钥，不是行情服务 API Key。不要将它提交仓库或发到聊天中。可直接通过管道生成并传给 Wrangler：
+
+```powershell
+node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('hex'))" | npx wrangler secret put ABUSE_IP_KEY --config wrangler.live.jsonc
+npm run build:crypto
+npx wrangler d1 migrations apply DB --remote --config wrangler.live.jsonc
+npx wrangler deploy --config wrangler.live.jsonc
+```
+
+DEMO 使用其自己的配置和另一把随机密钥。迁移与代码需配套发布；旧代码没有逐票结算授权写入步骤，迁移后会安全拒绝其派奖，而不会部分结算。部署后访问 `/api/randomness-health` 检查验签与配置，再检查现有期次。不要把新 v2 写回已售 v1 manifest。
 
 创建自己的 D1 数据库和 R2 桶，替换 wrangler.jsonc 中的数据库 ID。正式环境将 DEMO_MODE 改为 false，再执行远端迁移和部署：
 

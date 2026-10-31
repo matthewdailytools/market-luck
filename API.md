@@ -33,6 +33,16 @@ curl -b cookies.txt -H 'Origin: http://127.0.0.1:8787' -H 'Content-Type: applica
   http://127.0.0.1:8787/api/buy
 ```
 
+## Randomness and anti-abuse additions
+
+GET `/api/randomness-health` returns installed algorithm versions, the new-round version, pinned public beacon policy, server abuse-key configuration status, and a real historical quicknet signature self-test performed by a SQLite Durable Object. A valid round-1000 signature must pass; relabelling it as round 1001 must fail. This endpoint is read-only with respect to D1/R2, although the verifier may cache its result in memory. Success is an execution-readiness check, not a certificate of fairness or a future natural draw.
+
+GET `/api/round/ROUND_ID/entropy` returns `{roundId,version,snapshot,beaconTime}` only for a public round. A v1 or not-yet-frozen v2 round returns `snapshot:null`. A frozen snapshot contains `{payload,digest,sealedAt,beaconRound}`. These are public prices and metadata, not all raw provider bodies. No account or ticket ownership information is included. Invalid or unpublished IDs return 404.
+
+New POST `/api/admin/prepare` requests produce v2 manifests; omit `version` or specify 2. Version 1 and KEYED-v1 preparation are refused on this route. Existing sold v1 rounds keep their original collect/settle flow. v2 collection first freezes consensus and returns a waiting error until the derived future beacon is available and valid. Repeated collection reuses that snapshot. v2 pause after freezing returns 409 `FROZEN_ROUND_CANNOT_PAUSE`; pause history is append-only. The verifier binding must be ready before v2 preparation/publication.
+
+Authentication now uses persistent fixed-window source limits: LIVE registration 5/hour, DEMO registration 50/hour, login 60/minute. A rejected request returns HTTP 429 and `Retry-After` seconds. Public LIVE authentication refuses a missing server key/source instead of disabling protection. Local DEMO development may omit the key. The database stores HMAC bucket IDs, not raw IPs. Request JSON is limited to 16 KiB even when Content-Length is omitted.
+
 ## Public sharing page
 
 GET `/share.html?round=ROUND_ID&game=de&lang=zh-CN` opens a read-only page, not a new purchase API. `lang` supports `zh-CN`, `en`, and `ja`; `game` must belong to that exact round's committed catalog. Without a round parameter, the page selects the displayed public round and then pins its ID in the URL. A supplied invalid, missing or unpublished ID shows an error instead of borrowing another round. Cloudflare Assets may canonicalize the HTML path; the query parameters are preserved.

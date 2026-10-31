@@ -12,6 +12,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run build:crypto && git diff --exit-code -- public/beacon-verifier.js
       - run: npm test
       - run: npm run db:migrate
       - name: Integration with local D1 and R2

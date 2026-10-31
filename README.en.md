@@ -4,6 +4,8 @@
 
 A virtual-points lottery experiment using publicly reproducible market-close input, built on Cloudflare Workers, D1 and R2. Includes 16 national number formats, Chinese/English/Japanese UI, signup points, atomic purchases, a shared rollover pool, winner history and downloadable proof.
 
+New LIVE preparation uses v2: freeze the first two-source consensus, then verify a fixed future drand quicknet round. A SQLite Durable Object performs BLS verification within the Free-plan compute allowance; D1/R2 remain the primary stores. Already sold v1 rounds keep their original algorithms and payouts. Configure a separate server `ABUSE_IP_KEY`, apply the new D1 migration and deploy matching code; see the Chinese installation steps and [hardening plan](随机性与防作弊改进方案.md). Node.js 22.13+ is required for the isolated SQLite security tests.
+
 This is **not** an official lottery, real-money service or a promise of absolute tamper resistance. No deposits, withdrawals, transfers or physical prizes. Hosting, data providers and administrators remain trust boundaries. MD5 is only a fingerprint; SHA-256 generates commitments and sampling seeds.
 
 [Public round cards](https://luck.onlinefreetools.org/share.html?lang=en) need no sign-in. Links pin the round and format; cards support three languages, link sharing and PNG downloads. Published numbers appear only after browser recalculation passes. LIVE, DEMO and replay labels stay visible, and cards contain no private tickets or balances.

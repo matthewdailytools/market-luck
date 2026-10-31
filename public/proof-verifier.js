@@ -1,4 +1,10 @@
 import { md5Hex, sha256Bytes, sha256Hex } from "./proof-hashes.js";
+import {
+  RANDOMNESS_POLICY,
+  validateSnapshot,
+  verifyBeacon,
+  beaconTime,
+} from "./beacon-verifier.js";
 
 const ids = [
   "manifest",
@@ -183,7 +189,10 @@ function sourcesMatch(proof, manifest, prices) {
  * source responses, inspect all tickets, verify payout recipients, or certify fairness.
  * A replay's internally consistent time remains a simulated time. */
 export async function verifyProof(proof, expected = {}) {
-  const checks = ids.map((id) => ({ id, ok: false })),
+  const checks = [
+      ...ids,
+      ...(proof?.version === 2 ? ["snapshot", "beacon"] : []),
+    ].map((id) => ({ id, ok: false })),
     errors = [],
     results = {};
   const checked = (id, ok) => {
@@ -207,8 +216,8 @@ export async function verifyProof(proof, expected = {}) {
       throw Error("INVALID_PROOF");
     const manifest = proof.manifest;
     if (
-      proof.version !== 1 ||
-      manifest.version !== 1 ||
+      ![1, 2].includes(proof.version) ||
+      manifest.version !== proof.version ||
       !Array.isArray(manifest.games) ||
       manifest.games.length < 1 ||
       manifest.games.length > 64 ||
@@ -245,7 +254,7 @@ export async function verifyProof(proof, expected = {}) {
       a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0,
     );
     const canonical = JSON.stringify({
-      version: 1,
+      version: manifest.version,
       round: manifest.id,
       commitment: proof.commitment,
       prices: prices.map(({ symbol, date, currency, scale, close }) => ({
@@ -255,6 +264,21 @@ export async function verifyProof(proof, expected = {}) {
         scale,
         close,
       })),
+      ...(manifest.version === 2
+        ? {
+            snapshot: {
+              digest: proof.snapshot?.digest,
+              sealedAt: proof.snapshot?.sealedAt,
+              beaconRound: proof.snapshot?.beaconRound,
+            },
+            beacon: {
+              chainHash: RANDOMNESS_POLICY.chainHash,
+              round: proof.beacon?.round,
+              signature: proof.beacon?.signature,
+              randomness: proof.beacon?.randomness,
+            },
+          }
+        : {}),
     });
     const marketsMatch =
       prices.length === manifest.markets.length &&
@@ -269,13 +293,28 @@ export async function verifyProof(proof, expected = {}) {
       );
     checked(
       "canonical",
-      input.version === 1 &&
+      input.version === manifest.version &&
         input.round === expected.roundId &&
         input.commitment === proof.commitment &&
         proof.input === canonical &&
         marketsMatch,
     );
-    const seed = await sha256Hex(canonical);
+    if (manifest.version === 2) {
+      const frozen = validateSnapshot(proof.snapshot, manifest);
+      checked(
+        "snapshot",
+        same(frozen.prices, prices) && same(frozen.sources, proof.sources),
+      );
+      checked(
+        "beacon",
+        verifyBeacon(proof.beacon, proof.snapshot.beaconRound) &&
+          Date.parse(proof.observedAt) >=
+            beaconTime(proof.snapshot.beaconRound),
+      );
+    }
+    const seed = await sha256Hex(
+      manifest.version === 2 ? "market-luck/draw/v2\n" + canonical : canonical,
+    );
     checked("hashes", seed === proof.seed && md5Hex(canonical) === proof.md5);
     for (const game of manifest.games)
       results[game.id] = await recalculate(seed, game);

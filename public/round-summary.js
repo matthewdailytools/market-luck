@@ -230,6 +230,17 @@ export function describeHomeRound(
   } else phase = "waiting";
 
   const formatter = clockFormat(lang, timeZone);
+  const v2 = round?.manifest?.version === 2;
+  const entropyLabels = {
+    "zh-CN": "等待一致行情或未来信标",
+    en: "Awaiting consensus or future beacon",
+    ja: "相場の一致または将来ビーコン待ち",
+  };
+  const entropyNotes = {
+    "zh-CN": "v2 首次行情冻结后，还需等待至少 120 秒后的指定信标并验签。",
+    en: "v2 also waits for its specified beacon at least 120 seconds after the first price freeze, then verifies its signature.",
+    ja: "v2 は相場固定から120秒以上先の指定ビーコンを待ち、署名を検証します。",
+  };
   const zone = formatter.resolvedOptions().timeZone;
   let note =
     phase === "paused"
@@ -280,7 +291,7 @@ export function describeHomeRound(
     ready,
     cutoffText: cutoff ? formatter.format(cutoff) : "—",
     readyText: ready ? formatter.format(ready) : "—",
-    timingNote: `${words.timezone}: ${zone} · ${note}`,
+    timingNote: `${words.timezone}: ${zone} · ${note}${v2 ? " " + entropyNotes[lang] : ""}`,
     auditLabel: !round
       ? words.noRoundAudit
       : phase === "settled"
@@ -289,12 +300,15 @@ export function describeHomeRound(
     auditHref: round
       ? "/verify.html?round=" + encodeURIComponent(round.id)
       : "/verify.html",
-    countdownLabel: words[phase],
+    countdownLabel:
+      phase === "waiting" && v2 ? entropyLabels[lang] : words[phase],
     statusLabel:
       phase === "sales"
         ? words.statusSales
         : ["awaitingClose", "confirming", "waiting"].includes(phase)
-          ? words.statusWaiting
+          ? phase === "waiting" && v2
+            ? entropyLabels[lang]
+            : words.statusWaiting
           : words[phase],
     sourceText:
       !round || !sources.length

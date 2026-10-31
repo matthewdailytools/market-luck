@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { ticketFixture } from "./ticket-fixtures.mjs";
 import { runShareAcceptance } from "./share-acceptance.mjs";
+import { runSecurityAcceptance } from "./security-acceptance.mjs";
 
 // This runner uses an isolated GitHub-hosted Linux browser, never the user's
 // desktop browser, profile, extensions or the desktop app's disabled controls.
@@ -633,6 +634,22 @@ for (const [engine, type] of [
   try {
     browser = await type.launch({ headless: true });
     report.browserVersions[engine] = browser.version();
+    report.securityAcceptance ||= [];
+    const security = await runSecurityAcceptance({
+      browser,
+      engine,
+      base,
+      out,
+    });
+    report.securityAcceptance.push({
+      engine,
+      status: security.status,
+      cases: security.cases.length,
+      layouts: security.layouts.length,
+      errors: security.errors,
+    });
+    if (security.status !== "passed")
+      fail(engine + "/security", JSON.stringify(security.errors));
     report.shareAcceptance ||= [];
     const share = await runShareAcceptance({
       browser,

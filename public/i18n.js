@@ -1,5 +1,17 @@
 export const languages = ["zh-CN", "en", "ja"];
 export const dictionary = {
+  "尝试次数过多，请稍后重试": [
+    "Too many attempts. Please try again later.",
+    "試行回数が多すぎます。後でもう一度お試しください。",
+  ],
+  "认证服务配置待完成，请稍后重试": [
+    "Authentication setup is incomplete. Please try again later.",
+    "認証設定を準備中です。後でもう一度お試しください。",
+  ],
+  "无法确认请求来源，请稍后重试": [
+    "Could not confirm the request source. Please try again later.",
+    "リクエスト元を確認できません。後でもう一度お試しください。",
+  ],
   开奖核验: ["Verify the draw", "抽選の検証"],
   "看懂本期规则与核验 →": [
     "Understand this round and verify →",

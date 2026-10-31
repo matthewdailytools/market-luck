@@ -1,7 +1,7 @@
 // This entry point is never used by the LIVE deployment. Dedicated test D1/R2 only.
 import { createWorker } from "../src/worker.js";
 import { sessionFor } from "../src/calendar.js";
-import { collectAndSettle } from "../src/live.js";
+import { collectAndSettle, liveManifest } from "../src/live.js";
 import { publicConsensus } from "../src/public-market-data.js";
 import { hash, evidence } from "../src/engine.js";
 export default {
@@ -59,10 +59,11 @@ export default {
               cookie,
               "content-type": "application/json",
               authorization: "Bearer " + env.ADMIN_TOKEN,
+              "CF-Connecting-IP": "isolated-replay-" + crypto.randomUUID(),
             },
             ...(body ? { body: JSON.stringify(body) } : {}),
           }),
-          env,
+          { ...env, ABUSE_IP_KEY: "isolated-replay-test-transport-only" },
         );
         const data = await response.json();
         if (response.status !== status)
@@ -88,15 +89,32 @@ export default {
           password: "replay-test-password-123",
         });
         before = await call("state");
-        const prepared = await call("admin/prepare", {
-          cutoff: sessionFor("2026-10-29").cutoff,
-          markets: ["AAPL", "MSFT", "IBM"].map((s) => ({
-            symbol: (s === "IBM" ? "XNYS:" : "XNAS:") + s,
-            date: "2026-10-29",
-            currency: "USD",
-            scale: 2,
-          })),
-        });
+        // Build the legacy manifest only in this authenticated test entry point.
+        // Production /api/admin/prepare always creates v2 and has no downgrade.
+        const legacy = liveManifest(
+          {
+            cutoff: sessionFor("2026-10-29").cutoff,
+            markets: ["AAPL", "MSFT", "IBM"].map((s) => ({
+              symbol: (s === "IBM" ? "XNYS:" : "XNAS:") + s,
+              date: "2026-10-29",
+              currency: "USD",
+              scale: 2,
+            })),
+          },
+          now,
+        );
+        const prepared = {
+          manifest: legacy,
+          commitment: hash(JSON.stringify(legacy)),
+        };
+        await q(
+          "INSERT INTO rounds(id,manifest,commitment,cutoff,ready,status) VALUES(?,?,?,?,?,'draft')",
+          legacy.id,
+          JSON.stringify(legacy),
+          prepared.commitment,
+          legacy.cutoff,
+          legacy.ready,
+        ).run();
         m = prepared.manifest;
         round = m.id;
         // Replay's external-publishing stage is simulated, and is labeled in the report.

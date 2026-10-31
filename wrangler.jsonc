@@ -1,12 +1,18 @@
 {
   "name": "market-luck",
-  "main": "src/worker.js",
+  "main": "src/entry.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": true,
   },
+  "durable_objects": {
+    "bindings": [{ "name": "BEACON_VERIFIER", "class_name": "BeaconVerifier" }],
+  },
+  "migrations": [
+    { "tag": "beacon-verifier-v1", "new_sqlite_classes": ["BeaconVerifier"] },
+  ],
   "vars": { "DEMO_MODE": "true" },
   "triggers": { "crons": ["0 6 * * *"] },
   "d1_databases": [

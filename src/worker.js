@@ -1,9 +1,13 @@
 import { games, hash, validate } from "./engine.js";
 import { settle } from "./settle.js";
-import { liveManifest, collectAndSettle } from "./live.js";
+import { prepareLiveManifest, collectAndSettle } from "./live.js";
 import { verifyPublication } from "./publication.js";
 import { assertLockedRound } from "./calendar.js";
 import { publicConsensus } from "./public-market-data.js";
+import { attemptLimit } from "./abuse.js";
+import { readSnapshot, verifyOnServer, BEACON_VECTOR } from "./entropy.js";
+import { RANDOMNESS_POLICY, beaconTime } from "./beacon.js";
+import { recordGuardsReady } from "./record-guards.js";
 const json = (v, status = 200, headers = {}) =>
   new Response(JSON.stringify(v), {
     status,
@@ -14,6 +18,31 @@ const json = (v, status = 200, headers = {}) =>
     },
   });
 const stmt = (e, s, ...a) => e.DB.prepare(s).bind(...a);
+async function readJson(req) {
+  const reader = req.body?.getReader();
+  if (!reader) throw Error("INVALID_JSON");
+  let size = 0;
+  const chunks = [];
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > 16384) {
+      await reader.cancel();
+      const error = Error("请求过大");
+      error.status = 413;
+      throw error;
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
 async function password(p, s) {
   const key = await crypto.subtle.importKey(
     "raw",
@@ -121,6 +150,42 @@ export function createWorker(clock = Date.now) {
           Number(req.headers.get("content-length")) > 16384
         )
           return json({ error: "请求过大" }, 413);
+        if (p === "/api/randomness-health" && req.method === "GET") {
+          if (!e.BEACON_VERIFIER)
+            return json(
+              { ready: false, error: "BEACON_VERIFIER_UNAVAILABLE" },
+              503,
+            );
+          const valid = await verifyOnServer(e, BEACON_VECTOR, 1000);
+          const invalid = await verifyOnServer(
+            e,
+            { ...BEACON_VECTOR, round: 1001 },
+            1001,
+          );
+          const guards = await recordGuardsReady(e);
+          const authReady =
+            Boolean(e.ABUSE_IP_KEY) ||
+            (e.DEMO_MODE === "true" &&
+              ["localhost", "127.0.0.1"].includes(u.hostname));
+          const ready = valid && !invalid && guards && authReady;
+          return json(
+            {
+              ready,
+              recordGuardsInstalled: guards,
+              installedAlgorithms: [1, 2],
+              newRoundVersion: 2,
+              verification: "SQLite Durable Object BLS",
+              historicalSelfTest: {
+                round: 1000,
+                validAccepted: valid,
+                tamperRejected: !invalid,
+              },
+              abuseProtectionConfigured: Boolean(e.ABUSE_IP_KEY),
+              policy: RANDOMNESS_POLICY,
+            },
+            ready ? 200 : 503,
+          );
+        }
 
         if (p.startsWith("/api/admin/") && req.method === "POST") {
           if (
@@ -130,7 +195,7 @@ export function createWorker(clock = Date.now) {
             return json({ error: "需要管理员凭据" }, 401);
 
           if (p === "/api/admin/check-public-sources") {
-            const b = await req.json();
+            const b = await readJson(req);
             const result = await publicConsensus(b.symbol, b.date);
             for (const o of result.observations)
               await e.EVIDENCE.put(
@@ -146,7 +211,14 @@ export function createWorker(clock = Date.now) {
             );
           }
           if (p === "/api/admin/prepare") {
-            const m = liveManifest(await req.json(), clock());
+            if (!(await recordGuardsReady(e)))
+              return json({ error: "RECORD_GUARDS_UNAVAILABLE" }, 503);
+            if (
+              !e.BEACON_VERIFIER ||
+              !(await verifyOnServer(e, BEACON_VECTOR, 1000))
+            )
+              return json({ error: "BEACON_VERIFIER_UNAVAILABLE" }, 503);
+            const m = prepareLiveManifest(await readJson(req), clock());
             await stmt(
               e,
               "INSERT INTO rounds(id,manifest,commitment,cutoff,ready,status) VALUES(?,?,?,?,?,'draft')",
@@ -162,7 +234,7 @@ export function createWorker(clock = Date.now) {
               next: "在外部发布承诺后调用 /api/admin/publish",
             });
           }
-          const b = await req.json();
+          const b = await readJson(req);
           const r = await stmt(
             e,
             "SELECT * FROM rounds WHERE id=?",
@@ -179,6 +251,11 @@ export function createWorker(clock = Date.now) {
               )
                 return json({ error: "需要外部承诺记录 HTTPS 链接" }, 400);
               assertLockedRound(r, clock());
+              if (
+                JSON.parse(r.manifest).version === 2 &&
+                !(await verifyOnServer(e, BEACON_VECTOR, 1000))
+              )
+                throw Error("BEACON_VERIFIER_UNAVAILABLE");
               await verifyPublication(
                 b.anchor,
                 r.commitment,
@@ -210,13 +287,31 @@ export function createWorker(clock = Date.now) {
             }
           }
           if (p === "/api/admin/pause") {
+            if (
+              JSON.parse(r.manifest).version === 2 &&
+              (await readSnapshot(e, r.id))
+            )
+              return json({ error: "FROZEN_ROUND_CANNOT_PAUSE" }, 409);
             if (r.status !== "open")
               return json({ error: "期次不可暂停" }, 409);
-            await stmt(
-              e,
-              "UPDATE rounds SET status='paused' WHERE id=?",
-              r.id,
-            ).run();
+            await e.DB.batch([
+              stmt(
+                e,
+                "UPDATE rounds SET status='paused' WHERE id=? AND status='open'",
+                r.id,
+              ),
+              stmt(
+                e,
+                "INSERT INTO collection_attempts(round_id,attempted,ok,reason) SELECT ?,?,0,? WHERE EXISTS(SELECT 1 FROM rounds WHERE id=? AND status='paused')",
+                r.id,
+                clock(),
+                "ADMIN_PAUSE: " +
+                  (typeof b.reason === "string"
+                    ? b.reason.slice(0, 200)
+                    : "No reason supplied"),
+                r.id,
+              ),
+            ]);
             return json({ ok: true });
           }
           if (p === "/api/admin/collect") {
@@ -245,7 +340,7 @@ export function createWorker(clock = Date.now) {
           }
         }
         const roundResource = p.match(
-          /^\/api\/round\/([A-Za-z0-9-]{1,80})(\/manifest)?$/,
+          /^\/api\/round\/([A-Za-z0-9-]{1,80})(\/manifest|\/entropy)?$/,
         );
         if (roundResource && req.method === "GET") {
           const row = await stmt(
@@ -254,7 +349,19 @@ export function createWorker(clock = Date.now) {
             roundResource[1],
           ).first();
           if (!row) return json({ error: "期次不存在或尚未公开" }, 404);
-          if (roundResource[2])
+          if (roundResource[2] === "/entropy") {
+            const snapshot =
+              JSON.parse(row.manifest).version === 2
+                ? await readSnapshot(e, row.id)
+                : null;
+            return json({
+              roundId: row.id,
+              version: JSON.parse(row.manifest).version,
+              snapshot,
+              beaconTime: snapshot ? beaconTime(snapshot.beaconRound) : null,
+            });
+          }
+          if (roundResource[2] === "/manifest")
             return new Response(row.manifest, {
               headers: {
                 "content-type": "application/json; charset=utf-8",
@@ -349,7 +456,21 @@ export function createWorker(clock = Date.now) {
           ["/api/register", "/api/login"].includes(p) &&
           req.method === "POST"
         ) {
-          const b = await req.json();
+          const limited = await attemptLimit(
+            req,
+            e,
+            p.endsWith("register") ? "register" : "login",
+            clock(),
+          );
+          if (limited)
+            return json(
+              { error: limited.error },
+              limited.status,
+              limited.retryAfter
+                ? { "retry-after": String(limited.retryAfter) }
+                : {},
+            );
+          const b = await readJson(req);
           if (
             typeof b.name !== "string" ||
             !/^[\p{L}\p{N}_-]{3,24}$/u.test(b.name) ||
@@ -408,7 +529,7 @@ export function createWorker(clock = Date.now) {
         }
         if (p === "/api/buy" && req.method === "POST") {
           if (!me) return json({ error: "请先登录" }, 401);
-          const b = await req.json();
+          const b = await readJson(req);
           validate(b.game, b.main, b.bonus);
           if (
             typeof b.key !== "string" ||
@@ -491,7 +612,7 @@ export function createWorker(clock = Date.now) {
             ).first();
             return json({ id: existing?.id || (await createRound(e, clock)) });
           }
-          const b = await req.json();
+          const b = await readJson(req);
           const r = await stmt(
             e,
             "SELECT * FROM rounds WHERE id=?",
@@ -540,6 +661,7 @@ export function createWorker(clock = Date.now) {
         }
         return json({ error: "接口不存在" }, 404);
       } catch (err) {
+        if (err.status === 413) return json({ error: "请求过大" }, 413);
         const msg = String(err.message);
         return json(
           {
@@ -560,6 +682,11 @@ export function createWorker(clock = Date.now) {
     async scheduled(event, e, ctx) {
       ctx.waitUntil(
         (async () => {
+          await stmt(
+            e,
+            "DELETE FROM abuse_limits WHERE expires<?",
+            clock() - 86400000,
+          ).run();
           const rows = (
             await stmt(
               e,

@@ -1,3 +1,9 @@
+#entropyPanel {
+  overflow-wrap: anywhere;
+}
+#entropyPanel dd {
+  margin: 5px 0 0;
+}
 :root {
   font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
   color: #252841;

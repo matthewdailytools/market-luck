@@ -3,6 +3,24 @@ import { collectMarketData } from "./market-data.js";
 import { settle } from "./settle.js";
 import { publicConsensus } from "./public-market-data.js";
 import {
+  RANDOMNESS_POLICY,
+  assertRandomnessPolicy,
+  validateSnapshot,
+} from "./beacon.js";
+import { readSnapshot, freezeSnapshot, fetchBeacon } from "./entropy.js";
+import { recordGuardsReady } from "./record-guards.js";
+export function prepareLiveManifest(body, now = Date.now()) {
+  if (body?.version !== undefined && body.version !== 2)
+    throw Error("NEW_ROUNDS_REQUIRE_V2");
+  if (body?.sourceProfile && body.sourceProfile !== "PUBLIC-NOKEY-v1")
+    throw Error("V2_REQUIRES_PUBLIC_SOURCE_PROFILE");
+  return {
+    ...liveManifest(body, now),
+    version: 2,
+    randomness: { ...RANDOMNESS_POLICY },
+  };
+}
+import {
   sessionFor,
   assertLockedRound,
   CALENDAR_VERSION,
@@ -103,6 +121,36 @@ export async function collectAndSettle(
   if (hash(round.manifest) !== round.commitment)
     throw Error("COMMITMENT_MISMATCH");
   assertLockedRound(round, now, { forCollection: true });
+  if (![1, 2].includes(m.version)) throw Error("UNSUPPORTED_ALGORITHM_VERSION");
+  let snapshot = null;
+  if (m.version === 2) {
+    if (!(await recordGuardsReady(env)))
+      throw Error("RECORD_GUARDS_UNAVAILABLE");
+    assertRandomnessPolicy(m);
+    snapshot = await readSnapshot(env, round.id);
+    if (snapshot) {
+      const frozen = validateSnapshot(snapshot, m);
+      const beacon = await fetchBeacon(env, snapshot, fetcher, now);
+      return settle(
+        env,
+        round,
+        frozen.prices,
+        {
+          snapshot,
+          beacon,
+          sources: frozen.sources,
+          observedAt: new Date(now).toISOString(),
+          execution:
+            env.INSTALLATION_KIND === "ONLINE_REPLAY"
+              ? "ONLINE_REPLAY_SIMULATED_CLOCK"
+              : "LIVE_REAL_CLOCK",
+          dataNote:
+            "First consensus snapshot frozen before the fixed future quicknet beacon.",
+        },
+        now,
+      );
+    }
+  }
   let data;
   if (m.sourceProfile === "PUBLIC-NOKEY-v1") {
     if (m.sources.join(",") !== "YahooFinance,Nasdaq" || m.quorum !== 2)
@@ -151,11 +199,22 @@ export async function collectAndSettle(
     sources: a.sources.map(({ raw, ...rest }) => rest),
     failures: a.failures || [],
   }));
+  let entropy = {};
+  if (m.version === 2) {
+    snapshot = await freezeSnapshot(env, round, data.prices, sources);
+    const frozen = validateSnapshot(snapshot, m);
+    const beacon = await fetchBeacon(env, snapshot, fetcher, now);
+    // The first persisted snapshot wins even when collectors raced with differing quotes.
+    data.prices = frozen.prices;
+    sources.splice(0, sources.length, ...frozen.sources);
+    entropy = { snapshot, beacon };
+  }
   return settle(
     env,
     round,
     data.prices,
     {
+      ...entropy,
       observedAt,
       execution:
         env.INSTALLATION_KIND === "ONLINE_REPLAY"

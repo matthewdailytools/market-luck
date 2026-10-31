@@ -1,5 +1,7 @@
 import { evidence, tier, hash } from "./engine.js";
 import { assertLockedRound } from "./calendar.js";
+import { validateSnapshot, beaconTime } from "./beacon.js";
+import { verifyOnServer } from "./entropy.js";
 export async function settle(
   env,
   round,
@@ -22,8 +24,35 @@ export async function settle(
     forCollection: JSON.parse(round.manifest).mode === "LIVE",
   });
   if (now < round.cutoff || now < round.ready) throw Error("MARKETS_NOT_FINAL");
+  const manifest = JSON.parse(round.manifest);
+  if (manifest.version === 2) {
+    const frozen = validateSnapshot(metadata.snapshot, manifest);
+    if (
+      JSON.stringify(frozen.prices) !==
+        JSON.stringify(
+          [...prices]
+            .sort((a, b) =>
+              a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0,
+            )
+            .map(({ symbol, date, currency, scale, close }) => ({
+              symbol,
+              date,
+              currency,
+              scale,
+              close,
+            })),
+        ) ||
+      now < beaconTime(metadata.snapshot.beaconRound) ||
+      !(await verifyOnServer(
+        env,
+        metadata.beacon,
+        metadata.snapshot.beaconRound,
+      ))
+    )
+      throw Error("ENTROPY_NOT_VERIFIED");
+  }
   const proof = {
-    ...evidence(round, prices),
+    ...evidence(round, prices, metadata),
     ...metadata,
     mode: JSON.parse(round.manifest).mode,
   };
@@ -67,7 +96,18 @@ export async function settle(
     })),
   );
   const ops = [
-    q("INSERT INTO settlements(round_id) VALUES(?)", round.id),
+    q(
+      "INSERT INTO settlements(round_id) SELECT ? WHERE (SELECT balance FROM pool WHERE id=1)=? AND (SELECT COUNT(*) FROM tickets WHERE round_id=?)=?",
+      round.id,
+      balance,
+      round.id,
+      tickets.length,
+    ),
+    q(
+      "INSERT INTO settlement_payments(ticket_id,round_id,prize,tier) SELECT json_extract(value,'$.id'),?,json_extract(value,'$.prize'),json_extract(value,'$.tier') FROM json_each(?)",
+      round.id,
+      payments,
+    ),
     q(
       "UPDATE rounds SET status='settled',proof=? WHERE id=? AND status='open'",
       JSON.stringify(proof),
