@@ -1042,6 +1042,10 @@ input:focus-visible {
 #toast {
   background: #4c3c7a;
   border: 1px solid #e9dfff4d;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  overflow-wrap: anywhere;
+  pointer-events: none;
 }
 html[lang="en"] h1 {
   font-size: clamp(39px, 4.35vw, 62px);

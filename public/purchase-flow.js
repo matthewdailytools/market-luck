@@ -140,11 +140,7 @@ const words = {
     "Your welcome points are ready.",
     "登録ポイントを受け取りました。",
   ],
-  loggedIn: [
-    "登录成功，号码已保留。",
-    "Signed in. Your picks are kept.",
-    "ログインしました。選んだ番号を保持しています。",
-  ],
+  loggedIn: ["登录成功。", "Signed in.", "ログインしました。"],
   noPicks: [
     "尚未选择号码，可使用随机选号。",
     "No numbers yet. Try Quick pick.",

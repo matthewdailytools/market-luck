@@ -497,11 +497,37 @@ async function actualFlow(browser, engine, mobile) {
       "Sign-in should return focus to ticket history",
     );
     await expect(page.locator("#purchaseReview")).not.toBeVisible();
+    await expect(page.locator("#toast")).toBeVisible();
+    const auditLink = page.locator(".ticket-card-actions a");
+    await auditLink.scrollIntoViewIfNeeded();
+    const immediateTarget = await auditLink.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      const target = document.elementFromPoint(
+        r.left + r.width / 2,
+        r.top + r.height / 2,
+      );
+      return Boolean(target && (target === el || el.contains(target)));
+    });
+    assert(
+      immediateTarget,
+      "A login notification must not cover the verification click target",
+    );
+    await activate(".ticket-card-actions a");
+    await expect(page.locator("#auditContent")).toBeVisible();
+    const visitedRound = new URL(page.url()).searchParams.get("round");
+    await page.goBack({ waitUntil: "networkidle" });
+    await expect(page.locator("#tickets .ticket-card")).toHaveCount(1);
+    await expect(page.locator("#toast")).toBeHidden();
     const before = await (
       await context.request.get(base + "/api/state")
     ).json();
     const ticket = before.tickets[0];
     assert(ticket && ticket.user_id === before.me.id);
+    assert.equal(
+      visitedRound,
+      ticket.round_id,
+      "Immediate verification must open the purchased ticket's round",
+    );
     await expect(page.locator(".ticket-card")).toHaveAttribute(
       "data-ticket-id",
       ticket.id,
@@ -558,17 +584,6 @@ async function actualFlow(browser, engine, mobile) {
     await page.unroute("**/api/state");
     await activate("#ticketHistoryRefresh");
     await expect(page.locator("#ticketHistoryLoadStatus")).toBeHidden();
-    await activate(".ticket-card-actions a");
-    await expect(page).toHaveURL(
-      new RegExp("/verify\\?round=" + ticket.round_id),
-    );
-    await expect(page.locator("#auditContent")).toBeVisible();
-    assert.equal(
-      new URL(page.url()).searchParams.get("round"),
-      ticket.round_id,
-    );
-    await page.goBack({ waitUntil: "networkidle" });
-    await expect(page.locator("#tickets .ticket-card")).toHaveCount(1);
     const after = await (await context.request.get(base + "/api/state")).json();
     assert.equal(
       after.tickets.length,
@@ -591,7 +606,7 @@ async function actualFlow(browser, engine, mobile) {
       engine,
       source: online ? "online-demo" : "local-real-api",
       mobile,
-      case: "sign-in/cancel/keyboard/touch/refresh-error/retry/own-round verification/next-pick/logout",
+      case: "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
       status: "passed",
       ticketCount: after.tickets.length,
       balanceBefore: before.me.balance,
