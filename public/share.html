@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Market Luck · 本期公开卡片</title>
+    <meta
+      name="description"
+      content="规则提前公开，结果人人可复算。查看本期规则、时间与号码。纯虚拟积分，无充值提现或现金奖品。"
+    />
+    <meta
+      property="og:title"
+      content="Market Luck · 好运值得期待，结果自己核对"
+    />
+    <meta
+      property="og:description"
+      content="查看公开期次与复算入口。免费积分体验，无现金价值；演示与真实期清楚区分。"
+    />
+    <meta property="og:type" content="website" />
+    <meta name="referrer" content="same-origin" />
+    <link rel="stylesheet" href="/share.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="brand">◈ MARKET LUCK</a>
+      <label
+        ><span data-copy="language">语言</span
+        ><select id="shareLanguage" aria-label="Language">
+          <option value="zh-CN">中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select></label
+      >
+    </header>
+    <main>
+      <div class="intro">
+        <p class="eyebrow">PUBLIC RULES. REPRODUCIBLE RESULTS.</p>
+        <h1 data-copy="title">好运值得期待，结果自己核对。</h1>
+        <p data-copy="subtitle">
+          规则提前公开 · 号码按公开算法生成 · 结果人人可复算
+        </p>
+      </div>
+      <p id="shareLoad" role="status" aria-live="polite">
+        正在读取本期公开记录…
+      </p>
+      <article id="roundCard" aria-labelledby="roundCardTitle" hidden>
+        <div class="card-top">
+          <span id="shareMode" class="mode"></span
+          ><span class="wordmark">MARKET LUCK</span>
+        </div>
+        <label class="format-label" for="shareGame" data-copy="game"
+          >选择玩法</label
+        >
+        <select id="shareGame"></select>
+        <h2 id="roundCardTitle"></h2>
+        <p id="shareFormat"></p>
+        <div
+          id="shareNumbers"
+          class="balls"
+          role="group"
+          aria-label="Published numbers"
+        ></div>
+        <p id="sharePhase" class="phase" role="status" aria-live="polite"></p>
+        <p id="shareMessage"></p>
+        <p
+          id="shareSimulation"
+          class="simulation"
+          data-copy="simulation"
+          hidden
+        ></p>
+        <dl class="times">
+          <div>
+            <dt data-copy="cutoff">停售时间</dt>
+            <dd id="shareCutoff"></dd>
+          </div>
+          <div>
+            <dt data-copy="ready">最早核验</dt>
+            <dd id="shareReady"></dd>
+          </div>
+        </dl>
+        <p class="small" data-copy="zone">时间以 Asia/Shanghai 显示</p>
+        <p class="small" data-copy="timeNote">
+          最早核验不保证立即开奖；缺失或分歧就等待。
+        </p>
+        <dl class="metadata">
+          <div>
+            <dt data-copy="sources">本期来源</dt>
+            <dd id="shareSources"></dd>
+          </div>
+          <div>
+            <dt data-copy="round">完整期号</dt>
+            <dd id="shareRoundId"></dd>
+          </div>
+        </dl>
+        <div class="evidence">
+          <a id="shareRules" data-copy="rules">本期规则</a
+          ><a id="shareSourcesLink" data-copy="sources">本期来源</a
+          ><a id="shareVerify" data-copy="proof">结果与复算</a>
+        </div>
+        <p class="points" data-copy="money">
+          纯虚拟积分 · 无充值提现 · 无现金价值或实物奖品
+        </p>
+        <p class="small scope" data-copy="scope">
+          复算验证公开记录的一致性；行情来源真实性、独立时间与完整账本仍需另行核验。
+        </p>
+      </article>
+      <section class="actions" aria-label="Share controls">
+        <button id="nativeShare" data-copy="share" disabled>分享这期卡片</button
+        ><button id="copyShare" data-copy="copy" disabled>复制链接</button
+        ><button id="saveShare" data-copy="save" disabled>保存图片</button>
+        <label for="shareUrl" data-copy="url">本期公开链接</label
+        ><input
+          id="shareUrl"
+          type="url"
+          readonly
+          aria-label="Public round link"
+        />
+        <p id="shareActionStatus" role="status" aria-live="polite"></p>
+        <p class="small" data-copy="privacy">
+          仅分享公开期次和玩法；不包含你的账号、票据或余额。无需登录即可查看。
+        </p>
+      </section>
+      <footer>
+        <button id="refreshShare" data-copy="refresh">刷新记录</button
+        ><a href="/" data-copy="home">返回选号大厅</a>
+      </footer>
+      <noscript
+        >需要启用 JavaScript
+        才能读取本期记录与复算；也可使用开源命令行工具验证证明。</noscript
+      >
+    </main>
+    <script type="module" src="/share.js"></script>
+  </body>
+</html>

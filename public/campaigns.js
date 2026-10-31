@@ -69,7 +69,7 @@ const copy = {
     points: {
       kicker: "给期待一个轻松的开始",
       title: ["花一点积分，", "留一份期待。"],
-      intro: "免费试试手气，开奖依据自己看。",
+      intro: "号码按公开算法生成，结果可以自己核对。",
       description:
         "注册一次赠1,000积分，每注10分，无充值提现。真实期使用固定美股篮子，公开输入与号码可复算。积分无现金价值。",
       primary: "选玩法，开始选号 ↗",
@@ -195,7 +195,8 @@ const copy = {
     points: {
       kicker: "A LIGHTER WAY TO BEGIN",
       title: ["A few points.", "A little anticipation."],
-      intro: "Try with free points. See the basis for each draw.",
+      intro:
+        "Numbers follow a public algorithm. Reproduce the result yourself.",
       description:
         "Get 1,000 points once at sign-up; each ticket costs 10. No top-ups or withdrawals. Live rounds use a fixed US-stock basket. Reproduce published inputs and numbers. Points have no cash value.",
       primary: "Choose a game and pick numbers ↗",
@@ -316,7 +317,7 @@ const copy = {
     points: {
       kicker: "気軽に始める、小さな楽しみ。",
       title: ["少しのポイントで、", "次の楽しみを。"],
-      intro: "無料ポイントで運試し。抽選の根拠も自分で確認。",
+      intro: "番号は公開アルゴリズムで生成。結果は自分で再計算。",
       description:
         "登録時に1,000ポイントを1回付与、1口10ポイント。入出金はありません。実抽選は固定した米国株を使い、公開入力と番号を再計算できます。ポイントに金銭的価値はありません。",
       primary: "形式を選んで番号を選ぶ ↗",

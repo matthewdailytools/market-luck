@@ -2,6 +2,7 @@ import { chromium, webkit, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { ticketFixture } from "./ticket-fixtures.mjs";
+import { runShareAcceptance } from "./share-acceptance.mjs";
 
 // This runner uses an isolated GitHub-hosted Linux browser, never the user's
 // desktop browser, profile, extensions or the desktop app's disabled controls.
@@ -632,6 +633,17 @@ for (const [engine, type] of [
   try {
     browser = await type.launch({ headless: true });
     report.browserVersions[engine] = browser.version();
+    report.shareAcceptance ||= [];
+    const share = await runShareAcceptance({
+      browser,
+      engine,
+      base,
+      online,
+      out,
+    });
+    report.shareAcceptance.push(share);
+    if (share.status !== "passed")
+      fail(engine + "/share", JSON.stringify(share.errors));
     if (!online) await fixtures(browser, engine);
     await actualFlow(browser, engine, true);
     if (engine === "chromium") await actualFlow(browser, engine, false);

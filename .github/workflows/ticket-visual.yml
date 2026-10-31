@@ -5,12 +5,14 @@ on:
     paths:
       - "public/**"
       - "tests/browser/**"
+      - "tests/fixtures/share-round.js"
       - "package*.json"
       - ".github/workflows/ticket-visual.yml"
   pull_request:
     paths:
       - "public/**"
       - "tests/browser/**"
+      - "tests/fixtures/share-round.js"
       - "package*.json"
       - ".github/workflows/ticket-visual.yml"
   workflow_dispatch:

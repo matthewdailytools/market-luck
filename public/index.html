@@ -4,6 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Market Luck · 全球收盘实验室</title>
+    <meta
+      name="description"
+      content="规则提前公开，号码按公开算法生成，结果人人可复算。免费积分体验，16国模拟玩法，无充值提现或现金奖品。"
+    />
+    <meta
+      property="og:title"
+      content="Market Luck · 好运值得期待，结果自己核对"
+    />
+    <meta
+      property="og:description"
+      content="免费积分选号实验。查看本期规则、时间与复算依据；积分无现金价值。"
+    />
+    <meta property="og:type" content="website" />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body data-campaign="points">
@@ -82,7 +95,7 @@
             <p id="heroPoolNote">共享积分余额，无现金价值。</p>
           </div>
           <p class="hero-intro" data-campaign-copy>
-            免费试试手气，开奖依据自己看。
+            号码按公开算法生成，结果可以自己核对。
           </p>
           <p class="hero-description" data-campaign-copy>
             注册一次赠1,000积分，每注10分，无充值提现。真实期使用固定美股篮子，公开输入与号码可复算。积分无现金价值。
@@ -92,6 +105,18 @@
             ><a class="hero-secondary" href="/verify.html"
               >查看本期规则与时间 →</a
             >
+          </div>
+          <div
+            id="trustPillars"
+            class="trust-pillars"
+            data-campaign-copy
+            aria-label="查看公平机制与证据"
+          >
+            <a
+              href="https://github.com/matthewdailytools/market-luck/blob/main/ALGORITHM.md"
+              >公开算法 ↗</a
+            ><a href="/verify.html#rules">事前规则 ↗</a
+            ><a href="/verify.html#results">结果复算 ↗</a>
           </div>
           <div class="hero-perks">
             <span><b>16</b><small>国经典玩法</small></span
@@ -134,6 +159,13 @@
               href="/verify.html"
               data-campaign-copy
               >查看本期规则与时间 →</a
+            >
+            <a
+              id="heroShareLink"
+              class="hero-share-link"
+              data-campaign-copy
+              hidden
+              >查看与分享本期卡片 →</a
             >
           </div>
           <div class="stage-caption">PUBLIC INPUT. SHARED EXCITEMENT.</div>
@@ -202,6 +234,13 @@
           <div id="recentDrawPanel" class="recent-draw-panel">
             <p class="highlight-placeholder">正在读取已公布期次…</p>
           </div>
+          <a
+            id="recentShareLink"
+            class="recent-share-link"
+            data-campaign-copy
+            hidden
+            >分享这期公开卡片 →</a
+          >
         </article>
         <article class="highlight-card world-formats-card">
           <div class="highlight-heading">

@@ -4,6 +4,7 @@ import { createPurchaseFlow } from "./purchase-flow.js";
 import { createTicketHistory } from "./ticket-history.js";
 import { createStateRefresh } from "./state-refresh.js";
 import { describeHomeRound, selectDisplayRound } from "./round-summary.js";
+import { renderTrustEntry } from "./trust-entry.js";
 import {
   renderHomeHighlights,
   syncHomeHighlightProgress,
@@ -105,7 +106,12 @@ function updateHomeHighlights() {
     now: serverNow(),
     onSelectGame: (id) => selectGame(id, true),
   });
+  renderTrustEntry(state, document.documentElement.lang, gid);
 }
+document.addEventListener("change", (event) => {
+  if (event.target?.id === "recentGameSelect")
+    renderTrustEntry(state, document.documentElement.lang, gid);
+});
 function selectGame(id, scroll = false) {
   const catalog = current()?.manifest.games || state?.games || [];
   if (!catalog.some((game) => game.id === id)) return;

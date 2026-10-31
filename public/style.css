@@ -1,4 +1,41 @@
 @import url("/fonts.css");
+.trust-pillars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 12px 0 6px;
+}
+.trust-pillars a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #344886;
+  font-size: 12px;
+  font-weight: 650;
+  text-underline-offset: 4px;
+}
+.hero-share-link,
+.recent-share-link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 12px;
+  line-height: 1.6;
+  font-weight: 650;
+  text-underline-offset: 4px;
+}
+.hero-share-link {
+  margin-top: 6px;
+  color: #344886;
+}
+.recent-share-link {
+  color: #344886;
+  margin-top: 10px;
+}
+.hero-share-link[hidden],
+.recent-share-link[hidden] {
+  display: none;
+}
 :root {
   font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
   color: #182925;
