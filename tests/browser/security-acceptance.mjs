@@ -102,11 +102,12 @@ export async function runSecurityAcceptance({ browser, engine, base, out }) {
       }
     await page.locator("#verifyLanguage").selectOption("zh-CN");
     await page.setViewportSize({ width: 390, height: 844 });
-    await page
-      .locator("#entropyPanel")
-      .screenshot({
-        path: `${out}/screenshots/${engine}-v2-entropy-controlled.png`,
-      });
+    await expect(page.locator("#entropyPanel")).toContainText(
+      String(proof.snapshot.beaconRound),
+    );
+    await page.locator("#entropyPanel").screenshot({
+      path: `${out}/screenshots/${engine}-v2-entropy-controlled.png`,
+    });
     report.cases.push(
       "valid v2 snapshot, target and BLS proof across three languages",
     );

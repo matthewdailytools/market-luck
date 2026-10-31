@@ -12,6 +12,7 @@
     "test:onboarding": "node tests/onboarding-online.js",
     "test:tickets": "node tests/ticket-history-online.js",
     "test:share": "node tests/share-online.js",
+    "test:security": "node tests/security-online.js",
     "test:browser:ci": "node tests/browser/ticket-visual-runner.mjs",
     "deploy": "wrangler deploy",
     "format": "prettier --write src public tests scripts *.json *.jsonc",
