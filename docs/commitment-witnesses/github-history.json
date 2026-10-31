@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-31T16:54:33.022Z",
+  "repository": "matthewdailytools/market-luck",
+  "archiveCommit": "7624d7bee3ed6a772e41d8d1cc0f78154705c7e1",
+  "archiveRun": 41221712436,
+  "url": "https://github.com/matthewdailytools/market-luck/tree/7624d7bee3ed6a772e41d8d1cc0f78154705c7e1/history/live",
+  "round": "1c6cb4c0-f039-4f23-a290-c303d509562a",
+  "manifestSha256": "12e6fae3c838a77ea1b1ee6630b4f5704c200f817c5a011ed9666959886b18e1",
+  "originalVersion": 1,
+  "originalPresaleAnchor": "https://raw.githubusercontent.com/matthewdailytools/market-luck/2e4fff6e4c28bdaa6e0df0a0e56efecfda26ebd1/commitments/1c6cb4c0-f039-4f23-a290-c303d509562a.json",
+  "firstObservedAt": "2026-10-31T16:52:02.884Z",
+  "observation": "post-publication mirror; not a new presale attestation",
+  "ledgerRecords": 101,
+  "ledgerKinds": {
+    "seed": 1,
+    "purchase": 100
+  },
+  "poolAtHead": 101000,
+  "ledgerThrough": 102,
+  "privateUserOrTicketIdentifiers": false,
+  "workerGitHubWriteToken": false,
+  "naturalV3Draw": false
+}

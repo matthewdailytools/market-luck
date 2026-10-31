@@ -11,7 +11,7 @@ Known boundaries:
 - MD5 is a compatibility fingerprint, not a secure commitment. SHA-256 is used for commitments and sampling.
 - Registration has persistent HMAC-IP rate limits (LIVE: 5 registrations per fixed hour bucket; DEMO: 50; login: 60 attempts per fixed minute). The secret stays on the server and raw IPs are not stored in the limit table. This is not proof of one person per account: proxies, shared NAT and distributed signup abuse remain limitations. There is still no email verification or CAPTCHA.
 - Calendar values are reviewed and supplied by an operator. There is no automatic global holiday calendar integration.
-- UI lists show the most recent records. Cursor-based ledger and winner history are not implemented yet.
+- UI lists show the most recent records. The separate de-identified public pool ledger supports cursor pagination; complete per-user financial audit and paginated winner history are not implemented yet.
 - No production penetration test or provider-account live test has been performed.
 
 Security-sensitive changes require relevant tests and an explicit update to the trust model. Report which release and runtime you used.

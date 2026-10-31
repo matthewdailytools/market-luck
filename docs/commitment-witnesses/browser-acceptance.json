@@ -1,0 +1,305 @@
+{
+  "status": "passed",
+  "runtimeCommit": "f2621ea60528d447f528bc1f12f304ffe4bf038c",
+  "checkedAt": "2026-10-31T16:56:16.301Z",
+  "standardCi": {
+    "runId": 41221200575,
+    "url": "https://github.com/matthewdailytools/market-luck/actions/runs/41221200575",
+    "unitTests": 145,
+    "integrationChecks": 45,
+    "concurrentRequests": 105,
+    "readableChecks": 113,
+    "securityChecks": 21,
+    "nativeV3DraftChecks": 8
+  },
+  "reports": [
+    {
+      "mode": "local",
+      "runId": 41221200565,
+      "url": "https://github.com/matthewdailytools/market-luck/actions/runs/41221200565",
+      "commit": "f2621ea60528d447f528bc1f12f304ffe4bf038c",
+      "status": "passed",
+      "execution": "GitHub-hosted Linux; isolated headless Chromium and WebKit",
+      "browserVersions": {
+        "chromium": "156.0.8078.4",
+        "webkit": "27.2"
+      },
+      "startedAt": "2026-10-31T16:46:48.217Z",
+      "finishedAt": "2026-10-31T16:48:35.817Z",
+      "ticketLayouts": 441,
+      "flows": [
+        {
+          "engine": "chromium",
+          "source": "fixture",
+          "case": "keyboard focus and German zero",
+          "status": "passed"
+        },
+        {
+          "engine": "chromium",
+          "source": "local-real-api",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "chromium",
+          "source": "local-real-api",
+          "mobile": false,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "webkit",
+          "source": "fixture",
+          "case": "keyboard focus and German zero",
+          "status": "passed"
+        },
+        {
+          "engine": "webkit",
+          "source": "local-real-api",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        }
+      ],
+      "securityAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "witnessAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 4,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 4,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "shareAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 8,
+          "layoutCases": 72,
+          "errors": [],
+          "apiWrites": 0
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 8,
+          "layoutCases": 36,
+          "errors": [],
+          "apiWrites": 0
+        }
+      ],
+      "brandArchiveAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 2,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 2,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "failures": [],
+      "runtimeErrors": []
+    },
+    {
+      "mode": "online",
+      "runId": 41221718162,
+      "url": "https://github.com/matthewdailytools/market-luck/actions/runs/41221718162",
+      "commit": "f2621ea60528d447f528bc1f12f304ffe4bf038c",
+      "status": "passed",
+      "execution": "GitHub-hosted Linux; isolated headless Chromium and WebKit",
+      "browserVersions": {
+        "chromium": "156.0.8078.4",
+        "webkit": "27.2"
+      },
+      "startedAt": "2026-10-31T16:53:11.042Z",
+      "finishedAt": "2026-10-31T16:55:37.601Z",
+      "ticketLayouts": 144,
+      "flows": [
+        {
+          "engine": "chromium",
+          "source": "online-demo",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "chromium",
+          "source": "online-demo",
+          "mobile": false,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "chromium",
+          "source": "online-live-readonly",
+          "case": "anonymous LIVE, zero API writes, unchanged commitments",
+          "status": "passed",
+          "poolBefore": 101000,
+          "poolAfter": 101000
+        },
+        {
+          "engine": "webkit",
+          "source": "online-demo",
+          "mobile": true,
+          "case": "sign-in/cancel/keyboard/touch/immediate verification through notification/refresh-error/retry/next-pick/logout",
+          "status": "passed",
+          "ticketCount": 1,
+          "balanceBefore": 990,
+          "balanceAfter": 990,
+          "uniquePurchasesByBrowser": 0
+        },
+        {
+          "engine": "webkit",
+          "source": "online-live-readonly",
+          "case": "anonymous LIVE, zero API writes, unchanged commitments",
+          "status": "passed",
+          "poolBefore": 101000,
+          "poolAfter": 101000
+        }
+      ],
+      "securityAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 3,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "witnessAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 4,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 4,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "shareAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 3,
+          "layoutCases": 24,
+          "errors": [],
+          "apiWrites": 0
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 3,
+          "layoutCases": 12,
+          "errors": [],
+          "apiWrites": 0
+        }
+      ],
+      "brandArchiveAcceptance": [
+        {
+          "engine": "chromium",
+          "status": "passed",
+          "cases": 2,
+          "layouts": 9,
+          "errors": []
+        },
+        {
+          "engine": "webkit",
+          "status": "passed",
+          "cases": 2,
+          "layouts": 9,
+          "errors": []
+        }
+      ],
+      "failures": [],
+      "runtimeErrors": []
+    }
+  ],
+  "layoutObservations": 837,
+  "controlledReplay": {
+    "round": "v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3",
+    "provenance": "CONTROLLED EXPEDITED CALENDAR AND SYNTHETIC PRICES. Genuine independent Rekor receipts and a genuine future drand signature. Not a natural market draw.",
+    "presaleUuid": "108e9186e8c5677a0b3c6415281fc3b5387e7cd8ee2f571e87fe12af51ad8012f09d6f58e2a69f5f",
+    "freezeUuid": "108e9186e8c5677a69b11fd185ad8753e7646bf20038b1d36fe293d257edd7b4d2be240150c72b6c",
+    "presaleTime": 1793461897000,
+    "sealedAt": 1793461914805,
+    "freezeTime": 1793461916000,
+    "beaconRound": 33552891,
+    "observedAt": "2026-10-31T15:54:01.844Z",
+    "checks": 11,
+    "checkpointRefresh": {
+      "oldTree": 3492509138,
+      "newTree": 3492522197,
+      "sameSeedAndResults": true
+    }
+  },
+  "limitations": [
+    "Controlled expedited calendar and synthetic price fixtures are not a natural market draw",
+    "LIVE account, purchase and settlement writes were blocked",
+    "Independent log inclusion does not prove global candidate uniqueness or force root operators to reveal",
+    "Headless mobile viewports, not physical-device or mainland-network certification"
+  ]
+}

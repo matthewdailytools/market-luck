@@ -1,5 +1,7 @@
 name: Public core record archive
 on:
+  schedule:
+    - cron: "3-58/5 * * * *"
   workflow_dispatch:
     inputs:
       include_demo:

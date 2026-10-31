@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-31T16:46:34.265Z",
+  "repository": "matthewdailytools/market-luck",
+  "description": "公开奖 OpenDraw — reproducible virtual-points draws with public GitHub evidence archives, commit–reveal, drand and independent log witnesses. 中文 / English / 日本語.",
+  "homepage": "https://luck.onlinefreetools.org",
+  "topics": [
+    "auditability",
+    "cloudflare-d1",
+    "cloudflare-r2",
+    "cloudflare-workers",
+    "commit-reveal",
+    "drand",
+    "open-source",
+    "transparency-log",
+    "verifiable-draw",
+    "virtual-points"
+  ],
+  "stars": 0,
+  "forks": 0,
+  "externalOutreachPosts": 0
+}

@@ -10,6 +10,8 @@ Cloudflare Workers + D1 + R2 的纯积分彩票实验，中英日响应式页面
 
 [可读核验](https://luck.onlinefreetools.org/verify.html) · [GitHub 核心档案](history/README.md) · [GitHub 传播方案与首发草稿](GitHub传播方案.md)
 
+[本轮上线验收](公开奖随机承诺与GitHub档案上线验收.md)：145 项单测、837 次浏览器布局观察、真实 GitHub 归档与幂等检查；原已售 100 张票据和奖池保持不变。新 v3 自然开奖仍待发生。
+
 三分钟离线核验（受控行情、加速日历，真实外部签名；不是自然开奖）：
 
 ```sh

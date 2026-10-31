@@ -1,0 +1,13 @@
+{
+  "base": "https://luck-test.onlinefreetools.org",
+  "readOnly": true,
+  "checkedAt": "2026-10-31T16:53:59.506Z",
+  "checks": 131,
+  "round": "b9e428ac-fc1d-4577-9e44-731deca9ca6b",
+  "mode": "DEMO",
+  "status": "open",
+  "settledProofChecked": true,
+  "settledRound": "7dc0e8d6-5f55-4f92-b11f-5fed225f5788",
+  "execution": "DEMO",
+  "draftVisibilityChecked": false
+}

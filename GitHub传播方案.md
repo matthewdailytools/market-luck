@@ -52,6 +52,14 @@ Homepage 建议填真实站 `https://luck.onlinefreetools.org`。Topics 建议�
 
 ## 第一条演示：让访问者自己验证
 
+### 本轮已落地与待发布事项
+
+截至 2026-11-01 北京时间，仓库 About、真实站 Homepage 和上述 10 个 Topics 已实际设置，[配置核验](docs/commitment-witnesses/github-metadata.json)记录了实际值。三语言 README 已增加可读核验、核心档案、离线复算和威胁模型入口。
+
+LIVE 首次核心归档已成功：[运行记录](https://github.com/matthewdailytools/market-luck/actions/runs/41221712436)、[固定提交中的档案](https://github.com/matthewdailytools/market-luck/tree/7624d7bee3ed6a772e41d8d1cc0f78154705c7e1/history/live)。本期原规则 SHA-256 与原售前承诺相同；101 条公开积分流水复算奖池为 101,000。再次抓取确认没有变化，也没有产生空提交，见[幂等运行](https://github.com/matthewdailytools/market-luck/actions/runs/41221892524)。旧期是事后补档，不能当成新售前见证。
+
+首发正文、社区投稿、Discussion 类别及社会化预览图仍是待执行材料，没有对外群发，也没有声称已获得第三方审计。Discussions 与 GitHub 私密漏洞报告功能没有在本轮启用；安全问题按现有 [SECURITY.md](SECURITY.md)处理。定时镜像的计划频率与延迟边界见[归档工作流](.github/workflows/core-archive.yml)和[存储方案](GitHub核心档案存储方案.md)。
+
 README 和首发帖采用同一段操作：
 
 ```sh
