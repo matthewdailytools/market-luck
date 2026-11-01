@@ -1,22 +1,35 @@
 # 公開くじ · OpenDraw
 
-[中文](README.md) · [English](README.en.md) · 日本語
+**ルールを先に固定、結果を自分で再計算。** 誰でも公開証拠を独立して検証できる、オープンソースの仮想ポイント抽選です。
 
-Cloudflare Workers・D1・R2を使った仮想ポイント抽選実験。16か国の番号形式、中国語・英語・日本語UI、登録ポイント、チケット購入、繰越プール、公開当選一覧、再計算用の証拠ファイルを提供します。
+[公開検証](https://luck.onlinefreetools.org/verify.html?lang=ja) · [1 分の再計算デモ](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01) · [GitHub 公開履歴](history/live/README.md) · [中文](README.md) · [English](README.en.md)
 
-**ルールを先に固定、結果を自分で再計算。** 第三者が独立して検証できる公開証拠と追跡可能な記録を提供します。番号生成の入力に購入者の選択番号は使いません。既存コミットメントを保つためリポジトリ名は `market-luck` を維持します。[公開履歴](history/README.md)・[GitHub 発信計画](GitHub传播方案.md)。
+[![Cloudflare checks](https://github.com/matthewdailytools/market-luck/actions/workflows/test.yml/badge.svg)](https://github.com/matthewdailytools/market-luck/actions/workflows/test.yml) · [MIT](LICENSE) · Node.js 22.13+ · Cloudflare Workers / D1 / R2
 
-`npm ci` の後に `node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json` を実行すると、実際の外部署名を含む制御リプレイを再計算できます。自然な市場抽選とは区別します。GitHubの保存トークンをWorkerに渡さず、固定記録の置換を拒否して履歴を追加します。
+[![OpenDraw — 公開証拠と再計算。英語の紹介画像](docs/launch/social-preview.en.png)](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01)
 
-[今回の公開検証報告（中国語）](公开奖随机承诺与GitHub档案上线验收.md)：単体テスト145件、ブラウザのレイアウト確認837回、実際のGitHub保存と変更なしの再実行を確認しました。既存100枚の券とプールは変更せず、自然なv3抽選はまだ行われていません。
+## API キーなしで再計算
 
-新しい LIVE 回は v3 を使用します。販売前に非公開の銘柄順・256ビット乱数を生成し、MD5と安全性を担うSHA-256を公開します。規則と最初の相場固定を独立した Rekor に記録し、その署名時刻から将来の drand 回を決定・検証して、精算と同時に秘密を公開します。v1/v2 の既存規則は変更しません。Rekor のAPIキーは不要です。無料プランで SQLite Durable Object が署名を検証します。各環境に別々の `ABUSE_IP_KEY` と32バイト16進数の `COMMIT_ENCRYPTION_KEY` を設定し、未公開の秘密がある間は既存鍵を上書きしないでください。全D1移行と対応コードが必要です。中国語の導入手順、[v3計画](隐藏顺序承诺与独立见证改进方案.md)、[アルゴリズム](ALGORITHM.md)をご覧ください。
+依存関係の導入後はオフライン検証ができます。模擬価格・加速日程・実際の外部署名を使う制御リプレイで、**自然な市場抽選ではありません**。2026-11-01 の初回公開時点で、販売済み LIVE 回は既存 v1 規則を維持します。
 
-公式宝くじではありません。入金・出金・現金や物品への交換はありません。完全な改ざん防止は保証しません。MD5は指紋として、SHA-256はコミットメントと抽選シードに使用します。
+```sh
+git clone https://github.com/matthewdailytools/market-luck.git
+cd market-luck
+npm ci
+node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json
+```
 
-[強化版の公開検証報告（中国語）](随机性与防作弊改进上线验收.md)に、公開バージョン、130件の単体テスト、実クラウド署名検証とブラウザ検証を記録しています。販売済み v1 は変更せず、過去の署名による制御テストを将来の自然な v2 抽選とは区別します。
+`VERIFIED` と `ONLINE_REPLAY_SIMULATED_CLOCK` が表示されます。`node scripts/demo-evidence.mjs` は元の証拠の 11 検査と、乱数を 1 文字変更した証拠の拒否・終了コード 1 を実行します。[実行証拠](docs/launch/demo-evidence.json)も保存します。動画は 60 秒で、clone とインストールの待ち時間は含みません。
 
-[公開カード](https://luck.onlinefreetools.org/share.html?lang=ja)はログイン不要です。回と形式を固定し、3言語、リンク共有、PNG保存に対応します。公開番号はブラウザでの再計算に合格後に表示し、LIVE・DEMO・リプレイを明示します。個人の購入券や残高は含みません。
+[60 秒 MP4](https://github.com/matthewdailytools/market-luck/releases/download/launch-2026-11-01/opendraw-one-minute.mp4) · [中文紹介](docs/launch/launch.zh-CN.md) · [English introduction](docs/launch/launch.en.md) · [字幕・画像・制作ソース](docs/launch/README.md)
+
+## 証拠と信頼の境界
+
+新 v3 回は販売前に非公開の銘柄順と 256 ビット乱数を SHA-256 で固定します。MD5 は指紋です。規則と相場固定の Rekor 署名を検証し、指定した未来 drand 回を待って精算と同時に秘密を公開します。既存 v1/v2 規則は変えません。GitHub は公開記録を保存し、固定事実の置換を検知します。
+
+根権限、秘密の非公開、隠れた候補、データ提供元と保存の遅延は引き続き信頼の境界です。[SECURITY.md](SECURITY.md)をご覧ください。公式宝くじや公平性認証ではなく、入出金・現金・実物の賞品はありません。16 か国の番号形式、中国語・英語・日本語 UI を備えます。
+
+導入時は各環境の `ABUSE_IP_KEY` と `COMMIT_ENCRYPTION_KEY`、全 D1 移行が必要です。未公開秘密がある既存鍵は上書きしないでください。[アルゴリズム](ALGORITHM.md)・[API](API.md)・[今回の公開検証報告](公开奖随机承诺与GitHub档案上线验收.md)。
 
 ## 実データ版と現在の抽選回
 

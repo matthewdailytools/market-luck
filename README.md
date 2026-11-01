@@ -1,27 +1,42 @@
 # 公开奖 · OpenDraw
 
-[English](README.en.md) · [日本語](README.ja.md)
+**规则先承诺，结果可复算。** 一个让公众独立检查开奖证据的开源虚拟积分项目。
 
-[真实开奖站](https://luck.onlinefreetools.org) · [模拟演示站](https://luck-test.onlinefreetools.org) · [GitHub 开源仓库](https://github.com/matthewdailytools/market-luck) · [线上测试报告](线上测试报告.md)
+[看懂本期规则](https://luck.onlinefreetools.org/verify.html) · [一分钟复算演示](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01) · [GitHub 核心档案](history/live/README.md) · [English](README.en.md) · [日本語](README.ja.md)
 
-Cloudflare Workers + D1 + R2 的纯积分彩票实验，中英日响应式页面，16 国虚拟选号玩法，公开奖池与近期中奖流水。
+[![Cloudflare checks](https://github.com/matthewdailytools/market-luck/actions/workflows/test.yml/badge.svg)](https://github.com/matthewdailytools/market-luck/actions/workflows/test.yml) · [MIT](LICENSE) · Node.js 22.13+ · Cloudflare Workers / D1 / R2
 
-**规则先承诺，结果可复算。** 面向公众与第三方独立核验：公平机制、公开记录、结果可追溯。开奖算法不把投注内容作为生成号码的输入；运营与数据源的信任边界见 [SECURITY.md](SECURITY.md)。项目代码库保留 `market-luck` 标识和原承诺链接。
+[![公开奖：售前承诺、独立日志、公开档案；受控样本 11 项核验通过](docs/launch/social-preview.zh-CN.png)](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01)
 
-[可读核验](https://luck.onlinefreetools.org/verify.html) · [GitHub 核心档案](history/README.md) · [GitHub 传播方案与首发草稿](GitHub传播方案.md)
+## 自己重算，无需 API Key
 
-[本轮上线验收](公开奖随机承诺与GitHub档案上线验收.md)：145 项单测、837 次浏览器布局观察、真实 GitHub 归档与幂等检查；原已售 100 张票据和奖池保持不变。新 v3 自然开奖仍待发生。
-
-三分钟离线核验（受控行情、加速日历，真实外部签名；不是自然开奖）：
+安装依赖后，样本可离线核验。演示包含模拟价格、加速日历与真实外部签名，**不是自然行情开奖**；2026-11-01 首发时已售真实期继续原 v1 规则。
 
 ```sh
+git clone https://github.com/matthewdailytools/market-luck.git
+cd market-luck
 npm ci
 node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json
 ```
 
-公开档案保留原规则字节、冻结记录、独立见证、最终证明和去除用户标识的奖池流水。归档脚本验证并追加，既有固定事实被替换或隐藏时拒绝覆盖。Worker 不持有 GitHub 写入令牌，详见 [GitHub 存储方案](GitHub核心档案存储方案.md)。
+预期输出包含 `VERIFIED` 和 `ONLINE_REPLAY_SIMULATED_CLOCK`。再运行 `node scripts/demo-evidence.mjs`：原样本 11 项检查通过；随机数改一个字符后返回 `SECRET_COMMITMENT_MISMATCH`，退出码 1。两次执行结果写入 [演示证据](docs/launch/demo-evidence.json)。一分钟指演示长度，clone 和安装等待时间另计。
 
-新增 v3：售前随机确定隐藏股票顺序与 256 位随机数，公开 MD5 和 SHA-256 承诺；售前规则、首次行情冻结分别取得独立 Rekor 透明日志见证，再等待指定的未来 drand 信标，结算事务同时揭晓秘密。v1/v2 原规则保留，免费计划使用 SQLite Durable Object 验签。见[新方案](隐藏顺序承诺与独立见证改进方案.md)、[算法规范](ALGORITHM.md)及[此前 v2 验收](随机性与防作弊改进上线验收.md)。
+[60 秒 MP4](https://github.com/matthewdailytools/market-luck/releases/download/launch-2026-11-01/opendraw-one-minute.mp4) · [中文介绍](docs/launch/launch.zh-CN.md) · [English introduction](docs/launch/launch.en.md) · [字幕、社交图与制作源文件](docs/launch/README.md)
+
+<details>
+<summary>展开 12 秒片段：通过核验 → 单字符篡改 → 拒绝</summary>
+
+![受控回放片段，完整版为 60 秒](docs/launch/replay-preview.gif)
+
+</details>
+
+## 证据链与信任边界
+
+**售前承诺 → 独立日志 → 指定未来信标 → 揭晓复算 → GitHub 档案。** 新 v3 使用隐藏股票顺序与 256 位随机数，SHA-256 提供安全承诺，MD5 保留作指纹；售前规则和首次行情冻结取得 Rekor 签名见证，验证指定未来 drand 后结算并原子揭晓。v1/v2 已售规则不改。核心算法不把投注内容作为号码生成输入。
+
+GitHub 保存公开核心事实，归档脚本拒绝替换已有固定记录。Worker 不持有归档写入令牌。根权限、拒绝揭晓、隐藏候选、数据源和异步观察延迟仍是边界，见 [SECURITY.md](SECURITY.md)。这是纯虚拟积分项目，没有入金、提现、现金或实物奖品，也不代表官方彩票或机构公平认证。
+
+支持 16 国虚拟号码格式、中英日界面、注册积分、原子购票、滚存奖池、中奖流水和公开证明。[算法](ALGORITHM.md) · [API](API.md) · [真实接入](LIVE接入与线上验收.md) · [v3 与档案上线验收](公开奖随机承诺与GitHub档案上线验收.md) · [传播方案](GitHub传播方案.md)
 
 ## 本地运行
 

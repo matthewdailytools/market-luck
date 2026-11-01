@@ -1,22 +1,44 @@
 # OpenDraw · 公开奖
 
-[中文](README.md) · English · [日本語](README.ja.md)
+**Committed rules. Reproducible results.** An open-source virtual-points project with evidence anyone can independently verify.
 
-A virtual-points lottery experiment using publicly reproducible market-close input, built on Cloudflare Workers, D1 and R2. Includes 16 national number formats, Chinese/English/Japanese UI, signup points, atomic purchases, a shared rollover pool, winner history and downloadable proof.
+[Readable verification](https://luck.onlinefreetools.org/verify.html?lang=en) · [One-minute walkthrough](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01) · [Public GitHub history](history/live/README.md) · [中文](README.md) · [日本語](README.ja.md)
 
-**Committed rules. Reproducible results.** Public evidence supports independent third-party verification. The draw algorithm does not use ticket choices as number-generation input. The repository keeps its `market-luck` identity to preserve existing commitments. [Public archives](history/README.md) · [GitHub launch plan and English draft](GitHub传播方案.md).
+[![Cloudflare checks](https://github.com/matthewdailytools/market-luck/actions/workflows/test.yml/badge.svg)](https://github.com/matthewdailytools/market-luck/actions/workflows/test.yml) · [MIT](LICENSE) · Node.js 22.13+ · Cloudflare Workers / D1 / R2
 
-Try `npm ci` then `node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json` for an offline controlled replay with genuine external signatures. It is not a natural market draw. GitHub history mirrors public facts with append-only checks; Workers never receive the archive write token.
+[![OpenDraw: commitments, independent logs and public history; controlled replay with 11 checks](docs/launch/social-preview.en.png)](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01)
 
-[Current release acceptance (Chinese)](公开奖随机承诺与GitHub档案上线验收.md): 145 unit tests, 837 browser layout observations, a real GitHub archive and an unchanged-data/no-empty-commit run. The original 100 sold tickets and pool remain unchanged. A natural v3 draw has not occurred yet.
+## Reproduce it without API keys
 
-New LIVE preparation uses v3: commit a CSPRNG stock permutation and 256-bit nonce before sales using MD5 and binding SHA-256; independently witness the rules and first frozen price snapshot in Rekor; derive and verify a future drand round; reveal atomically with settlement. Existing v1/v2 rules stay unchanged. No Rekor API key is needed. A SQLite Durable Object verifies signatures on the Free plan. Configure separate `ABUSE_IP_KEY` and 32-byte hexadecimal `COMMIT_ENCRYPTION_KEY` secrets per installation, preserve existing encryption keys while any v3 secret remains unrevealed, apply all migrations and deploy matching code. See the Chinese installation steps, [v3 plan](隐藏顺序承诺与独立见证改进方案.md) and [algorithm](ALGORITHM.md). Node.js 22.13+ is required for SQLite security tests.
+Once dependencies are installed, the sample verifies offline. It uses synthetic prices, an expedited calendar and genuine external signatures. **It is not a natural market draw.** At launch on 2026-11-01, the already-sold LIVE round retains its original v1 rules.
 
-This is **not** an official lottery, real-money service or a promise of absolute tamper resistance. No deposits, withdrawals, transfers or physical prizes. Hosting, data providers and administrators remain trust boundaries. MD5 is only a fingerprint; SHA-256 generates commitments and sampling seeds.
+```sh
+git clone https://github.com/matthewdailytools/market-luck.git
+cd market-luck
+npm ci
+node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json
+```
 
-[Hardening release evidence (Chinese)](随机性与防作弊改进上线验收.md) records the deployed versions, 130 unit tests, real cloud signature checks and browser acceptance. Sold v1 records were preserved; controlled historical-beacon tests do not establish a future natural v2 draw.
+Expect `VERIFIED` and `ONLINE_REPLAY_SIMULATED_CLOCK`. Then run `node scripts/demo-evidence.mjs`: the valid proof passes 11 checks; a one-character nonce change reports `SECRET_COMMITMENT_MISMATCH` and exits 1. Both actual results are recorded in [demo evidence](docs/launch/demo-evidence.json). The movie is 60 seconds; clone and installation time are additional.
 
-[Public round cards](https://luck.onlinefreetools.org/share.html?lang=en) need no sign-in. Links pin the round and format; cards support three languages, link sharing and PNG downloads. Published numbers appear only after browser recalculation passes. LIVE, DEMO and replay labels stay visible, and cards contain no private tickets or balances.
+[60-second MP4](https://github.com/matthewdailytools/market-luck/releases/download/launch-2026-11-01/opendraw-one-minute.mp4) · [English launch introduction](docs/launch/launch.en.md) · [中文介绍](docs/launch/launch.zh-CN.md) · [Captions, social images and source](docs/launch/README.md)
+
+<details>
+<summary>12-second excerpt: verified → one-character change → rejected</summary>
+
+![Controlled replay excerpt; the full movie is 60 seconds](docs/launch/replay-preview.gif)
+
+</details>
+
+## Evidence and trust boundaries
+
+**Commit → independent log → specified future beacon → reveal and reproduce → public archive.** New v3 rounds commit a hidden stock permutation and 256-bit nonce. SHA-256 is binding; MD5 is a fingerprint. Rules and the first frozen snapshot receive signed Rekor witnesses; the specified future drand signature is verified before atomic settlement and disclosure. Existing v1/v2 rules remain unchanged. Ticket choices are not number-generation inputs.
+
+GitHub archives public facts with replacement checks. Workers never receive the archive write token. Root owners, withheld reveals, hidden candidates, providers and asynchronous observation remain trust boundaries; see [SECURITY.md](SECURITY.md). This is a virtual-points project with no deposits, withdrawals, cash or physical prizes, and no official-lottery or institutional fairness certification.
+
+Includes 16 national number formats, Chinese/English/Japanese UI, signup points, atomic purchases and a shared rollover pool. [Algorithm](ALGORITHM.md) · [API](API.md) · [Current release acceptance (Chinese)](公开奖随机承诺与GitHub档案上线验收.md) · [GitHub launch plan](GitHub传播方案.md)
+
+New installations require separate `ABUSE_IP_KEY` and `COMMIT_ENCRYPTION_KEY` secrets, all migrations and matching code. Preserve an existing encryption key while any secret remains unrevealed; follow the deployment instructions below. No Rekor API key is needed.
 
 ## Live installation and current round
 

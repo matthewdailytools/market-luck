@@ -1,0 +1,35 @@
+1
+00:00:00,000 --> 00:00:06,000
+Public numbers should be reproducible.
+
+2
+00:00:06,000 --> 00:00:12,000
+Check commitments and independent log receipts.
+
+3
+00:00:12,000 --> 00:00:18,000
+Dependencies installed. Run the offline verifier.
+
+4
+00:00:18,000 --> 00:00:24,000
+Check signatures, inputs and commitments.
+
+5
+00:00:24,000 --> 00:00:32,000
+11 checks pass. Reproduce all 16 number formats.
+
+6
+00:00:32,000 --> 00:00:38,000
+Change one character in the revealed nonce.
+
+7
+00:00:38,000 --> 00:00:46,000
+Verification fails. The altered proof is rejected.
+
+8
+00:00:46,000 --> 00:00:52,000
+Root control and withheld reveals remain risks.
+
+9
+00:00:52,000 --> 00:01:00,000
+Clone the evidence. Reproduce the draw. Review it.

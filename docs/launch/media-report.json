@@ -1,0 +1,213 @@
+{
+  "status": "passed",
+  "sourceCommit": "3057062803f02fa602881c71cf7afbd662bbbd4b",
+  "runId": "41259600014",
+  "browser": "156.0.8078.4",
+  "video": true,
+  "checks": [
+    {
+      "kind": "social-preview",
+      "language": "zh-CN",
+      "width": 1280,
+      "height": 640,
+      "bytes": 213148,
+      "overflow": []
+    },
+    {
+      "kind": "social-preview",
+      "language": "en",
+      "width": 1280,
+      "height": 640,
+      "bytes": 217845,
+      "overflow": []
+    },
+    {
+      "kind": "timeline",
+      "t": 0,
+      "scene": "intro",
+      "caption": "号码公开，还要能自己重算。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 6,
+      "scene": "intro",
+      "caption": "先核对售前承诺与独立日志。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 12,
+      "scene": "terminal",
+      "caption": "依赖已安装，运行离线核验。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 17.9,
+      "scene": "terminal",
+      "caption": "依赖已安装，运行离线核验。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 18,
+      "scene": "terminal",
+      "caption": "验证签名、输入和承诺。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 23,
+      "scene": "terminal",
+      "caption": "验证签名、输入和承诺。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 25,
+      "scene": "terminal",
+      "caption": "11 项检查通过，复算全部玩法。",
+      "valid": true,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 28,
+      "scene": "terminal",
+      "caption": "11 项检查通过，复算全部玩法。",
+      "valid": true,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 31.9,
+      "scene": "terminal",
+      "caption": "11 项检查通过，复算全部玩法。",
+      "valid": true,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 32,
+      "scene": "tamper",
+      "caption": "只改随机数的一个字符。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 37.9,
+      "scene": "tamper",
+      "caption": "只改随机数的一个字符。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 38,
+      "scene": "tamper",
+      "caption": "核验失败，篡改结果被拒绝。",
+      "valid": false,
+      "rejected": true,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 45.9,
+      "scene": "tamper",
+      "caption": "核验失败，篡改结果被拒绝。",
+      "valid": false,
+      "rejected": true,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 46,
+      "scene": "limits",
+      "caption": "根权限与拒绝揭晓仍是边界。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 52,
+      "scene": "ending",
+      "caption": "下载证据，独立复算，提出质疑。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    },
+    {
+      "kind": "timeline",
+      "t": 59.9,
+      "scene": "ending",
+      "caption": "下载证据，独立复算，提出质疑。",
+      "valid": false,
+      "rejected": false,
+      "overflow": false
+    }
+  ],
+  "screenshots": [
+    "frame-8.jpg",
+    "frame-27.jpg",
+    "frame-40.jpg",
+    "frame-end.jpg"
+  ],
+  "evidence": {
+    "fixtureSha256": "2caec25dc8303f438af317f7dec3f9c097088b7d8a833f28a2b2b26207c92a71",
+    "validExit": 0,
+    "tamperExit": 1,
+    "publicChecks": 11
+  },
+  "errors": [],
+  "initialCaptureRun": "41259600014",
+  "initialCaptureStatus": "pending",
+  "masteringRunId": "41260331313",
+  "mastering": {
+    "sourceSha256": "0d36a8f201dc70ea7f546cc664274db2c1ee3b4919ddb8e80d200a7cccc5f706",
+    "filter": "acompressor=threshold=0.01:ratio=6:attack=2:release=150:makeup=1,loudnorm=I=-14:TP=-2:LRA=7,loudnorm=I=-14:TP=-2:LRA=7",
+    "videoStreamHashBefore": "SHA256=a4aaeef5eb01f5e773ea9b2f16ef0a10760066f2491e25db41dc2ed66eff8fad",
+    "videoStreamHashAfter": "SHA256=a4aaeef5eb01f5e773ea9b2f16ef0a10760066f2491e25db41dc2ed66eff8fad",
+    "videoPacketsUnchanged": true,
+    "reason": "The initial full capture passed visual checks but its sparse score missed the loudness target; only audio was remastered."
+  },
+  "movie": {
+    "duration": 60,
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "frames": 1800,
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "audioSampleRate": 48000,
+    "bytes": 3568514,
+    "sha256": "ee9740ac6b4f7afb393322fe4fc0bd0b7d6b5759e66ba1228580b59aecf0c8f1",
+    "decodedEntireFile": true,
+    "measuredLufs": -14.08,
+    "measuredTruePeak": -1.7,
+    "narration": false,
+    "subtitleLanguages": [
+      "zh-CN",
+      "en"
+    ]
+  }
+}
