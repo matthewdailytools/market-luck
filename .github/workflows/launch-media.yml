@@ -1,0 +1,39 @@
+name: OpenDraw launch media
+on:
+  workflow_dispatch:
+    inputs:
+      render_video:
+        description: Render the full 60-second movie after reviewing stills
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: opendraw-launch-media
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Install rendering fonts and encoder in the isolated runner
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-noto-cjk
+      - name: Execute valid and single-character tampered proof
+        run: node scripts/demo-evidence.mjs && git diff --exit-code -- docs/launch/demo-evidence.json
+      - name: Render and inspect media
+        env:
+          RENDER_VIDEO: ${{ inputs.render_video && 'true' || 'false' }}
+        run: node scripts/render-launch.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opendraw-launch-${{ github.run_id }}
+          path: test-output/launch-media/
+          retention-days: 14

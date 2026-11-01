@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "kind": "CONTROLLED_REPLAY",
+  "execution": "ONLINE_REPLAY_SIMULATED_CLOCK",
+  "naturalMarketDraw": false,
+  "source": "actual CLI and browser-verifier execution; video is paced motion reconstruction",
+  "fixture": "tests/fixtures/v3-controlled-proof.json",
+  "fixtureSha256": "2caec25dc8303f438af317f7dec3f9c097088b7d8a833f28a2b2b26207c92a71",
+  "round": "v3-controlled-replay-54a2fb1d-a5ef-4ac5-878b-b896607c6ba3",
+  "manifestSha256": "f755707d18ce6db207811e9a70201b4d859def8965b6ad039acf0c77a0410649",
+  "secretMd5": "524787e9bc8457f0adfba4d4fca19f7c",
+  "secretSha256": "c07d3df3046c78e211c572d19013425e8553f20b82fb6d9037ae955a8f332b1a",
+  "witnesses": {
+    "presaleAt": "2026-10-31T15:51:37.000Z",
+    "freezeAt": "2026-10-31T15:51:56.000Z"
+  },
+  "beaconRound": 33552891,
+  "checks": [
+    {
+      "id": "manifest",
+      "ok": true
+    },
+    {
+      "id": "canonical",
+      "ok": true
+    },
+    {
+      "id": "hashes",
+      "ok": true
+    },
+    {
+      "id": "results",
+      "ok": true
+    },
+    {
+      "id": "timing",
+      "ok": true
+    },
+    {
+      "id": "sources",
+      "ok": true
+    },
+    {
+      "id": "pool",
+      "ok": true
+    },
+    {
+      "id": "snapshot",
+      "ok": true
+    },
+    {
+      "id": "beacon",
+      "ok": true
+    },
+    {
+      "id": "hidden",
+      "ok": true
+    },
+    {
+      "id": "witnesses",
+      "ok": true
+    }
+  ],
+  "valid": {
+    "command": "node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json",
+    "exitCode": 0,
+    "stdout": "VERIFIED: commitment, canonical input, MD5, SHA-256 and all game results. Mode: LIVE; Execution: ONLINE_REPLAY_SIMULATED_CLOCK"
+  },
+  "tamper": {
+    "field": "JSON.parse(reveal).nonce[0]",
+    "original": "e",
+    "changed": "0",
+    "command": "node scripts/verify-proof.js <temporary>/tampered-proof.json",
+    "exitCode": 1,
+    "errorType": "Error",
+    "errors": [
+      "SECRET_COMMITMENT_MISMATCH"
+    ]
+  },
+  "gameCount": 16,
+  "example": {
+    "game": "cn",
+    "main": [
+      3,
+      11,
+      12,
+      23,
+      29,
+      32
+    ],
+    "bonus": 13
+  },
+  "limits": [
+    "Root operators can stop or withhold reveals",
+    "Log inclusion does not prove candidate uniqueness",
+    "GitHub observer can lag the future beacon"
+  ]
+}
