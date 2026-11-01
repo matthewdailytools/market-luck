@@ -1,0 +1,37 @@
+name: OpenDraw launch audio acceptance
+on:
+  workflow_dispatch:
+    inputs:
+      source_run:
+        description: Immutable full visual capture run in this repository
+        type: string
+        default: "41259600014"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  master:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check encoder in isolated runner
+        run: command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+      - uses: actions/download-artifact@v4
+        with:
+          name: opendraw-launch-${{ inputs.source_run }}
+          path: test-output/launch-media
+          run-id: ${{ inputs.source_run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Remaster audio, preserve video and validate the entire file
+        run: node scripts/master-launch-audio.mjs test-output/launch-media
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opendraw-master-${{ github.run_id }}
+          path: test-output/launch-media/
+          retention-days: 14

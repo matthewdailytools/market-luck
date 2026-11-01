@@ -7,6 +7,7 @@ import { once } from "node:events";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { duration, fps, captions, hits } from "../docs/launch/timeline.js";
+import { launchAudioFilter } from "./master-launch-audio.mjs";
 
 const out = resolve("test-output/launch-media"),
   source = resolve("docs/launch");
@@ -156,8 +157,13 @@ try {
       ]
         .filter((e) => e.scrollWidth > e.clientWidth + 1)
         .map((e) => e.textContent);
-      const scene = document.querySelector('#scene');
-      return { windowBottom: w.bottom, captionTop: c.top, overflow, contentOverflow: scene.scrollHeight > scene.clientHeight + 1 };
+      const scene = document.querySelector("#scene");
+      return {
+        windowBottom: w.bottom,
+        captionTop: c.top,
+        overflow,
+        contentOverflow: scene.scrollHeight > scene.clientHeight + 1,
+      };
     });
     assert(layout.windowBottom < layout.captionTop);
     assert.deepEqual(layout.overflow, []);
@@ -276,7 +282,9 @@ try {
         "-b:a",
         "128k",
         "-af",
-        "loudnorm=I=-14:TP=-2:LRA=7",
+        launchAudioFilter,
+        "-ar",
+        "48000",
         "-movflags",
         "+faststart",
         target,
@@ -361,7 +369,10 @@ try {
     );
     assert.equal(loud.status, 0);
     const measured = JSON.parse(
-      loud.stderr.slice(loud.stderr.lastIndexOf("{")),
+      loud.stderr.slice(
+        loud.stderr.lastIndexOf("{"),
+        loud.stderr.lastIndexOf("}") + 1,
+      ),
     );
     assert(Number(measured.input_tp) < -1);
     assert(Math.abs(Number(measured.input_i) + 14) < 2);
