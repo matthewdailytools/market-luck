@@ -1,0 +1,87 @@
+{
+  "status": "passed",
+  "commit": "b1269c91efde8d7faa6ce4e94bb09af367a4dcee",
+  "runId": "41260576686",
+  "execution": "GitHub-hosted isolated Chromium; anonymous public GitHub pages; no account writes",
+  "layouts": [
+    {
+      "file": "README.md",
+      "language": "zh-CN",
+      "width": 390,
+      "articleWidth": 324,
+      "coverLeft": 33,
+      "coverRight": 357,
+      "coverWidth": 324,
+      "imageLoaded": true,
+      "imageNaturalHeight": 640,
+      "articleOverflow": false,
+      "status": "passed"
+    },
+    {
+      "file": "README.md",
+      "language": "zh-CN",
+      "width": 1280,
+      "articleWidth": 861,
+      "coverLeft": 370,
+      "coverRight": 1231,
+      "coverWidth": 861,
+      "imageLoaded": true,
+      "imageNaturalHeight": 640,
+      "articleOverflow": false,
+      "status": "passed"
+    },
+    {
+      "file": "README.en.md",
+      "language": "en",
+      "width": 390,
+      "articleWidth": 324,
+      "coverLeft": 33,
+      "coverRight": 357,
+      "coverWidth": 324,
+      "imageLoaded": true,
+      "imageNaturalHeight": 640,
+      "articleOverflow": false,
+      "status": "passed"
+    },
+    {
+      "file": "README.en.md",
+      "language": "en",
+      "width": 1280,
+      "articleWidth": 861,
+      "coverLeft": 370,
+      "coverRight": 1231,
+      "coverWidth": 861,
+      "imageLoaded": true,
+      "imageNaturalHeight": 640,
+      "articleOverflow": false,
+      "status": "passed"
+    },
+    {
+      "file": "README.ja.md",
+      "language": "ja",
+      "width": 390,
+      "articleWidth": 324,
+      "coverLeft": 33,
+      "coverRight": 357,
+      "coverWidth": 324,
+      "imageLoaded": true,
+      "imageNaturalHeight": 640,
+      "articleOverflow": false,
+      "status": "passed"
+    },
+    {
+      "file": "README.ja.md",
+      "language": "ja",
+      "width": 1280,
+      "articleWidth": 861,
+      "coverLeft": 370,
+      "coverRight": 1231,
+      "coverWidth": 861,
+      "imageLoaded": true,
+      "imageNaturalHeight": 640,
+      "articleOverflow": false,
+      "status": "passed"
+    }
+  ],
+  "browser": "156.0.8078.4"
+}

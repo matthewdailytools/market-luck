@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "url": "https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01",
+  "tag": "launch-2026-11-01",
+  "commit": "b1269c91efde8d7faa6ce4e94bb09af367a4dcee",
+  "checks": [
+    {
+      "name": "opendraw-one-minute.mp4",
+      "bytes": 3568514,
+      "sha256": "ee9740ac6b4f7afb393322fe4fc0bd0b7d6b5759e66ba1228580b59aecf0c8f1",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "opendraw-one-minute.zh-CN.srt",
+      "bytes": 653,
+      "sha256": "5c85665596737620c3e90fc91b6179df2e78f8f977ea61058526145eb3473194",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "opendraw-one-minute.en.srt",
+      "bytes": 718,
+      "sha256": "a3472c5e1c0bd27736b8085235906a324ce83204f32c45c9b3b751d8123cd370",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "social-preview.zh-CN.png",
+      "bytes": 213148,
+      "sha256": "c954ad89ab21336642f5d4ba453ee0b93b04ee76510d3e21ab541e1d90bfaeaa",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "social-preview.en.png",
+      "bytes": 217845,
+      "sha256": "d8a5b6d2f2e10d6f37ba591b2c6db218fd0d7d7b637ffc54bc3b42133982213a",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "replay-preview.gif",
+      "bytes": 667028,
+      "sha256": "4b9de22a26f84448d46a68a29b7e65b318344865333efd83ec7e590bb8550abb",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "poster.jpg",
+      "bytes": 142625,
+      "sha256": "d12de1dc48d8381b1c08b7c54dc14043e50cf07f7d756ef72fff23f386cf4c56",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "demo-evidence.json",
+      "bytes": 2278,
+      "sha256": "28345d00a02a1c07c8d2a982bbbd89be65486eff0d0ba6da86e9e8aa8c1b3a11",
+      "publicDownloadVerified": true
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 705,
+      "sha256": "86a5035cb4697a41b829f6fbe278e79b0ba770dae74a1446510f6dc4cba564e8",
+      "publicDownloadVerified": true
+    }
+  ],
+  "publicDownloads": 9
+}

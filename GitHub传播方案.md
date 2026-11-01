@@ -52,13 +52,19 @@ Homepage 建议填真实站 `https://luck.onlinefreetools.org`。Topics 建议�
 
 ## 第一条演示：让访问者自己验证
 
-### 本轮已落地与待发布事项
+### 前一轮准备记录
 
 截至 2026-11-01 北京时间，仓库 About、真实站 Homepage 和上述 10 个 Topics 已实际设置，[配置核验](docs/commitment-witnesses/github-metadata.json)记录了实际值。三语言 README 已增加可读核验、核心档案、离线复算和威胁模型入口。
 
 LIVE 首次核心归档已成功：[运行记录](https://github.com/matthewdailytools/market-luck/actions/runs/41221712436)、[固定提交中的档案](https://github.com/matthewdailytools/market-luck/tree/7624d7bee3ed6a772e41d8d1cc0f78154705c7e1/history/live)。本期原规则 SHA-256 与原售前承诺相同；101 条公开积分流水复算奖池为 101,000。再次抓取确认没有变化，也没有产生空提交，见[幂等运行](https://github.com/matthewdailytools/market-luck/actions/runs/41221892524)。旧期是事后补档，不能当成新售前见证。
 
-首发正文、社区投稿、Discussion 类别及社会化预览图仍是待执行材料，没有对外群发，也没有声称已获得第三方审计。Discussions 与 GitHub 私密漏洞报告功能没有在本轮启用；安全问题按现有 [SECURITY.md](SECURITY.md)处理。定时镜像的计划频率与延迟边界见[归档工作流](.github/workflows/core-archive.yml)和[存储方案](GitHub核心档案存储方案.md)。
+前一轮准备完成时，首发正文、社区投稿、Discussion 类别及社会化预览图尚为待执行材料。Discussions 与 GitHub 私密漏洞报告功能当时没有启用；安全问题按现有 [SECURITY.md](SECURITY.md)处理。定时镜像的计划频率与延迟边界见[归档工作流](.github/workflows/core-archive.yml)和[存储方案](GitHub核心档案存储方案.md)。
+
+### 2026-11-01 首发执行记录
+
+**[中英文首发介绍已公开发布为预览版 Release](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01)**，北京时间 09:21:35 发布。三语言 README 首屏已更新，社交图、60 秒双语复算演示、字幕、12 秒片段、证据和校验和均已交付。9 个公开附件重新下载并逐一比对 SHA-256 通过；GitHub 页面三语言、移动/桌面 6 个布局验收通过。
+
+实际发布稿见[中文](docs/launch/launch.zh-CN.md)、[English](docs/launch/launch.en.md)；[完整执行与素材验收](GitHub首发传播落实与素材验收.md)记录版本、文件、CI 与检查边界。仓库全局 Social preview 图片上传受当前浏览器工具设置限制，尚未执行；文件已嵌入 README/Release，另有[官方上传步骤](docs/launch/README.md#github-仓库全局社交预览设置)。发布行为与后续增长效果分开评估。
 
 README 和首发帖采用同一段操作：
 
@@ -81,7 +87,9 @@ node scripts/verify-proof.js tests/fixtures/v3-controlled-proof.json
 
 所有演示只使用隔离样本或公开数据，不使用真实用户账号、票据号码、Cookie 或 API 密钥。CI 徽章链接实际工作流，截图中的测试数量与日期以对应报告为准。
 
-## GitHub 首发材料草稿
+## 原首发材料草稿
+
+以下保留方案制定时的原拟稿。已经发布的实际中英文正文以[首发 Release](https://github.com/matthewdailytools/market-luck/releases/tag/launch-2026-11-01)及上方执行记录为准。
 
 ### 中文标题与正文
 
