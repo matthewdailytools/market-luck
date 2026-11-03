@@ -4,14 +4,14 @@
   "round": "1c6cb4c0-f039-4f23-a290-c303d509562a",
   "manifestSha256": "12e6fae3c838a77ea1b1ee6630b4f5704c200f817c5a011ed9666959886b18e1",
   "firstObservedAt": "2026-10-31T16:52:02.884Z",
-  "lastChangedAt": "2026-10-31T16:52:02.884Z",
+  "lastChangedAt": "2026-11-03T23:43:37.861Z",
   "freezeObservedAt": null,
-  "stateSha256": "14b1c85fb35977e0fae446f556f8a3478be10d8eaac246bdff36b08fad870d4d",
-  "status": "open",
+  "stateSha256": "aaad389b9335519a9d545eff1f06cf9e8363b61dbdb5baeafc6397df035299e0",
+  "status": "settled",
   "algorithm": 1,
   "hasSnapshot": false,
-  "hasProof": false,
+  "hasProof": true,
   "originalPresaleAnchor": "https://raw.githubusercontent.com/matthewdailytools/market-luck/2e4fff6e4c28bdaa6e0df0a0e56efecfda26ebd1/commitments/1c6cb4c0-f039-4f23-a290-c303d509562a.json",
   "observation": "post-publication mirror; not a new presale attestation",
-  "run": "https://github.com/matthewdailytools/market-luck/actions/runs/41221712436"
+  "run": "https://github.com/matthewdailytools/market-luck/actions/runs/41741377354"
 }

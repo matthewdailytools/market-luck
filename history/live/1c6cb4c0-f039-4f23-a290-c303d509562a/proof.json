@@ -1,0 +1,445 @@
+{
+  "version": 1,
+  "mode": "LIVE",
+  "manifest": {
+    "version": 1,
+    "id": "1c6cb4c0-f039-4f23-a290-c303d509562a",
+    "mode": "LIVE",
+    "price": 10,
+    "games": [
+      {
+        "id": "cn",
+        "name": "中国 · 双星",
+        "flag": "🇨🇳",
+        "count": 6,
+        "max": 33,
+        "bonus": 16
+      },
+      {
+        "id": "us",
+        "name": "美国 · 超级球",
+        "flag": "🇺🇸",
+        "count": 5,
+        "max": 69,
+        "bonus": 26
+      },
+      {
+        "id": "uk",
+        "name": "英国 · 六重奏",
+        "flag": "🇬🇧",
+        "count": 6,
+        "max": 59,
+        "bonus": 0
+      },
+      {
+        "id": "jp",
+        "name": "日本 · 六之幸",
+        "flag": "🇯🇵",
+        "count": 6,
+        "max": 43,
+        "bonus": 0
+      },
+      {
+        "id": "fr",
+        "name": "法国 · 幸运星",
+        "flag": "🇫🇷",
+        "count": 5,
+        "max": 49,
+        "bonus": 10,
+        "minMatch": 2
+      },
+      {
+        "id": "de",
+        "name": "德国 · 超级数",
+        "flag": "🇩🇪",
+        "count": 6,
+        "max": 49,
+        "bonus": 10,
+        "bonusMin": 0
+      },
+      {
+        "id": "it",
+        "name": "意大利 · 九十之选",
+        "flag": "🇮🇹",
+        "count": 6,
+        "max": 90,
+        "bonus": 0,
+        "minMatch": 2
+      },
+      {
+        "id": "es",
+        "name": "西班牙 · 原野六",
+        "flag": "🇪🇸",
+        "count": 6,
+        "max": 49,
+        "bonus": 0
+      },
+      {
+        "id": "ca",
+        "name": "加拿大 · 枫叶六",
+        "flag": "🇨🇦",
+        "count": 6,
+        "max": 49,
+        "bonus": 0
+      },
+      {
+        "id": "au",
+        "name": "澳大利亚 · 南十字七",
+        "flag": "🇦🇺",
+        "count": 7,
+        "max": 47,
+        "bonus": 0
+      },
+      {
+        "id": "nz",
+        "name": "新西兰 · 云帆六",
+        "flag": "🇳🇿",
+        "count": 6,
+        "max": 40,
+        "bonus": 0
+      },
+      {
+        "id": "kr",
+        "name": "韩国 · 四五之约",
+        "flag": "🇰🇷",
+        "count": 6,
+        "max": 45,
+        "bonus": 0
+      },
+      {
+        "id": "sg",
+        "name": "新加坡 · 狮城六",
+        "flag": "🇸🇬",
+        "count": 6,
+        "max": 49,
+        "bonus": 0
+      },
+      {
+        "id": "br",
+        "name": "巴西 · 森林六",
+        "flag": "🇧🇷",
+        "count": 6,
+        "max": 60,
+        "bonus": 0,
+        "minMatch": 4
+      },
+      {
+        "id": "za",
+        "name": "南非 · 彩虹六",
+        "flag": "🇿🇦",
+        "count": 6,
+        "max": 52,
+        "bonus": 0
+      },
+      {
+        "id": "ph",
+        "name": "菲律宾 · 群岛六",
+        "flag": "🇵🇭",
+        "count": 6,
+        "max": 58,
+        "bonus": 0
+      }
+    ],
+    "cutoff": 1793608200000,
+    "ready": 1793739600000,
+    "sourceProfile": "PUBLIC-NOKEY-v1",
+    "calendarVersion": "US-EQUITIES-2026-v1",
+    "preparedAt": 1793413595948,
+    "sources": [
+      "YahooFinance",
+      "Nasdaq"
+    ],
+    "quorum": 2,
+    "conflict": "any-valid-disagreement-waits",
+    "confirmationDelayMs": 86400000,
+    "markets": [
+      {
+        "symbol": "XNAS:AAPL",
+        "date": "2026-11-02",
+        "currency": "USD",
+        "scale": 2,
+        "openUTC": 1793629800000,
+        "closeUTC": 1793653200000,
+        "eodhd": "AAPL.US",
+        "alpha": "AAPL",
+        "twelve": "AAPL",
+        "exchange": "NASDAQ"
+      },
+      {
+        "symbol": "XNAS:MSFT",
+        "date": "2026-11-02",
+        "currency": "USD",
+        "scale": 2,
+        "openUTC": 1793629800000,
+        "closeUTC": 1793653200000,
+        "eodhd": "MSFT.US",
+        "alpha": "MSFT",
+        "twelve": "MSFT",
+        "exchange": "NASDAQ"
+      },
+      {
+        "symbol": "XNYS:IBM",
+        "date": "2026-11-02",
+        "currency": "USD",
+        "scale": 2,
+        "openUTC": 1793629800000,
+        "closeUTC": 1793653200000,
+        "eodhd": "IBM.US",
+        "alpha": "IBM",
+        "twelve": "IBM",
+        "exchange": "NYSE"
+      }
+    ],
+    "payout": [
+      50,
+      30,
+      20
+    ],
+    "missing": "wait",
+    "calendar": "pinned-NYSE-Nasdaq-2026-calendar"
+  },
+  "commitment": "12e6fae3c838a77ea1b1ee6630b4f5704c200f817c5a011ed9666959886b18e1",
+  "input": "{\"version\":1,\"round\":\"1c6cb4c0-f039-4f23-a290-c303d509562a\",\"commitment\":\"12e6fae3c838a77ea1b1ee6630b4f5704c200f817c5a011ed9666959886b18e1\",\"prices\":[{\"symbol\":\"XNAS:AAPL\",\"date\":\"2026-11-02\",\"currency\":\"USD\",\"scale\":2,\"close\":33832},{\"symbol\":\"XNAS:MSFT\",\"date\":\"2026-11-02\",\"currency\":\"USD\",\"scale\":2,\"close\":50712},{\"symbol\":\"XNYS:IBM\",\"date\":\"2026-11-02\",\"currency\":\"USD\",\"scale\":2,\"close\":25251}]}",
+  "md5": "8fd85543f5399c3a51c611503682ab67",
+  "seed": "e56ab7bc7aff0c900d61548a5f0a11b2e14b16d6aa7a908e2fa91e2a6d74e6dd",
+  "results": {
+    "cn": {
+      "main": [
+        2,
+        15,
+        21,
+        22,
+        30,
+        32
+      ],
+      "bonus": 12
+    },
+    "us": {
+      "main": [
+        24,
+        37,
+        54,
+        56,
+        65
+      ],
+      "bonus": 8
+    },
+    "uk": {
+      "main": [
+        1,
+        16,
+        27,
+        45,
+        52,
+        59
+      ],
+      "bonus": null
+    },
+    "jp": {
+      "main": [
+        2,
+        18,
+        22,
+        25,
+        29,
+        40
+      ],
+      "bonus": null
+    },
+    "fr": {
+      "main": [
+        4,
+        10,
+        15,
+        28,
+        45
+      ],
+      "bonus": 5
+    },
+    "de": {
+      "main": [
+        12,
+        20,
+        32,
+        40,
+        42,
+        47
+      ],
+      "bonus": 4
+    },
+    "it": {
+      "main": [
+        18,
+        22,
+        26,
+        51,
+        58,
+        74
+      ],
+      "bonus": null
+    },
+    "es": {
+      "main": [
+        1,
+        14,
+        18,
+        22,
+        32,
+        39
+      ],
+      "bonus": null
+    },
+    "ca": {
+      "main": [
+        23,
+        28,
+        36,
+        37,
+        47,
+        48
+      ],
+      "bonus": null
+    },
+    "au": {
+      "main": [
+        6,
+        25,
+        31,
+        36,
+        38,
+        39,
+        40
+      ],
+      "bonus": null
+    },
+    "nz": {
+      "main": [
+        7,
+        13,
+        14,
+        36,
+        37,
+        40
+      ],
+      "bonus": null
+    },
+    "kr": {
+      "main": [
+        6,
+        17,
+        21,
+        22,
+        25,
+        41
+      ],
+      "bonus": null
+    },
+    "sg": {
+      "main": [
+        26,
+        28,
+        30,
+        32,
+        38,
+        49
+      ],
+      "bonus": null
+    },
+    "br": {
+      "main": [
+        13,
+        24,
+        26,
+        30,
+        55,
+        56
+      ],
+      "bonus": null
+    },
+    "za": {
+      "main": [
+        16,
+        18,
+        37,
+        42,
+        43,
+        50
+      ],
+      "bonus": null
+    },
+    "ph": {
+      "main": [
+        12,
+        25,
+        29,
+        46,
+        52,
+        58
+      ],
+      "bonus": null
+    }
+  },
+  "observedAt": "2026-11-03T21:00:20.089Z",
+  "execution": "LIVE_REAL_CLOCK",
+  "sources": [
+    {
+      "symbol": "XNAS:AAPL",
+      "sources": [
+        {
+          "provider": "YahooFinance",
+          "closeMinorUnits": 33832,
+          "sha256": "7fb7d84f00a817c31cdef43c041bd63653cd4b0c0d4d0ed07f3fd48110c9b9cf",
+          "close": 33832
+        },
+        {
+          "provider": "Nasdaq",
+          "closeMinorUnits": 33832,
+          "sha256": "80f35a3f262ce8334954d2ee49d0621287ad069ac61ec0fa5d2e03d4bf877345",
+          "close": 33832
+        }
+      ],
+      "failures": []
+    },
+    {
+      "symbol": "XNAS:MSFT",
+      "sources": [
+        {
+          "provider": "YahooFinance",
+          "closeMinorUnits": 50712,
+          "sha256": "07d88e48517bfa39fd0e682d510b3c95e26850af7016f4bdfdc26d079370986b",
+          "close": 50712
+        },
+        {
+          "provider": "Nasdaq",
+          "closeMinorUnits": 50712,
+          "sha256": "8f6ccc205f09a3c872449f8d49d1e8416745d403bf344650d4109c3508de9c3b",
+          "close": 50712
+        }
+      ],
+      "failures": []
+    },
+    {
+      "symbol": "XNYS:IBM",
+      "sources": [
+        {
+          "provider": "YahooFinance",
+          "closeMinorUnits": 25251,
+          "sha256": "be009448e0dddf9f836d289149c15ebaabfbc1a5e45f16f7c7e7fbe7c903bd7e",
+          "close": 25251
+        },
+        {
+          "provider": "Nasdaq",
+          "closeMinorUnits": 25251,
+          "sha256": "4468962de1a1b15253bf53cf4ac747c382b829a9fb7171dd39067d3861360938",
+          "close": 25251
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "dataNote": "Yahoo Finance close (split-adjusted historical series, not adjclose) and Nasdaq Close/Last must agree exactly at declared precision; dated snapshots after the confirmation window. Not exchange-signed finality.",
+  "poolBefore": 101000,
+  "payout": 0,
+  "poolAfter": 101000,
+  "evidenceKey": "1c6cb4c0-f039-4f23-a290-c303d509562a/8f79f10658d452301fd4ec72fcb9b854caaf10ab92d3ec9deee33b88689d6dab.json"
+}
